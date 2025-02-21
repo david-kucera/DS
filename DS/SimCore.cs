@@ -2,16 +2,19 @@ namespace DS;
 
 public abstract class SimCore
 {
+    #region Public functions
     public double Run(int numReps)
     {
-        double kumVysledok = 0.0;
+        double cumulativeResult = 0.0;
         for (int i = 0; i < numReps; i++)
         {
             double result = Experiment();
-            kumVysledok += result;
+            cumulativeResult += result;
         }
-        return kumVysledok / numReps;
+        return cumulativeResult / numReps;
     }
     
     protected abstract double Experiment();
+    public abstract List<double> RunWithTracking(int numReps);
+    #endregion // Public functions
 }

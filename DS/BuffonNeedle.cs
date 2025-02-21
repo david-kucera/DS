@@ -19,6 +19,7 @@ public class BuffonNeedle : SimCore
     }
     #endregion // Constructor
 
+    #region Public functions
     protected override double Experiment()
     {
         double y = RndY.NextDouble() * D;
@@ -28,4 +29,22 @@ public class BuffonNeedle : SimCore
         if (y + a >= D) return 1.0;
         return 0.0;
     }
+
+    public override List<double> RunWithTracking(int numReps)
+    {
+        double cumulativeResult = 0.0;
+        List<double> estimates = [];
+
+        for (int i = 1; i <= numReps; i++)
+        {
+            double result = Experiment();
+            cumulativeResult += result;
+            double piEval = (2 * L) / (D * (cumulativeResult / i));
+            estimates.Add(piEval);
+        }
+
+        return estimates;
+    }
+
+    #endregion // Public functions
 }
