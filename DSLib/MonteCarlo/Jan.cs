@@ -1,4 +1,3 @@
-using DSLib.Generators;
 using DSLib.Generators.Empirical;
 
 namespace DSLib.MonteCarlo;
@@ -20,6 +19,7 @@ public class Jan : SimCore
     #endregion // Constants
     
     #region Class members
+    private JanStrategy _strategy;
     private Random _rndTlmice;
     private Random _rndBrzdy;
     private DiscreteEmpirical _rndSvetlomety;
@@ -28,17 +28,17 @@ public class Jan : SimCore
     private Random _rndDodavatel1Od11;
     private ContinousEmpirical _rndDodavatel2Prvych15;
     private ContinousEmpirical _rndDodavatel2Od16;
-    #endregion // Class members
 
-    #region Properties
-    public int PocetTlmicovNaSklade = 0;
-    public int PocetBrzdNaSklade = 0;
-    public int PocetSvetielNaSklade = 0;
-    #endregion // Properties
-    
-    #region Constructor
-    public Jan(Random rndTlmice, Random rndBrzdy, DiscreteEmpirical rndSvetlomety, Random rndDodavatel1Prvych10, Random rndDodavatel1Od11, ContinousEmpirical rndDodavatel2Prvych15, ContinousEmpirical rndDodavatel2Od16)
+    private int _pocetTlmicovNaSklade;
+    private int _pocetBrzdNaSklade;
+    private int _pocetSvetielNaSklade;
+	#endregion // Class members
+
+	#region Constructor
+	public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, DiscreteEmpirical rndSvetlomety, Random rndDodavatel1Prvych10, Random rndDodavatel1Od11, ContinousEmpirical rndDodavatel2Prvych15, ContinousEmpirical rndDodavatel2Od16)
     {
+	    _strategy = strat;
+
         _rndTlmice = rndTlmice;
         _rndBrzdy = rndBrzdy;
         _rndSvetlomety = rndSvetlomety;
@@ -50,13 +50,29 @@ public class Jan : SimCore
     }
     #endregion // Constructor
     
-    #region Public functions
+    #region Protected functions
     protected override double Experiment()
     {
         double result = 0.0;
         for (int i = 1; i <= POCET_TYZDNOV; i++)
         {
-            result += StategyA(i);
+	        switch (_strategy)
+	        {
+                case JanStrategy.A:
+	                result += StrategyA(i);
+	                break;
+                case JanStrategy.B:
+	                result += StrategyB(i);
+                    break;
+                case JanStrategy.C:
+	                result += StrategyC(i);
+	                break;
+                case JanStrategy.D:
+	                result += StrategyD(i);
+                    break;
+                default:
+	                throw new Exception("An unexpected error occured!");
+			}
         }
 
         return result;
@@ -74,17 +90,21 @@ public class Jan : SimCore
 
     protected override void BeforeSimulationRun()
     {
-
+        _pocetTlmicovNaSklade = 0;
+        _pocetBrzdNaSklade = 0;
+        _pocetSvetielNaSklade = 0;
     }
 
     protected override void AfterSimulationRun()
     {
-
-    }
-    #endregion // Public functions
+	    _pocetTlmicovNaSklade = 0;
+	    _pocetBrzdNaSklade = 0;
+	    _pocetSvetielNaSklade = 0;
+	}
+    #endregion // Protected functions
     
     #region Private functions
-    private double StategyA(int tyzden)
+    private double StrategyA(int tyzden)
     {
         var naklady = 0.0;
         
@@ -94,17 +114,17 @@ public class Jan : SimCore
         
         if (dovezeniePerc < 70 && dovezeniePerc >= 10) // doviezlo sa
         {
-            PocetTlmicovNaSklade += POCET_TLMICE;
-            PocetBrzdNaSklade += POCET_BRZDY;
-            PocetSvetielNaSklade += POCET_SVETLA;
+            _pocetTlmicovNaSklade += POCET_TLMICE;
+            _pocetBrzdNaSklade += POCET_BRZDY;
+            _pocetSvetielNaSklade += POCET_SVETLA;
         }
         
         // veci cakaju do piatku ... teda 4 dni po-ut, ut-st, st-stv, stv-pi
         for (int i = 0; i < 4; i++)
         {
-            naklady += PocetTlmicovNaSklade * U_TLMICE;
-            naklady += PocetBrzdNaSklade * U_BRZDY;
-            naklady += PocetSvetielNaSklade * U_SVETLA;
+            naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            naklady += _pocetBrzdNaSklade * U_BRZDY;
+            naklady += _pocetSvetielNaSklade * U_SVETLA;
         }
         
         // odberne mnozstva od klienta
@@ -113,37 +133,37 @@ public class Jan : SimCore
         var odberSvetiel = _rndSvetlomety.Next();
         
         // kontrola pokut za nedostatocne zasoby
-        if (odberTlmicov > PocetTlmicovNaSklade)
+        if (odberTlmicov > _pocetTlmicovNaSklade)
         {
-            naklady += (odberTlmicov - PocetTlmicovNaSklade) * POKUTA;
-            PocetTlmicovNaSklade = 0;
+            naklady += (odberTlmicov - _pocetTlmicovNaSklade) * POKUTA;
+            _pocetTlmicovNaSklade = 0;
         }
-        else PocetTlmicovNaSklade -= odberTlmicov;
-        if (odberBrzd > PocetBrzdNaSklade)
+        else _pocetTlmicovNaSklade -= odberTlmicov;
+        if (odberBrzd > _pocetBrzdNaSklade)
         {
-            naklady += (odberBrzd - PocetBrzdNaSklade) * POKUTA;
-            PocetBrzdNaSklade = 0;
+            naklady += (odberBrzd - _pocetBrzdNaSklade) * POKUTA;
+            _pocetBrzdNaSklade = 0;
         }
-        else PocetBrzdNaSklade -= odberBrzd;
-        if (odberSvetiel > PocetSvetielNaSklade)
+        else _pocetBrzdNaSklade -= odberBrzd;
+        if (odberSvetiel > _pocetSvetielNaSklade)
         {
-            naklady += (odberSvetiel - PocetSvetielNaSklade) * POKUTA;
-            PocetSvetielNaSklade = 0;
+            naklady += (odberSvetiel - _pocetSvetielNaSklade) * POKUTA;
+            _pocetSvetielNaSklade = 0;
         }
-        else PocetSvetielNaSklade -= odberSvetiel;
+        else _pocetSvetielNaSklade -= odberSvetiel;
         
         // zvysny tovar na sklade este caka dalsie 3 dni do konca tyzdna... pi-so, so-ne, ne-po
         for (int i = 0; i < 3; i++)
         {
-            naklady += PocetTlmicovNaSklade * U_TLMICE;
-            naklady += PocetBrzdNaSklade * U_BRZDY;
-            naklady += PocetSvetielNaSklade * U_SVETLA;
+            naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            naklady += _pocetBrzdNaSklade * U_BRZDY;
+            naklady += _pocetSvetielNaSklade * U_SVETLA;
         }
 
         return naklady;
     }
 
-    private double StategyB(int tyzden)
+    private double StrategyB(int tyzden)
     {
         var naklady = 0.0;
         
@@ -155,17 +175,17 @@ public class Jan : SimCore
         throw new NotImplementedException();
         if (dovezeniePerc < 70 && dovezeniePerc >= 10) // doviezlo sa
         {
-            PocetTlmicovNaSklade += POCET_TLMICE;
-            PocetBrzdNaSklade += POCET_BRZDY;
-            PocetSvetielNaSklade += POCET_SVETLA;
+            _pocetTlmicovNaSklade += POCET_TLMICE;
+            _pocetBrzdNaSklade += POCET_BRZDY;
+            _pocetSvetielNaSklade += POCET_SVETLA;
         }
         
         // veci cakaju do piatku ... teda 4 dni po-ut, ut-st, st-stv, stv-pi
         for (int i = 0; i < 4; i++)
         {
-            naklady += PocetTlmicovNaSklade * U_TLMICE;
-            naklady += PocetBrzdNaSklade * U_BRZDY;
-            naklady += PocetSvetielNaSklade * U_SVETLA;
+            naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            naklady += _pocetBrzdNaSklade * U_BRZDY;
+            naklady += _pocetSvetielNaSklade * U_SVETLA;
         }
         
         // odberne mnozstva od klienta
@@ -174,44 +194,52 @@ public class Jan : SimCore
         var odberSvetiel = _rndSvetlomety.Next();
         
         // kontrola pokut za nedostatocne zasoby
-        if (odberTlmicov > PocetTlmicovNaSklade)
+        if (odberTlmicov > _pocetTlmicovNaSklade)
         {
-            naklady += (odberTlmicov - PocetTlmicovNaSklade) * POKUTA;
-            PocetTlmicovNaSklade = 0;
+            naklady += (odberTlmicov - _pocetTlmicovNaSklade) * POKUTA;
+            _pocetTlmicovNaSklade = 0;
         }
-        else PocetTlmicovNaSklade -= odberTlmicov;
-        if (odberBrzd > PocetBrzdNaSklade)
+        else _pocetTlmicovNaSklade -= odberTlmicov;
+        if (odberBrzd > _pocetBrzdNaSklade)
         {
-            naklady += (odberBrzd - PocetBrzdNaSklade) * POKUTA;
-            PocetBrzdNaSklade = 0;
+            naklady += (odberBrzd - _pocetBrzdNaSklade) * POKUTA;
+            _pocetBrzdNaSklade = 0;
         }
-        else PocetBrzdNaSklade -= odberBrzd;
-        if (odberSvetiel > PocetSvetielNaSklade)
+        else _pocetBrzdNaSklade -= odberBrzd;
+        if (odberSvetiel > _pocetSvetielNaSklade)
         {
-            naklady += (odberSvetiel - PocetSvetielNaSklade) * POKUTA;
-            PocetSvetielNaSklade = 0;
+            naklady += (odberSvetiel - _pocetSvetielNaSklade) * POKUTA;
+            _pocetSvetielNaSklade = 0;
         }
-        else PocetSvetielNaSklade -= odberSvetiel;
+        else _pocetSvetielNaSklade -= odberSvetiel;
         
         // zvysny tovar na sklade este caka dalsie 3 dni do konca tyzdna... pi-so, so-ne, ne-po
         for (int i = 0; i < 3; i++)
         {
-            naklady += PocetTlmicovNaSklade * U_TLMICE;
-            naklady += PocetBrzdNaSklade * U_BRZDY;
-            naklady += PocetSvetielNaSklade * U_SVETLA;
+            naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            naklady += _pocetBrzdNaSklade * U_BRZDY;
+            naklady += _pocetSvetielNaSklade * U_SVETLA;
         }
 
         return naklady;
     }
 
-    private double StategyC(int tyzden)
+    private double StrategyC(int tyzden)
     {
         throw new NotImplementedException();        
     }
 
-    private double StategyD(int tyzden)
+    private double StrategyD(int tyzden)
     {
         throw new NotImplementedException();
     }
     #endregion // Private functions
+}
+
+public enum JanStrategy
+{
+    A,
+    B,
+    C,
+    D
 }

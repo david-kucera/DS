@@ -17,11 +17,13 @@ public abstract class SimCore
         AfterSimulation();
         return cumulativeResult / numReps;
     }
-    
+    #endregion // Public functions
+
+    #region Protected functions
     protected abstract double Experiment();
     protected abstract void BeforeSimulation();
     protected abstract void AfterSimulation();
     protected abstract void BeforeSimulationRun();
     protected abstract void AfterSimulationRun();
-    #endregion // Public functions
+	#endregion // Protected functions
 }

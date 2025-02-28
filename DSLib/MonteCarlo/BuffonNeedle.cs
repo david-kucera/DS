@@ -19,7 +19,7 @@ public class BuffonNeedle : SimCore
     }
     #endregion // Constructor
 
-    #region Public functions
+    #region Protected functions
     protected override double Experiment()
     {
         double y = RndY.NextDouble() * D;
@@ -49,5 +49,5 @@ public class BuffonNeedle : SimCore
     {
 
     }
-    #endregion // Public functions
+    #endregion // Protected functions
 }
