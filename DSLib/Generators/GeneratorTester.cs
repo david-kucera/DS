@@ -1,6 +1,6 @@
-using DS.Gen.Empirical;
+using DSLib.Generators.Empirical;
 
-namespace DS.Gen;
+namespace DSLib.Generators;
 
 public static class GeneratorTester
 {
@@ -13,8 +13,15 @@ public static class GeneratorTester
     {
         for (int i = 0; i < 100; i++)
         {
-            if (testerType == GeneratorTesterType.Continous) TestContinous(i);
-            else TestDiscrete(i);
+            switch (testerType)
+            {
+                case GeneratorTesterType.Continous: 
+                    TestContinous(i);
+                    break;
+                case GeneratorTesterType.Discrete:
+                    TestDiscrete(i);
+                    break;
+            }
         }
     }
     #endregion // Public functions
@@ -115,7 +122,7 @@ public static class GeneratorTester
         Console.WriteLine((double)int1.Count/NUMBER_OF_ITERATIONS + "\t" +  (double)int2.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int3.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int4.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int5.Count/NUMBER_OF_ITERATIONS);
         // Console.WriteLine(int1.Count + int2.Count + int3.Count + int4.Count + int5.Count);
     }
-    #endregion
+    #endregion // Private functions
 }
 
 public enum GeneratorTesterType

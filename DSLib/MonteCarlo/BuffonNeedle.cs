@@ -1,4 +1,4 @@
-namespace DS;
+namespace DSLib.MonteCarlo;
 
 public class BuffonNeedle : SimCore
 {
@@ -30,24 +30,24 @@ public class BuffonNeedle : SimCore
         return 0.0;
     }
 
-    public override void BeforeSimulation()
+    protected override void BeforeSimulation()
     {
-        
+
     }
-    
-    public override void AfterSimulation()
+
+    protected override void AfterSimulation()
     {
-        
+
     }
-    
-    public override void BeforeSimulationRun()
+
+    protected override void BeforeSimulationRun()
     {
-        
+
     }
-    
-    public override void AfterSimulationRun()
+
+    protected override void AfterSimulationRun()
     {
-       
+
     }
     #endregion // Public functions
 }

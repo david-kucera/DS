@@ -1,4 +1,4 @@
-namespace DS;
+namespace DSLib.MonteCarlo;
 
 public abstract class SimCore
 {
@@ -19,9 +19,9 @@ public abstract class SimCore
     }
     
     protected abstract double Experiment();
-    public abstract void BeforeSimulation();
-    public abstract void AfterSimulation();
-    public abstract void BeforeSimulationRun();
-    public abstract void AfterSimulationRun();
+    protected abstract void BeforeSimulation();
+    protected abstract void AfterSimulation();
+    protected abstract void BeforeSimulationRun();
+    protected abstract void AfterSimulationRun();
     #endregion // Public functions
 }

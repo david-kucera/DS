@@ -1,4 +1,4 @@
-namespace DS.Gen.Empirical;
+namespace DSLib.Generators.Empirical;
 
 public class ContinousEmpirical : EmpiricalGenerator
 {
@@ -12,7 +12,8 @@ public class ContinousEmpirical : EmpiricalGenerator
     #region Public functions
     public double Next()
     {
-        return NextDouble();
+        var (intervalGenerator, (min, max)) = GetIntervalGeneratorAndMinMax();
+        return min + (max - min) * intervalGenerator.NextDouble();
     }
     #endregion // Public functions
 }

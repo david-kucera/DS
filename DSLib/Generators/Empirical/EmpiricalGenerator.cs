@@ -1,4 +1,4 @@
-namespace DS.Gen.Empirical;
+namespace DSLib.Generators.Empirical;
 
 public class EmpiricalGenerator : SupGen
 {
@@ -31,21 +31,7 @@ public class EmpiricalGenerator : SupGen
     #endregion // Constructor
 
     #region Protected functions
-    protected double NextDouble()
-    {
-        var (intervalGenerator, (min, max)) = GetIntervalGeneratorAndMinMax();
-        return min + (max - min) * intervalGenerator.NextDouble();
-    }
-    
-    protected int NextInt()
-    {
-        var (intervalGenerator, (min, max)) = GetIntervalGeneratorAndMinMax();
-        return intervalGenerator.Next(min, max);
-    }
-    #endregion // Protected functions   
-    
-    #region Private functions
-    private (Random generator, (int min, int max) interval) GetIntervalGeneratorAndMinMax()
+    protected (Random generator, (int min, int max) interval) GetIntervalGeneratorAndMinMax()
     {
         var probabilityGenerator = _generators[0];
         double genProbability = probabilityGenerator.NextDouble();
@@ -55,5 +41,5 @@ public class EmpiricalGenerator : SupGen
 
         return (_generators[intervalIndex], _intervals[intervalIndex]);
     }
-    #endregion // Private functions
+    #endregion // Protected functions   
 }
