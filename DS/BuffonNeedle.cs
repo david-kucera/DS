@@ -20,7 +20,7 @@ public class BuffonNeedle : SimCore
     #endregion // Constructor
 
     #region Public functions
-    protected override double Experiment()
+    protected override double Simulate()
     {
         double y = RndY.NextDouble() * D;
         double alpha = RndA.NextDouble() * Math.PI;
@@ -30,6 +30,26 @@ public class BuffonNeedle : SimCore
         return 0.0;
     }
 
+    public override void BeforeSimulation()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void AfterSimulation()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void BeforeSimulationRun()
+    {
+        throw new NotImplementedException();
+    }
+
+    public override void AfterSimulationRun()
+    {
+        throw new NotImplementedException();
+    }
+
     public override List<double> RunWithTracking(int numReps)
     {
         double cumulativeResult = 0.0;
@@ -37,7 +57,7 @@ public class BuffonNeedle : SimCore
 
         for (int i = 1; i <= numReps; i++)
         {
-            double result = Experiment();
+            double result = Simulate();
             cumulativeResult += result;
             double piEval = (2 * L) / (D * (cumulativeResult / i));
             estimates.Add(piEval);
