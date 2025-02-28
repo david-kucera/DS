@@ -83,19 +83,19 @@ public class Jan : SimCore
 
     }
 
-    protected override void AfterSimulation()
+    protected override void AfterSimulation(double cumulativeResult)
     {
 
     }
 
-    protected override void BeforeSimulationRun()
+    protected override void BeforeSimulationRun(int replication, double cumulativeResult)
     {
         _pocetTlmicovNaSklade = 0;
         _pocetBrzdNaSklade = 0;
         _pocetSvetielNaSklade = 0;
     }
 
-    protected override void AfterSimulationRun()
+    protected override void AfterSimulationRun(int replication, double cumulativeResult)
     {
 	    _pocetTlmicovNaSklade = 0;
 	    _pocetBrzdNaSklade = 0;

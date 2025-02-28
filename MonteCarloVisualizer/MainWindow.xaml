@@ -4,9 +4,49 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MonteCarloVisualizer"
+        xmlns:wpfplot="clr-namespace:ScottPlot.WPF;assembly=ScottPlot.WPF"
         mc:Ignorable="d"
         Title="Monte Carlo Visualization" Height="450" Width="800">
-    <Grid>
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
 
+        <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0 0 0 10">
+            <Label Content="Počet replikácií:" VerticalAlignment="Center"/>
+            <TextBox Name="ReplicationCountInput" Text="1000000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
+            <Button Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick"></Button>
+            <Button Content="Zastav simuláciu" Margin="5" Click="StopSimulation_OnClick"></Button>
+        </StackPanel>
+
+        <Grid Grid.Row="1" Margin="0 10 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="0" Margin="0">
+                <Label Content="Aktuálna hodnota: " Grid.Row="1" FontSize="14"/>
+                <Label Name="CurrentValue1Label" Content="" Grid.Row="1" FontSize="14" FontWeight="Bold"/>
+            </StackPanel>
+
+            <StackPanel Orientation="Horizontal" Grid.Column="1" Margin="0">
+                <Label Content="Aktuálna hodnota: " Grid.Row="1" FontSize="14"/>
+                <Label Name="CurrentValue2Label" Content="" Grid.Row="1" FontSize="14" FontWeight="Bold"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="2" Margin="0 10 0 0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <wpfplot:WpfPlot Name="StabilizationPlot1" Grid.Column="0" Margin="5"/>
+
+            <wpfplot:WpfPlot Name="StabilizationPlot2" Grid.Column="1" Margin="5"/>
+        </Grid>
     </Grid>
 </Window>

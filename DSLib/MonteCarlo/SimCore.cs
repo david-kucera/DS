@@ -7,14 +7,16 @@ public abstract class SimCore
     {
         BeforeSimulation();
         double cumulativeResult = 0.0;
-        for (int i = 0; i < numReps; i++)
+
+        for (int i = 1; i <= numReps; i++)
         {
-            BeforeSimulationRun();
+            BeforeSimulationRun(i, cumulativeResult);
             double result = Experiment();
             cumulativeResult += result;
-            AfterSimulationRun();
+            AfterSimulationRun(i, cumulativeResult);
         }
-        AfterSimulation();
+
+        AfterSimulation(cumulativeResult);
         return cumulativeResult / numReps;
     }
     #endregion // Public functions
@@ -22,8 +24,8 @@ public abstract class SimCore
     #region Protected functions
     protected abstract double Experiment();
     protected abstract void BeforeSimulation();
-    protected abstract void AfterSimulation();
-    protected abstract void BeforeSimulationRun();
-    protected abstract void AfterSimulationRun();
+    protected abstract void AfterSimulation(double cumulativeResult);
+    protected abstract void BeforeSimulationRun(int replication, double cumulativeResult);
+    protected abstract void AfterSimulationRun(int replication, double cumulativeResult);
 	#endregion // Protected functions
 }

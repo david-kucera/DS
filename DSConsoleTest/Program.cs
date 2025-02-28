@@ -7,9 +7,9 @@ internal static class Program
 {
     private static void Main()
     {
-        //TestujGeneratory();
-        //BuffonNeedle();
-        Jan();
+		//TestujGeneratory();
+		BuffonNeedle();
+		//Jan();
     }
 
     private static void TestujGeneratory()
@@ -19,7 +19,7 @@ internal static class Program
 
     private static void BuffonNeedle()
     {
-		const int numReps = 1_000;
+		const int numReps = 1_000_000;
 		const double L = 5.0;
 		const double D = 10.0;
 		Random rndY = new();
