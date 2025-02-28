@@ -1,9 +1,14 @@
+using DS.Gen.Empirical;
+
 namespace DS.Gen;
 
 public static class GeneratorTester
 {
+    #region Constants
     private const int NUMBER_OF_ITERATIONS = 1_000_000;
+    #endregion // Constants
     
+    #region Public functions
     public static void Test(GeneratorTesterType testerType)
     {
         for (int i = 0; i < 100; i++)
@@ -12,6 +17,9 @@ public static class GeneratorTester
             else TestDiscrete(i);
         }
     }
+    #endregion // Public functions
+
+    #region Private functions
     private static void TestDiscrete(int seed)
     {
         List<(int,int)> intervals =
@@ -107,6 +115,7 @@ public static class GeneratorTester
         Console.WriteLine((double)int1.Count/NUMBER_OF_ITERATIONS + "\t" +  (double)int2.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int3.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int4.Count/NUMBER_OF_ITERATIONS + "\t" + (double)int5.Count/NUMBER_OF_ITERATIONS);
         // Console.WriteLine(int1.Count + int2.Count + int3.Count + int4.Count + int5.Count);
     }
+    #endregion
 }
 
 public enum GeneratorTesterType

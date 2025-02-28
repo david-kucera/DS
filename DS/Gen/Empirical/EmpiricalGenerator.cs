@@ -1,4 +1,4 @@
-namespace DS.Gen;
+namespace DS.Gen.Empirical;
 
 public class EmpiricalGenerator : SupGen
 {
