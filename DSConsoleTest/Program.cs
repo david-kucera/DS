@@ -1,5 +1,4 @@
-﻿using DSLib.Generators;
-using DSLib.Generators.Empirical;
+﻿using DSLib.Generators.Empirical;
 using DSLib.MonteCarlo;
 
 namespace DSConsoleTest;

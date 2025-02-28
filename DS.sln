@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.13.35825.156 d17.13
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSLib", "DSLib\DSLib.csproj", "{0EF9A1F5-A869-4BEB-9D0E-E5C5FC86A082}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSConsoleTest", "DSConsoleTest\DSConsoleTest.csproj", "{C9AD2E8F-2EC9-4CE7-8F39-47CD7B32E41D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MonteCarloVisualizer", "MonteCarloVisualizer\MonteCarloVisualizer.csproj", "{2D83F071-162C-41E9-A3EE-B04D552C70A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,12 @@ Global
 		{C9AD2E8F-2EC9-4CE7-8F39-47CD7B32E41D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C9AD2E8F-2EC9-4CE7-8F39-47CD7B32E41D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C9AD2E8F-2EC9-4CE7-8F39-47CD7B32E41D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D83F071-162C-41E9-A3EE-B04D552C70A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D83F071-162C-41E9-A3EE-B04D552C70A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D83F071-162C-41E9-A3EE-B04D552C70A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D83F071-162C-41E9-A3EE-B04D552C70A3}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
 	EndGlobalSection
 EndGlobal

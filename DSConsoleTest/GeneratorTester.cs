@@ -1,6 +1,6 @@
 using DSLib.Generators.Empirical;
 
-namespace DSLib.Generators;
+namespace DSConsoleTest;
 
 public static class GeneratorTester
 {
