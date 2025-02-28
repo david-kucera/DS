@@ -34,7 +34,7 @@ public class Jan : SimCore
     #endregion // Properties
     
     #region Public functions
-    protected override double Simulate()
+    protected override double Experiment()
     {
         double result = 0.0;
         for (int i = 1; i <= POCET_TYZDNOV; i++)
@@ -61,11 +61,6 @@ public class Jan : SimCore
     }
 
     public override void AfterSimulationRun()
-    {
-        throw new NotImplementedException();
-    }
-
-    public override List<double> RunWithTracking(int numReps)
     {
         throw new NotImplementedException();
     }
