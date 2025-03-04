@@ -1,6 +1,6 @@
 namespace DSLib.Generators.Empirical;
 
-public class EmpiricalGenerator : SupGen
+public class EmpiricalGenerator : Random
 {
     #region Class members
     private List<Random> _generators = new();
@@ -9,7 +9,7 @@ public class EmpiricalGenerator : SupGen
     #endregion // Class members
     
     #region Constructor
-    protected EmpiricalGenerator(List<(int,int)> intervals, List<double> probabilities, int seed = 0) : base(seed)
+    protected EmpiricalGenerator(Random seeder, List<(int,int)> intervals, List<double> probabilities)
     {
         if (intervals.Count != probabilities.Count) throw new ArgumentException("Incorrect number of parameters!");
 
@@ -23,10 +23,7 @@ public class EmpiricalGenerator : SupGen
         
         _intervals = intervals;
         
-        for (int i = 0; i <= probabilities.Count; i++)
-        {
-            _generators.Add(new Random(GetNextSeed()));
-        }
+        for (int i = 0; i <= probabilities.Count; i++) _generators.Add(new Random(seeder.Next()));
     }
     #endregion // Constructor
 
@@ -35,11 +32,8 @@ public class EmpiricalGenerator : SupGen
     {
         var probabilityGenerator = _generators[0];
         double genProbability = probabilityGenerator.NextDouble();
-
         int intervalIndex = _cumulativeProbabilities.FindIndex(p => genProbability < p);
-        if (intervalIndex == -1) intervalIndex = _cumulativeProbabilities.Count - 1;
-
-        return (_generators[intervalIndex], _intervals[intervalIndex]);
+        return (_generators[intervalIndex + 1], _intervals[intervalIndex]);
     }
     #endregion // Protected functions   
 }

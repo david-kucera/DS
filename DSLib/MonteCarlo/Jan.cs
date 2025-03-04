@@ -20,14 +20,16 @@ public class Jan : SimCore
     
     #region Class members
     private JanStrategy _strategy;
+    private Random _rnd;
+    
     private Random _rndTlmice;
     private Random _rndBrzdy;
-    private DiscreteEmpirical _rndSvetlomety;
+    private Random _rndSvetlomety;
     
     private Random _rndDodavatel1Prvych10;
     private Random _rndDodavatel1Od11;
-    private ContinousEmpirical _rndDodavatel2Prvych15;
-    private ContinousEmpirical _rndDodavatel2Od16;
+    private Random _rndDodavatel2Prvych15;
+    private Random _rndDodavatel2Od16;
 
     private int _pocetTlmicovNaSklade;
     private int _pocetBrzdNaSklade;
@@ -35,18 +37,20 @@ public class Jan : SimCore
 	#endregion // Class members
 
 	#region Constructor
-	public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, DiscreteEmpirical rndSvetlomety, Random rndDodavatel1Prvych10, Random rndDodavatel1Od11, ContinousEmpirical rndDodavatel2Prvych15, ContinousEmpirical rndDodavatel2Od16)
+	public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, Random rndSvetlomety, Random rndDodavatel11, Random rndDodavatel12, Random rndDodavatel21, Random rndDodavatel22, Random rnd)
     {
 	    _strategy = strat;
-
+        
+        _rnd = rnd;
+        
         _rndTlmice = rndTlmice;
         _rndBrzdy = rndBrzdy;
         _rndSvetlomety = rndSvetlomety;
         
-        _rndDodavatel1Prvych10 = rndDodavatel1Prvych10;
-        _rndDodavatel1Od11 = rndDodavatel1Od11;
-        _rndDodavatel2Prvych15 = rndDodavatel2Prvych15;
-        _rndDodavatel2Od16 = rndDodavatel2Od16;
+        _rndDodavatel1Prvych10 = rndDodavatel11;
+        _rndDodavatel1Od11 = rndDodavatel12;
+        _rndDodavatel2Prvych15 = rndDodavatel21;
+        _rndDodavatel2Od16 = rndDodavatel22;
     }
     #endregion // Constructor
     
@@ -110,9 +114,10 @@ public class Jan : SimCore
         
         double dovezeniePerc = 0.0;
         if (tyzden <= 10) dovezeniePerc = _rndDodavatel1Prvych10.Next(10, 70);
-        else dovezeniePerc = _rndDodavatel1Od11.Next(30, 95); 
-        
-        if (dovezeniePerc < 70 && dovezeniePerc >= 10) // doviezlo sa
+        else dovezeniePerc = _rndDodavatel1Od11.Next(30, 95);
+
+        double perc = _rnd.NextDouble() * 100;
+        if (dovezeniePerc >= perc) // doviezlo sa
         {
             _pocetTlmicovNaSklade += POCET_TLMICE;
             _pocetBrzdNaSklade += POCET_BRZDY;
@@ -168,12 +173,11 @@ public class Jan : SimCore
         var naklady = 0.0;
         
         double dovezeniePerc = 0.0;
-        if (tyzden <= 15) dovezeniePerc = _rndDodavatel2Prvych15.Next();
-        else dovezeniePerc = _rndDodavatel2Od16.Next();
+        if (tyzden <= 15) dovezeniePerc = _rndDodavatel2Prvych15.NextDouble();
+        else dovezeniePerc = _rndDodavatel2Od16.NextDouble();
         
-        // TODO s cim proovnavat???
-        throw new NotImplementedException();
-        if (dovezeniePerc < 70 && dovezeniePerc >= 10) // doviezlo sa
+        double perc = _rnd.NextDouble() * 100;
+        if (dovezeniePerc >= perc) // doviezlo sa
         {
             _pocetTlmicovNaSklade += POCET_TLMICE;
             _pocetBrzdNaSklade += POCET_BRZDY;

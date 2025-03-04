@@ -29,6 +29,8 @@ public static class GeneratorTester
     #region Private functions
     private static void TestDiscrete(int seed)
     {
+        Random seeder = new Random(seed);
+        
         List<(int,int)> intervals =
         [
             (30, 60),
@@ -43,7 +45,7 @@ public static class GeneratorTester
             0.3,
             0.1
         ];
-        DiscreteEmpirical gen = new(intervals, probabilities, seed);
+        DiscreteEmpirical gen = new(seeder, intervals, probabilities);
 
         List<int> int1 = [];
         List<int> int2 = [];
@@ -75,6 +77,8 @@ public static class GeneratorTester
     
     private static void TestContinous(int seed)
     {
+        Random seeder = new Random(seed);
+        
         List<(int,int)> intervals =
         [
             (5, 10),
@@ -91,7 +95,7 @@ public static class GeneratorTester
             0.06,
             0.04
         ];
-        ContinousEmpirical gen = new(intervals, probabilities, seed);
+        ContinousEmpirical gen = new(seeder, intervals, probabilities);
 
         List<double> int1 = [];
         List<double> int2 = [];
@@ -102,7 +106,7 @@ public static class GeneratorTester
         // Console.WriteLine("Generating data...");
         for (int i = 0; i < NUMBER_OF_ITERATIONS; i++)
         {
-            double val = gen.Next();
+            double val = gen.NextDouble();
             
             if (val >= intervals[0].Item1 && val < intervals[0].Item2) int1.Add(val);
             else if (val >= intervals[1].Item1 && val < intervals[1].Item2) int2.Add(val);

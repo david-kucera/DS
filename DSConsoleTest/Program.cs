@@ -7,9 +7,9 @@ internal static class Program
 {
     private static void Main()
     {
-		//TestujGeneratory();
-		BuffonNeedle();
-		//Jan();
+		// TestujGeneratory();
+		// BuffonNeedle();
+		Jan();
     }
 
     private static void TestujGeneratory()
@@ -36,9 +36,10 @@ internal static class Program
     {
 		const int numReps = 1_000;
 		const int seed = 0;
-
-		Random rndTlmice = new(seed);
-		Random rndBrzdy = new(seed);
+		Random seeder = new(seed);
+		
+		Random rndTlmice = new(seeder.Next());
+		Random rndBrzdy = new(seeder.Next());
 		List<(int, int)> intervals =
 		[
 			(30, 60), (60, 100), (100, 140), (140, 160)
@@ -47,10 +48,10 @@ internal static class Program
 		[
 			0.2, 0.4, 0.3, 0.1
 		];
-		DiscreteEmpirical rndSvetlomety = new(intervals, probabilities);
+		DiscreteEmpirical rndSvetlomety = new(seeder, intervals, probabilities);
 
-		Random rndDodavatel11 = new(seed);
-		Random rndDodavatel12 = new(seed);
+		Random rndDodavatel11 = new(seeder.Next());
+		Random rndDodavatel12 = new(seeder.Next());
 		List<(int, int)> intervals2 =
 		[
 			(5, 10), (10, 50), (50, 70), (70, 80), (80, 95)
@@ -59,14 +60,16 @@ internal static class Program
 		[
 			0.4, 0.3, 0.2, 0.06, 0.04
 		];
-		ContinousEmpirical rndDodavatel21 = new(intervals2, probabilities2);
+		ContinousEmpirical rndDodavatel21 = new(seeder, intervals2, probabilities2);
 		List<double> probabilities3 =
 		[
 			0.2, 0.4, 0.3, 0.06, 0.04
 		];
-		ContinousEmpirical rndDodavatel22 = new(intervals2, probabilities3);
+		ContinousEmpirical rndDodavatel22 = new(seeder, intervals2, probabilities3);
 
-		Jan jan = new Jan(JanStrategy.A, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22);
+		Random rnd = new Random(seeder.Next());
+
+		Jan jan = new Jan(JanStrategy.A, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22, rnd);
 		var output = jan.Run(numReps);
 		Console.WriteLine($"Naklady: {output}");
 	}
