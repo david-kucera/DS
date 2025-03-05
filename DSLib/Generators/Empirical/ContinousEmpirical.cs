@@ -10,7 +10,6 @@ public class ContinousEmpirical : EmpiricalGenerator
     #endregion // Constructor
 
     #region Public functions
-
     public override int Next()
     {
         throw new NotSupportedException("This method is not supported!");
