@@ -101,9 +101,9 @@ public class Jan : SimCore
 
     protected override void AfterSimulationRun(int replication, double cumulativeResult)
     {
-	    _pocetTlmicovNaSklade = 0;
-	    _pocetBrzdNaSklade = 0;
-	    _pocetSvetielNaSklade = 0;
+	    // _pocetTlmicovNaSklade = 0;
+	    // _pocetBrzdNaSklade = 0;
+	    // _pocetSvetielNaSklade = 0;
 	}
     #endregion // Protected functions
     
@@ -113,8 +113,8 @@ public class Jan : SimCore
         var naklady = 0.0;
         
         double dovezeniePerc = 0.0;
-        if (tyzden <= 10) dovezeniePerc = _rndDodavatel1Prvych10.Next(10, 70);
-        else dovezeniePerc = _rndDodavatel1Od11.Next(30, 95);
+        if (tyzden <= 10) dovezeniePerc = _rndDodavatel1Prvych10.NextDouble();
+        else dovezeniePerc = _rndDodavatel1Od11.NextDouble();
 
         double perc = _rnd.NextDouble() * 100;
         if (dovezeniePerc >= perc) // doviezlo sa
@@ -133,8 +133,8 @@ public class Jan : SimCore
         }
         
         // odberne mnozstva od klienta
-        var odberTlmicov = _rndTlmice.Next(50, 100);
-        var odberBrzd = _rndBrzdy.Next(60, 250);
+        var odberTlmicov = _rndTlmice.Next();
+        var odberBrzd = _rndBrzdy.Next();
         var odberSvetiel = _rndSvetlomety.Next();
         
         // kontrola pokut za nedostatocne zasoby
@@ -193,8 +193,8 @@ public class Jan : SimCore
         }
         
         // odberne mnozstva od klienta
-        var odberTlmicov = _rndTlmice.Next(50, 100);
-        var odberBrzd = _rndBrzdy.Next(60, 250);
+        var odberTlmicov = _rndTlmice.Next();
+        var odberBrzd = _rndBrzdy.Next();
         var odberSvetiel = _rndSvetlomety.Next();
         
         // kontrola pokut za nedostatocne zasoby

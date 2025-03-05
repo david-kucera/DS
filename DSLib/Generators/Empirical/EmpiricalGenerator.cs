@@ -1,6 +1,6 @@
 namespace DSLib.Generators.Empirical;
 
-public class EmpiricalGenerator : Random
+public abstract class EmpiricalGenerator : Random
 {
     #region Class members
     private List<Random> _generators = new();

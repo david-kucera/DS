@@ -1,4 +1,5 @@
 ﻿using DSLib.Generators.Empirical;
+using DSLib.Generators.Uniform;
 using DSLib.MonteCarlo;
 
 namespace DSConsoleTest;
@@ -34,12 +35,12 @@ internal static class Program
 
     private static void Jan()
     {
-		const int numReps = 1_000;
-		const int seed = 0;
+		const int numReps = 1_000_000;
+		int seed = DateTime.Now.Millisecond;
 		Random seeder = new(seed);
 		
-		Random rndTlmice = new(seeder.Next());
-		Random rndBrzdy = new(seeder.Next());
+		DiscreteUniform rndTlmice = new(seeder, 50, 100);
+		DiscreteUniform rndBrzdy = new(seeder, 60, 250);
 		List<(int, int)> intervals =
 		[
 			(30, 60), (60, 100), (100, 140), (140, 160)
@@ -50,8 +51,8 @@ internal static class Program
 		];
 		DiscreteEmpirical rndSvetlomety = new(seeder, intervals, probabilities);
 
-		Random rndDodavatel11 = new(seeder.Next());
-		Random rndDodavatel12 = new(seeder.Next());
+		ContinousUniform rndDodavatel11 = new(seeder, 10, 70);
+		ContinousUniform rndDodavatel12 = new(seeder, 30, 95);
 		List<(int, int)> intervals2 =
 		[
 			(5, 10), (10, 50), (50, 70), (70, 80), (80, 95)
@@ -69,7 +70,7 @@ internal static class Program
 
 		Random rnd = new Random(seeder.Next());
 
-		Jan jan = new Jan(JanStrategy.A, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22, rnd);
+		Jan jan = new Jan(JanStrategy.B, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22, rnd);
 		var output = jan.Run(numReps);
 		Console.WriteLine($"Naklady: {output}");
 	}
