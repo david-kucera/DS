@@ -1,7 +1,4 @@
-﻿using System.Windows;
-using DSLib.MonteCarlo;
-
-namespace MonteCarloVisualizer;
+﻿namespace MonteCarloVisualizer;
 
 public partial class MainWindow : Window
 {

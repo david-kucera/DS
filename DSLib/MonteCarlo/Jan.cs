@@ -1,5 +1,3 @@
-using DSLib.Generators.Empirical;
-
 namespace DSLib.MonteCarlo;
 
 public class Jan : SimCore

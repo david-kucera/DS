@@ -70,7 +70,7 @@ internal static class Program
 
 		Random rnd = new Random(seeder.Next());
 
-		Jan jan = new Jan(JanStrategy.B, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22, rnd);
+		Jan jan = new Jan(JanStrategy.D, rndTlmice, rndBrzdy, rndSvetlomety, rndDodavatel11, rndDodavatel12, rndDodavatel21, rndDodavatel22, rnd);
 		var output = jan.Run(numReps);
 		Console.WriteLine($"Naklady: {output}");
 	}
