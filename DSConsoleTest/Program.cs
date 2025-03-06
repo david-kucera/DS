@@ -39,8 +39,8 @@ internal static class Program
 		int seed = DateTime.Now.Millisecond;
 		Random seeder = new(seed);
 		
-		DiscreteUniform rndTlmice = new(seeder, 50, 100);
-		DiscreteUniform rndBrzdy = new(seeder, 60, 250);
+		DiscreteUniform rndTlmice = new(seeder, 50, 100 + 1);
+		DiscreteUniform rndBrzdy = new(seeder, 60, 250 + 1);
 		List<(int, int)> intervals =
 		[
 			(30, 60), (60, 100), (100, 140), (140, 160)
