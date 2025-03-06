@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DSLib\DSLib.csproj" />
+    <ProjectReference Include="..\MonteCarloLib\MonteCarloLib.csproj" />
   </ItemGroup>
 
 </Project>
