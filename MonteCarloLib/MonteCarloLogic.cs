@@ -59,9 +59,13 @@ namespace MonteCarloLib
 
         public void Stop()
         {
+            _janA.Stop();
             _janA.NewValue -= OnNewValueA;
+            _janB.Stop();
             _janB.NewValue -= OnNewValueB;
+            _janC.Stop();
             _janC.NewValue -= OnNewValueC;
+            _janD.Stop();
             _janD.NewValue -= OnNewValueD;
         }
         #endregion // Public functions

@@ -41,7 +41,10 @@ namespace MonteCarloVisualizer
             _simulation.NewValueC += NewDataC;
             _simulation.NewValueD += NewDataD;
 
-            _simulation.Start(numReps, interval);
+            Task.Run(() =>
+            {
+                _simulation.Start(numReps, interval);
+            });
         }
 
         private void NewDataA(object? sender, double e) => UpdateUI(_valuesA, e, CurrentValueALabel, StabilizationPlot1);
