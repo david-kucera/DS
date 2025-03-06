@@ -1,4 +1,7 @@
-﻿namespace MonteCarloVisualizer;
+﻿using System.Windows;
+using DSLib.MonteCarlo;
+
+namespace MonteCarloVisualizer;
 
 public partial class MainWindow : Window
 {
@@ -21,7 +24,7 @@ public partial class MainWindow : Window
 		Application.Current.Dispatcher.Invoke(() =>
 		{
 			values.Add(newValue);
-			CurrentValue1Label.Content = $"{newValue}";
+			CurrentValueALabel.Content = $"{newValue}";
 			_updateCount++;
 			if (_updateCount % 100 == 0) UpdatePlot();
 		});
