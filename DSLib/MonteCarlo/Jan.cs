@@ -1,3 +1,6 @@
+using DSLib.Generators.Empirical;
+using DSLib.Generators.Uniform;
+
 namespace DSLib.MonteCarlo;
 
 public class Jan : SimCore
@@ -32,10 +35,18 @@ public class Jan : SimCore
     private int _pocetTlmicovNaSklade;
     private int _pocetBrzdNaSklade;
     private int _pocetSvetielNaSklade;
-	#endregion // Class members
+    #endregion // Class members
 
-	#region Constructor
-	public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, Random rndSvetlomety, Random rndDodavatel11, Random rndDodavatel12, Random rndDodavatel21, Random rndDodavatel22, Random rnd)
+    #region Events
+    public event EventHandler<(int, double)> NewValue;
+    private void OnNewValue(int i, double cumulativeResult)
+    {
+        NewValue?.Invoke(this, (i, cumulativeResult));
+    }
+    #endregion // Events
+
+    #region Constructors
+    public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, Random rndSvetlomety, Random rndDodavatel11, Random rndDodavatel12, Random rndDodavatel21, Random rndDodavatel22, Random rnd)
     {
 	    _strategy = strat;
         
@@ -50,7 +61,42 @@ public class Jan : SimCore
         _rndDodavatel2Prvych15 = rndDodavatel21;
         _rndDodavatel2Od16 = rndDodavatel22;
     }
-    #endregion // Constructor
+
+    public Jan(JanStrategy strategy, Random seeder)
+    {
+        _strategy = strategy;
+        _rndTlmice = new DiscreteUniform(seeder, 50, 100 + 1);
+        _rndBrzdy = new DiscreteUniform(seeder, 60, 250 + 1);
+        List<(int, int)> intervals =
+        [
+            (30, 60), (60, 100), (100, 140), (140, 160)
+        ];
+        List<double> probabilities =
+        [
+            0.2, 0.4, 0.3, 0.1
+        ];
+        _rndSvetlomety = new DiscreteEmpirical(seeder, intervals, probabilities);
+
+        _rndDodavatel1Prvych10 = new ContinousUniform(seeder, 10, 70);
+        _rndDodavatel1Od11 = new ContinousUniform(seeder, 30, 95);
+        List<(int, int)> intervals2 =
+        [
+            (5, 10), (10, 50), (50, 70), (70, 80), (80, 95)
+        ];
+        List<double> probabilities2 =
+        [
+            0.4, 0.3, 0.2, 0.06, 0.04
+        ];
+        _rndDodavatel2Prvych15 = new ContinousEmpirical(seeder, intervals2, probabilities2);
+        List<double> probabilities3 =
+        [
+            0.2, 0.4, 0.3, 0.06, 0.04
+        ];
+        _rndDodavatel2Od16 = new ContinousEmpirical(seeder, intervals2, probabilities3);
+
+        _rnd = new Random(seeder.Next());
+    }
+    #endregion // Constructors
     
     #region Protected functions
     protected override double Experiment()
@@ -102,7 +148,8 @@ public class Jan : SimCore
 	    // _pocetTlmicovNaSklade = 0;
 	    // _pocetBrzdNaSklade = 0;
 	    // _pocetSvetielNaSklade = 0;
-	}
+        OnNewValue(replication, cumulativeResult);
+    }
     #endregion // Protected functions
     
     #region Private functions

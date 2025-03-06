@@ -7,15 +7,14 @@ public partial class MainWindow : Window
 {
 	private List<double> values = new();
 	private BuffonNeedle _simulation;
-	private int _updateCount = 0;
 
 	public MainWindow()
     {
         InitializeComponent();
 
-        StabilizationPlot1.Plot.XLabel("Iterácia");
-        StabilizationPlot1.Plot.YLabel("Hodnota");
-        StabilizationPlot1.Plot.Title("Graf ustáľovania");
+        //StabilizationPlot1.Plot.XLabel("Iterácia");
+        //StabilizationPlot1.Plot.YLabel("Hodnota");
+        //StabilizationPlot1.Plot.Title("Graf ustáľovania");
 	}
 
 	private void NewData(object? sender, double e)
@@ -25,8 +24,7 @@ public partial class MainWindow : Window
 		{
 			values.Add(newValue);
 			CurrentValueALabel.Content = $"{newValue}";
-			_updateCount++;
-			if (_updateCount % 100 == 0) UpdatePlot();
+			UpdatePlot();
 		});
 	}
 
