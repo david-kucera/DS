@@ -5,8 +5,8 @@ namespace DSLib.MonteCarlo;
 
 public class Jan : SimCore
 {
-    #region Constants
-    private const double U_TLMICE = 0.2;
+	#region Constants
+	private const double U_TLMICE = 0.2;
     private const double U_BRZDY = 0.3;
     private const double U_SVETLA = 0.25;
     
@@ -18,13 +18,14 @@ public class Jan : SimCore
 
     private const int POCET_TYZDNOV = 30;
 
-    private const string STRATEGY1_PATH = "../data/strat1.txt";
-    private const string STRATEGY2_PATH = "../data/strat2.txt";
-    private const string STRATEGY3_PATH = "../data/strat3.txt";
-    #endregion // Constants
+    private const string STRATEGY1_PATH = "../../data/strategy1.csv";
+    private const string STRATEGY2_PATH = "../../data/strategy2.csv";
+    private const string STRATEGY3_PATH = "../../data/strategy3.csv";
+    private const string STRATEGY4_PATH = "../../data/strategy4.csv";
+	#endregion // Constants
 
-    #region Class members
-    private JanStrategy _strategy;
+	#region Class members
+	private JanStrategy _strategy;
     private Random _rnd;
     
     private Random _rndTlmice;
@@ -39,16 +40,19 @@ public class Jan : SimCore
     private int _pocetTlmicovNaSklade;
     private int _pocetBrzdNaSklade;
     private int _pocetSvetielNaSklade;
-    #endregion // Class members
 
-    #region Events
-    public event EventHandler<(int, double)> NewValue = null;
-    public event EventHandler<double> NewNaklady = null;
-    public event EventHandler SimulationStopped = null;
+    private List<int> _dodavatel1Dni;
+    private bool _ownStrategy;
+	#endregion // Class members
+
+	#region Events
+	public event EventHandler<(int, double)> NewValue = null!;
+    public event EventHandler<double> NewNaklady = null!;
+    public event EventHandler NewSimulationStopped = null!;
 
     private void OnSimulationStopped()
 	{
-		SimulationStopped?.Invoke(this, EventArgs.Empty);
+		NewSimulationStopped?.Invoke(this, EventArgs.Empty);
 	}
 
 	private void OnNewValue(int i, double cumulativeResult)
@@ -65,7 +69,14 @@ public class Jan : SimCore
     #region Constructors
     public Jan(JanStrategy strat, Random rndTlmice, Random rndBrzdy, Random rndSvetlomety, Random rndDodavatel11, Random rndDodavatel12, Random rndDodavatel21, Random rndDodavatel22, Random rnd)
     {
-	    _strategy = strat;
+	    if (strat == JanStrategy.Own1 || strat == JanStrategy.Own2 || strat == JanStrategy.Own3 || strat == JanStrategy.Own4)
+	    {
+			if (!File.Exists(STRATEGY1_PATH) || !File.Exists(STRATEGY2_PATH) || !File.Exists(STRATEGY3_PATH) ||
+		        !File.Exists(STRATEGY4_PATH)) throw new Exception("Strategies must be in data folder!");
+			_dodavatel1Dni = [];
+            _ownStrategy = true;
+		}
+		_strategy = strat;
         
         _rnd = rnd;
         
@@ -79,9 +90,17 @@ public class Jan : SimCore
         _rndDodavatel2Od16 = rndDodavatel22;
     }
 
-    public Jan(JanStrategy strategy, Random seeder)
+    public Jan(JanStrategy strat, Random seeder)
     {
-        _strategy = strategy;
+	    if (strat == JanStrategy.Own1 || strat == JanStrategy.Own2 || strat == JanStrategy.Own3 || strat == JanStrategy.Own4)
+	    {
+		    if (!File.Exists(STRATEGY1_PATH) || !File.Exists(STRATEGY2_PATH) || !File.Exists(STRATEGY3_PATH) ||
+		        !File.Exists(STRATEGY4_PATH)) throw new Exception("Strategies must be in data folder!");
+		    _dodavatel1Dni = [];
+			_ownStrategy = true;
+		}
+
+		_strategy = strat;
         _rndTlmice = new DiscreteUniform(seeder, 50, 100 + 1);
         _rndBrzdy = new DiscreteUniform(seeder, 60, 250 + 1);
         List<(int, int)> intervals =
@@ -136,15 +155,12 @@ public class Jan : SimCore
 	                result += StrategyD(i);
                     break;
                 case JanStrategy.Own1:
-                    result += StrategyOwn1(i);
-                    break;
                 case JanStrategy.Own2:
-                    result += StrategyOwn2(i);
-                    break;
                 case JanStrategy.Own3:
-                    result += StrategyOwn3(i);
-                    break;
-                default:
+                case JanStrategy.Own4:
+					result += StrategyOwn(i);
+					break;
+				default:
 	                throw new Exception("An unexpected error occured!");
 			}
         }
@@ -154,10 +170,33 @@ public class Jan : SimCore
 
     protected override void BeforeSimulation()
     {
+        if (!_ownStrategy) return;
 
-    }
+		string path = string.Empty;
+		switch (_strategy)
+	    {
+            case JanStrategy.Own1:
+				path = STRATEGY1_PATH;
+				break;
+            case JanStrategy.Own2:
+				path = STRATEGY2_PATH;
+				break;
+			case JanStrategy.Own3:
+				path = STRATEGY3_PATH;
+				break;
+            case JanStrategy.Own4:
+				path = STRATEGY4_PATH;
+				break;
+            default:
+				break;
+		}
 
-    protected override void AfterSimulation(double cumulativeResult)
+		_dodavatel1Dni = File.ReadAllLines(path)
+			.Select(line => int.Parse(line.Split(';')[1]))
+			.ToList();
+	}
+
+	protected override void AfterSimulation(double cumulativeResult)
     {
         OnSimulationStopped();
     }
@@ -232,20 +271,23 @@ public class Jan : SimCore
         return Strategy(dovezeniePerc, perc);
     }
 
-    private double StrategyOwn1(int tyzden)
+    private double StrategyOwn(int tyzden)
     {
-        throw new NotImplementedException();
-    }
+        double dovezeniePerc = 0.0;
+		if (_dodavatel1Dni.Contains(tyzden)) // dodavatel 1
+	    {
+		    if (tyzden <= 10) dovezeniePerc = _rndDodavatel1Prvych10.NextDouble();
+			else dovezeniePerc = _rndDodavatel1Od11.NextDouble();
+		}
+	    else // dodavatel 2
+	    {
+            if (tyzden <= 15) dovezeniePerc = _rndDodavatel2Prvych15.NextDouble();
+			else dovezeniePerc = _rndDodavatel2Od16.NextDouble();
+		}
+        double perc = _rnd.NextDouble() * 100;
 
-    private double StrategyOwn2(int tyzden)
-    {
-        throw new NotImplementedException();
-    }
-
-    private double StrategyOwn3(int tyzden)
-    {
-        throw new NotImplementedException();
-    }
+        return Strategy(dovezeniePerc, perc);
+	}
 
     private double Strategy(double dovezeniePerc, double perc)
     {
@@ -315,11 +357,12 @@ public class Jan : SimCore
 
 public enum JanStrategy
 {
-    A,
-    B,
-    C,
-    D,
-    Own1,
-    Own2,
-    Own3
+	A,
+	B,
+	C,
+	D,
+	Own1,
+	Own2,
+	Own3,
+    Own4
 }

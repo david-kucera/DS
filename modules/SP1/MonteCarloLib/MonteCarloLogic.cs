@@ -4,8 +4,16 @@ namespace MonteCarloLib
 {
     public class MonteCarloLogic
     {
-        #region Private members
-        private readonly Jan _janA;
+		#region Constants
+		public enum Strategies
+		{
+			Classic,
+			Own
+		}
+		#endregion // Constants
+
+		#region Private members
+		private readonly Jan _janA;
         private double _janACurr;
         private readonly Jan _janB;
 		private double _janBCurr;
@@ -30,17 +38,27 @@ namespace MonteCarloLib
 		#endregion // Events
 
 		#region Constructor
-		public MonteCarloLogic(int seed)
+		public MonteCarloLogic(int seed, Strategies strategies)
         {
 	        var seeder = new Random(seed);
-            _janA = new Jan(JanStrategy.A, seeder);
-            _janA.SimulationStopped += OnSimulationStopped;
-			_janB = new Jan(JanStrategy.B, seeder);
-			_janB.SimulationStopped += OnSimulationStopped;
-			_janC = new Jan(JanStrategy.C, seeder);
-			_janC.SimulationStopped += OnSimulationStopped;
-			_janD = new Jan(JanStrategy.D, seeder);
-			_janD.SimulationStopped += OnSimulationStopped;
+	        if (strategies == Strategies.Classic)
+	        {
+		        _janA = new Jan(JanStrategy.A, seeder);
+		        _janB = new Jan(JanStrategy.B, seeder);
+		        _janC = new Jan(JanStrategy.C, seeder);
+		        _janD = new Jan(JanStrategy.D, seeder);
+			}
+	        else
+	        {
+		        _janA = new Jan(JanStrategy.Own1, seeder);
+		        _janB = new Jan(JanStrategy.Own2, seeder);
+		        _janC = new Jan(JanStrategy.Own3, seeder);
+		        _janD = new Jan(JanStrategy.Own4, seeder);
+			}
+	        _janA.NewSimulationStopped += OnSimulationStopped;
+	        _janB.NewSimulationStopped += OnSimulationStopped;
+	        _janC.NewSimulationStopped += OnSimulationStopped;
+	        _janD.NewSimulationStopped += OnSimulationStopped;
 		}
         #endregion // Constructor
 

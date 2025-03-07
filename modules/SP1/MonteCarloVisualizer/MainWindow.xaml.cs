@@ -23,7 +23,7 @@ namespace MonteCarloVisualizer
         #endregion // Constructor
 
         #region Private functions
-        private async void StartSimulation(int numReps, int interval, int seed)
+        private async void StartSimulation(int numReps, int interval, int seed, MonteCarloLogic.Strategies strategies)
         {
             _valuesA.Clear();
             _valuesB.Clear();
@@ -40,7 +40,7 @@ namespace MonteCarloVisualizer
             StabilizationPlot3.Refresh();
             StabilizationPlot4.Refresh();
 
-            _simulation = new MonteCarloLogic(seed);
+            _simulation = new MonteCarloLogic(seed, strategies);
             _simulation.SimulationEnded += SimulationEnded;
 
 			_simulation.NewValueA += NewDataA;
@@ -61,6 +61,7 @@ namespace MonteCarloVisualizer
 	        {
 				SpustiButton.IsEnabled = true;
 				ZastavButton.IsEnabled = false;
+                SpustiMojeStrategieButton.IsEnabled = true;
 			});
 		}
 
@@ -98,9 +99,10 @@ namespace MonteCarloVisualizer
                 int.TryParse(IntervalInput.Text, out int interval) &&
                 int.TryParse(SeedInput.Text, out int seed))
             {
-                StartSimulation(numReps, interval, seed);
+                StartSimulation(numReps, interval, seed, MonteCarloLogic.Strategies.Classic);
                 SpustiButton.IsEnabled = false;
-                ZastavButton.IsEnabled = true;
+                SpustiMojeStrategieButton.IsEnabled = false;
+				ZastavButton.IsEnabled = true;
             }
             else
             {
@@ -111,9 +113,27 @@ namespace MonteCarloVisualizer
         private void StopSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             ZastavButton.IsEnabled = false;
-            SpustiButton.IsEnabled = true;
+            SpustiMojeStrategieButton.IsEnabled = true;
+			SpustiButton.IsEnabled = true;
             _simulation?.Stop();
 		}
         #endregion // Private functions
+
+        private void SpustiMojeStrategieButton_OnClick(object sender, RoutedEventArgs e)
+        {
+			if (int.TryParse(ReplicationCountInput.Text, out int numReps) &&
+			    int.TryParse(IntervalInput.Text, out int interval) &&
+			    int.TryParse(SeedInput.Text, out int seed))
+			{
+				StartSimulation(numReps, interval, seed, MonteCarloLogic.Strategies.Own);
+				SpustiButton.IsEnabled = false;
+				SpustiMojeStrategieButton.IsEnabled = false;
+				ZastavButton.IsEnabled = true;
+			}
+			else
+			{
+				MessageBox.Show("Zadajte platné čísla pre všetky parametre!", "Chyba", MessageBoxButton.OK, MessageBoxImage.Error);
+			}
+		}
     }
 }

@@ -35,6 +35,7 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0 0 0 0">
                     <Button Name="SpustiButton"  Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick" IsEnabled="True"></Button>
                     <Button Name="ZastavButton" Content="Zastav simuláciu" Margin="5" Click="StopSimulation_OnClick" IsEnabled="False"></Button>
+                    <Button Name="SpustiMojeStrategieButton" Content="Spusti moje stratégie" Margin="50,5,5,5" Click="SpustiMojeStrategieButton_OnClick" IsEnabled="True"></Button>
                 </StackPanel>
             </Grid>
             
