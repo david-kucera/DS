@@ -18,6 +18,7 @@ namespace MonteCarloVisualizer
         public MainWindow()
         {
             InitializeComponent();
+            SeedInput.Text = new Random().Next(0, 1000).ToString();
 		}
         #endregion // Constructor
 
