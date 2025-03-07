@@ -7,11 +7,11 @@ namespace MonteCarloVisualizer
     public partial class MainWindow : Window
     {
         #region Class members
-        private MonteCarloLogic _simulation = null;
-		private List<double> _valuesA = new();
-        private List<double> _valuesB = new();
-        private List<double> _valuesC = new();
-        private List<double> _valuesD = new();
+        private MonteCarloLogic _simulation = null!;
+		private readonly List<double> _valuesA = [];
+        private readonly List<double> _valuesB = [];
+        private readonly List<double> _valuesC = [];
+        private readonly List<double> _valuesD = [];
         #endregion // Class members
 
         #region Constructor
@@ -63,12 +63,12 @@ namespace MonteCarloVisualizer
 			});
 		}
 
-        private void NewDataA(object? sender, double e) => UpdateUI(_valuesA, e, CurrentValueALabel, StabilizationPlot1);
-        private void NewDataB(object? sender, double e) => UpdateUI(_valuesB, e, CurrentValueBLabel, StabilizationPlot2);
-        private void NewDataC(object? sender, double e) => UpdateUI(_valuesC, e, CurrentValueCLabel, StabilizationPlot3);
-        private void NewDataD(object? sender, double e) => UpdateUI(_valuesD, e, CurrentValueDLabel, StabilizationPlot4);
+        private void NewDataA(object? sender, double e) => UpdateUi(_valuesA, e, CurrentValueALabel, StabilizationPlot1);
+        private void NewDataB(object? sender, double e) => UpdateUi(_valuesB, e, CurrentValueBLabel, StabilizationPlot2);
+        private void NewDataC(object? sender, double e) => UpdateUi(_valuesC, e, CurrentValueCLabel, StabilizationPlot3);
+        private void NewDataD(object? sender, double e) => UpdateUi(_valuesD, e, CurrentValueDLabel, StabilizationPlot4);
 
-        private void UpdateUI(List<double> values, double newValue, System.Windows.Controls.Label label, WpfPlot plot)
+        private void UpdateUi(List<double> values, double newValue, System.Windows.Controls.Label label, WpfPlot plot)
         {
             Application.Current.Dispatcher.BeginInvoke(() =>
             {

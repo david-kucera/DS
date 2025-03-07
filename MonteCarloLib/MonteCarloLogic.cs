@@ -5,55 +5,43 @@ namespace MonteCarloLib
     public class MonteCarloLogic
     {
         #region Private members
-        private Random _seeder;
-        private Jan _janA = null;
-        private double _janACurr = 0.0;
-        private Jan _janB = null;
-		private double _janBCurr = 0.0;
-        private Jan _janC = null;
-		private double _janCCurr = 0.0;
-        private Jan _janD = null;
-		private double _janDCurr = 0.0;
+        private readonly Jan _janA;
+        private double _janACurr;
+        private readonly Jan _janB;
+		private double _janBCurr;
+        private readonly Jan _janC;
+		private double _janCCurr;
+        private readonly Jan _janD;
+		private double _janDCurr;
         private int _interval = 1000;
-        private int _numberOfFinishedSimulations = 0;
+        private int _numberOfFinishedSimulations;
 		#endregion // Private members
 
 		#region Events
-		public event EventHandler<double> NewValueA = null;
-        public event EventHandler<double> NewNakladyA = null;
-		public event EventHandler<double> NewValueB = null;
-		public event EventHandler<double> NewNakladyB = null;
-		public event EventHandler<double> NewValueC = null;
-        public event EventHandler<double> NewNakladyC = null;
-		public event EventHandler<double> NewValueD = null;
-        public event EventHandler<double> NewNakladyD = null;
-        public event EventHandler SimulationEnded = null;
+		public event EventHandler<double> NewValueA = null!;
+        public event EventHandler<double> NewNakladyA = null!;
+		public event EventHandler<double> NewValueB = null!;
+		public event EventHandler<double> NewNakladyB = null!;
+		public event EventHandler<double> NewValueC = null!;
+        public event EventHandler<double> NewNakladyC = null!;
+		public event EventHandler<double> NewValueD = null!;
+        public event EventHandler<double> NewNakladyD = null!;
+        public event EventHandler SimulationEnded = null!;
 		#endregion // Events
 
 		#region Constructor
 		public MonteCarloLogic(int seed)
         {
-            _seeder = new Random(seed);
-            _janA = new Jan(JanStrategy.A, _seeder);
+	        var seeder = new Random(seed);
+            _janA = new Jan(JanStrategy.A, seeder);
             _janA.SimulationStopped += OnSimulationStopped;
-			_janB = new Jan(JanStrategy.B, _seeder);
+			_janB = new Jan(JanStrategy.B, seeder);
 			_janB.SimulationStopped += OnSimulationStopped;
-			_janC = new Jan(JanStrategy.C, _seeder);
+			_janC = new Jan(JanStrategy.C, seeder);
 			_janC.SimulationStopped += OnSimulationStopped;
-			_janD = new Jan(JanStrategy.D, _seeder);
+			_janD = new Jan(JanStrategy.D, seeder);
 			_janD.SimulationStopped += OnSimulationStopped;
 		}
-
-        private void OnSimulationStopped(object? sender, EventArgs e)
-        {
-	        _numberOfFinishedSimulations++;
-			if (_numberOfFinishedSimulations == 4)
-			{
-				SimulationEnded?.Invoke(this, EventArgs.Empty);
-				_numberOfFinishedSimulations = 0;
-			}
-		}
-
         #endregion // Constructor
 
         #region Public functions
@@ -128,6 +116,16 @@ namespace MonteCarloLib
 		#endregion // Public functions
 
 		#region Private functions
+		private void OnSimulationStopped(object? sender, EventArgs e)
+		{
+			_numberOfFinishedSimulations++;
+			if (_numberOfFinishedSimulations == 4)
+			{
+				SimulationEnded?.Invoke(this, EventArgs.Empty);
+				_numberOfFinishedSimulations = 0;
+			}
+		}
+
 		private void OnNewNakladyD(object? sender, double e)
 		{
 			_janDCurr += e;
@@ -154,38 +152,30 @@ namespace MonteCarloLib
 
         private void OnNewValueD(object? sender, (int, double) e)
         {
-            if (e.Item1 % _interval == 0)
-            {
-                double value = e.Item2 / e.Item1;
-                NewValueD?.Invoke(this, value);
-            }
+	        if (e.Item1 % _interval != 0) return;
+	        double value = e.Item2 / e.Item1;
+	        NewValueD?.Invoke(this, value);
         }
 
         private void OnNewValueC(object? sender, (int, double) e)
         {
-            if (e.Item1 % _interval == 0)
-            {
-                double value = e.Item2 / e.Item1;
-                NewValueC?.Invoke(this, value);
-            }
+	        if (e.Item1 % _interval != 0) return;
+	        double value = e.Item2 / e.Item1;
+	        NewValueC?.Invoke(this, value);
         }
 
         private void OnNewValueB(object? sender, (int, double) e)
         {
-            if (e.Item1 % _interval == 0)
-            {
-                double value = e.Item2 / e.Item1;
-                NewValueB?.Invoke(this, value);
-            }
+	        if (e.Item1 % _interval != 0) return;
+	        double value = e.Item2 / e.Item1;
+	        NewValueB?.Invoke(this, value);
         }
 
         private void OnNewValueA(object? sender, (int, double) e)
         {
-            if (e.Item1 % _interval == 0)
-            {
-                double value = e.Item2 / e.Item1;
-                NewValueA?.Invoke(this, value);
-            }
+	        if (e.Item1 % _interval != 0) return;
+	        double value = e.Item2 / e.Item1;
+	        NewValueA?.Invoke(this, value);
         }
         #endregion // Private functions
     }
