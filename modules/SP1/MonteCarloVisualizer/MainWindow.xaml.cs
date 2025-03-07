@@ -88,7 +88,7 @@ namespace MonteCarloVisualizer
 
 			values = values.Skip(_skipFirst).ToList();
 
-			double[] xData = Enumerable.Range(1, values.Count).Select(i => (double)i).ToArray();
+			double[] xData = Enumerable.Range(1 + _skipFirst, values.Count).Select(i => (double)i).ToArray();
             double[] yData = values.ToArray();
 
             plot.Plot.Clear();
