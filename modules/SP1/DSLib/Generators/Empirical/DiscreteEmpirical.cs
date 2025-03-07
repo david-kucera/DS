@@ -3,7 +3,7 @@ namespace DSLib.Generators.Empirical;
 public class DiscreteEmpirical : EmpiricalGenerator
 {
     #region Constructor
-    public DiscreteEmpirical(Random seeder, List<(int,int)> intervals, List<double> probabilities, int seed = 0) : base(seeder, intervals, probabilities)
+    public DiscreteEmpirical(Random seeder, List<(int,int)> intervals, List<double> probabilities) : base(seeder, intervals, probabilities)
     {
         
     }
