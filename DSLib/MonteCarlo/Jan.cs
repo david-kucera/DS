@@ -42,9 +42,16 @@ public class Jan : SimCore
     #endregion // Class members
 
     #region Events
-    public event EventHandler<(int, double)> NewValue;
-    public event EventHandler<double> NewNaklady;
-    private void OnNewValue(int i, double cumulativeResult)
+    public event EventHandler<(int, double)> NewValue = null;
+    public event EventHandler<double> NewNaklady = null;
+    public event EventHandler SimulationStopped = null;
+
+    private void OnSimulationStopped()
+	{
+		SimulationStopped?.Invoke(this, EventArgs.Empty);
+	}
+
+	private void OnNewValue(int i, double cumulativeResult)
     {
         NewValue?.Invoke(this, (i, cumulativeResult));
     }
@@ -152,7 +159,7 @@ public class Jan : SimCore
 
     protected override void AfterSimulation(double cumulativeResult)
     {
-
+        OnSimulationStopped();
     }
 
     protected override void BeforeSimulationRun(int replication, double cumulativeResult)
@@ -164,9 +171,6 @@ public class Jan : SimCore
 
     protected override void AfterSimulationRun(int replication, double cumulativeResult)
     {
-	    // _pocetTlmicovNaSklade = 0;
-	    // _pocetBrzdNaSklade = 0;
-	    // _pocetSvetielNaSklade = 0;
         OnNewValue(replication, cumulativeResult);
     }
     #endregion // Protected functions

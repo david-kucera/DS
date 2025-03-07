@@ -6,113 +6,150 @@ namespace MonteCarloLib
     {
         #region Private members
         private Random _seeder;
-        private Jan _janA;
-        private Jan _janB;
-        private Jan _janC;
-        private Jan _janD;
+        private Jan _janA = null;
+        private double _janACurr = 0.0;
+        private Jan _janB = null;
+		private double _janBCurr = 0.0;
+        private Jan _janC = null;
+		private double _janCCurr = 0.0;
+        private Jan _janD = null;
+		private double _janDCurr = 0.0;
         private int _interval = 1000;
-        #endregion // Private members
+        private int _numberOfFinishedSimulations = 0;
+		#endregion // Private members
 
-        #region Events
-        public event EventHandler<double> NewValueA = null;
-        public event EventHandler<double> NewValueB = null;
-        public event EventHandler<double> NewValueC = null;
-        public event EventHandler<double> NewValueD = null;
-        public event EventHandler<double> NewNaklady = null;
-        #endregion // Events
+		#region Events
+		public event EventHandler<double> NewValueA = null;
+        public event EventHandler<double> NewNakladyA = null;
+		public event EventHandler<double> NewValueB = null;
+		public event EventHandler<double> NewNakladyB = null;
+		public event EventHandler<double> NewValueC = null;
+        public event EventHandler<double> NewNakladyC = null;
+		public event EventHandler<double> NewValueD = null;
+        public event EventHandler<double> NewNakladyD = null;
+        public event EventHandler SimulationEnded = null;
+		#endregion // Events
 
-        #region Constructor
-        public MonteCarloLogic(int seed)
+		#region Constructor
+		public MonteCarloLogic(int seed)
         {
             _seeder = new Random(seed);
             _janA = new Jan(JanStrategy.A, _seeder);
-            _janA.NewValue += OnNewValueA;
-            _janB = new Jan(JanStrategy.B, _seeder);
-            _janB.NewValue += OnNewValueB;
-            _janC = new Jan(JanStrategy.C, _seeder);
-            _janC.NewValue += OnNewValueC;
-            _janD = new Jan(JanStrategy.D, _seeder);
-            _janD.NewValue += OnNewValueD;
-        }
+            _janA.SimulationStopped += OnSimulationStopped;
+			_janB = new Jan(JanStrategy.B, _seeder);
+			_janB.SimulationStopped += OnSimulationStopped;
+			_janC = new Jan(JanStrategy.C, _seeder);
+			_janC.SimulationStopped += OnSimulationStopped;
+			_janD = new Jan(JanStrategy.D, _seeder);
+			_janD.SimulationStopped += OnSimulationStopped;
+		}
+
+        private void OnSimulationStopped(object? sender, EventArgs e)
+        {
+	        _numberOfFinishedSimulations++;
+			if (_numberOfFinishedSimulations == 4)
+			{
+				SimulationEnded?.Invoke(this, EventArgs.Empty);
+				_numberOfFinishedSimulations = 0;
+			}
+		}
+
         #endregion // Constructor
 
         #region Public functions
         public void Start(int numberOfReplications, int throwInterval = 1000) 
         {
             _interval = throwInterval;
-            Task.Run(() => 
-            {
-                _janA.Run(numberOfReplications);
-            });
-            Task.Run(() =>
-            {
-                _janB.Run(numberOfReplications);
-            });
-            Task.Run(() =>
-            {
-                _janC.Run(numberOfReplications);
-            });
-            Task.Run(() =>
-            {
-                _janD.Run(numberOfReplications);
-            });
-        }
 
-        public void StartOne(JanStrategy strategy)
-        {
-            switch(strategy)
+            if (numberOfReplications == 1)
             {
-                case JanStrategy.A:
-                    Task.Run(() =>
-                    {
-                        _janA.NewNaklady += OnNewNaklady;
-                        _janA.Run(1);
-                    });
-                    break;
-                case JanStrategy.B:
-                    Task.Run(() =>
-                    {
-                        _janB.NewNaklady += OnNewNaklady;
-                        _janB.Run(1);
-                    });
-                    break;
-                 case JanStrategy.C:
-                    Task.Run(() =>
-                    {
-                        _janC.NewNaklady += OnNewNaklady;
-                        _janC.Run(1);
-                    });
-                    break;
-                case JanStrategy.D:
-                    Task.Run(() =>
-                    {
-                        _janD.NewNaklady += OnNewNaklady;
-                        _janD.Run(1);
-                    });
-                    break;
-                 default:
-                    throw new Exception("An unexpected error occured!");
-            }
-            
+                _interval = 1;
+	            Task.Run(() =>
+	            {
+					_janA.NewNaklady += OnNewNakladyA;
+					_janA.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+					_janB.NewNaklady += OnNewNakladyB;
+					_janB.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+					_janC.NewNaklady += OnNewNakladyC;
+					_janC.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+		            _janD.NewNaklady += OnNewNakladyD;
+		            _janD.Run(numberOfReplications);
+	            });
+			}
+            else
+            {
+	            Task.Run(() =>
+	            {
+		            _janA.NewValue += OnNewValueA;
+		            _janA.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+		            _janB.NewValue += OnNewValueB;
+		            _janB.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+		            _janC.NewValue += OnNewValueC;
+		            _janC.Run(numberOfReplications);
+	            });
+	            Task.Run(() =>
+	            {
+		            _janD.NewValue += OnNewValueD;
+		            _janD.Run(numberOfReplications);
+	            });
+			}
         }
 
         public void Stop()
         {
             _janA.Stop();
             _janA.NewValue -= OnNewValueA;
-            _janB.Stop();
+            _janA.NewNaklady -= OnNewNakladyA;
+			_janB.Stop();
             _janB.NewValue -= OnNewValueB;
-            _janC.Stop();
+			_janB.NewNaklady -= OnNewNakladyB;
+			_janC.Stop();
             _janC.NewValue -= OnNewValueC;
-            _janD.Stop();
+			_janC.NewNaklady -= OnNewNakladyC;
+			_janD.Stop();
             _janD.NewValue -= OnNewValueD;
-        }
-        #endregion // Public functions
+			_janD.NewNaklady -= OnNewNakladyD;
+		}
+		#endregion // Public functions
 
-        #region Private functions
-        private void OnNewNaklady(object? sender, double e)
+		#region Private functions
+		private void OnNewNakladyD(object? sender, double e)
+		{
+			_janDCurr += e;
+			NewNakladyD?.Invoke(this, _janDCurr);
+		}
+
+		private void OnNewNakladyC(object? sender, double e)
+		{
+			_janCCurr += e;
+			NewNakladyC?.Invoke(this, _janCCurr);
+		}
+
+		private void OnNewNakladyB(object? sender, double e)
+		{
+			_janBCurr += e;
+			NewNakladyB?.Invoke(this, _janBCurr);
+		}
+
+		private void OnNewNakladyA(object? sender, double e)
         {
-            NewNaklady?.Invoke(this, e);
+			_janACurr += e;
+			NewNakladyA?.Invoke(this, _janACurr);
         }
 
         private void OnNewValueD(object? sender, (int, double) e)

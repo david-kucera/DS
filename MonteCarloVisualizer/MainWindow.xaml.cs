@@ -7,8 +7,8 @@ namespace MonteCarloVisualizer
     public partial class MainWindow : Window
     {
         #region Class members
-        private MonteCarloLogic _simulation;
-        private List<double> _valuesA = new();
+        private MonteCarloLogic _simulation = null;
+		private List<double> _valuesA = new();
         private List<double> _valuesB = new();
         private List<double> _valuesC = new();
         private List<double> _valuesD = new();
@@ -18,12 +18,11 @@ namespace MonteCarloVisualizer
         public MainWindow()
         {
             InitializeComponent();
-            OneComboBox.SelectedIndex = 0;
-        }
+		}
         #endregion // Constructor
 
         #region Private functions
-        private void StartSimulation(int numReps, int interval, int seed)
+        private async void StartSimulation(int numReps, int interval, int seed)
         {
             _valuesA.Clear();
             _valuesB.Clear();
@@ -41,17 +40,28 @@ namespace MonteCarloVisualizer
             StabilizationPlot4.Refresh();
 
             _simulation = new MonteCarloLogic(seed);
+            _simulation.SimulationEnded += SimulationEnded;
 
-            _simulation.NewValueA += NewDataA;
-            _simulation.NewValueB += NewDataB;
-            _simulation.NewValueC += NewDataC;
-            _simulation.NewValueD += NewDataD;
+			_simulation.NewValueA += NewDataA;
+            _simulation.NewNakladyA += NewDataA;
+			_simulation.NewValueB += NewDataB;
+            _simulation.NewNakladyB += NewDataB;
+			_simulation.NewValueC += NewDataC;
+			_simulation.NewNakladyC += NewDataC;
+			_simulation.NewValueD += NewDataD;
+			_simulation.NewNakladyD += NewDataD;
 
-            Task.Run(() =>
-            {
-                _simulation.Start(numReps, interval);
-            });
+			await Task.Run(() => _simulation.Start(numReps, interval));
         }
+
+        private void SimulationEnded(object? sender, EventArgs e)
+        {
+	        Application.Current.Dispatcher.BeginInvoke(() =>
+	        {
+				SpustiButton.IsEnabled = true;
+				ZastavButton.IsEnabled = false;
+			});
+		}
 
         private void NewDataA(object? sender, double e) => UpdateUI(_valuesA, e, CurrentValueALabel, StabilizationPlot1);
         private void NewDataB(object? sender, double e) => UpdateUI(_valuesB, e, CurrentValueBLabel, StabilizationPlot2);
@@ -60,7 +70,7 @@ namespace MonteCarloVisualizer
 
         private void UpdateUI(List<double> values, double newValue, System.Windows.Controls.Label label, WpfPlot plot)
         {
-            Application.Current.Dispatcher.Invoke(() =>
+            Application.Current.Dispatcher.BeginInvoke(() =>
             {
                 values.Add(newValue);
                 label.Content = $"{newValue:F4}";
@@ -97,19 +107,12 @@ namespace MonteCarloVisualizer
             }
         }
 
-        private void OneSimulation_OnClick(object sender, RoutedEventArgs e)
-        {
-            int seed = int.TryParse(SeedInput.Text, out int s) ? s : 0;
-            string strategy = OneComboBox.SelectedItem.ToString();
-            new DenneNakladyGrafWindow(seed, strategy).Show();
-        }
-
         private void StopSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             ZastavButton.IsEnabled = false;
             SpustiButton.IsEnabled = true;
             _simulation?.Stop();
-        }
+		}
         #endregion // Private functions
     }
 }
