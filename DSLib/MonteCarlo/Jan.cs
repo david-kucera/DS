@@ -17,8 +17,12 @@ public class Jan : SimCore
     private const int POCET_SVETLA = 150;
 
     private const int POCET_TYZDNOV = 30;
+
+    private const string STRATEGY1_PATH = "../data/strat1.txt";
+    private const string STRATEGY2_PATH = "../data/strat2.txt";
+    private const string STRATEGY3_PATH = "../data/strat3.txt";
     #endregion // Constants
-    
+
     #region Class members
     private JanStrategy _strategy;
     private Random _rnd;
@@ -124,6 +128,15 @@ public class Jan : SimCore
                 case JanStrategy.D:
 	                result += StrategyD(i);
                     break;
+                case JanStrategy.Own1:
+                    result += StrategyOwn1(i);
+                    break;
+                case JanStrategy.Own2:
+                    result += StrategyOwn2(i);
+                    break;
+                case JanStrategy.Own3:
+                    result += StrategyOwn3(i);
+                    break;
                 default:
 	                throw new Exception("An unexpected error occured!");
 			}
@@ -215,6 +228,21 @@ public class Jan : SimCore
         return Strategy(dovezeniePerc, perc);
     }
 
+    private double StrategyOwn1(int tyzden)
+    {
+        throw new NotImplementedException();
+    }
+
+    private double StrategyOwn2(int tyzden)
+    {
+        throw new NotImplementedException();
+    }
+
+    private double StrategyOwn3(int tyzden)
+    {
+        throw new NotImplementedException();
+    }
+
     private double Strategy(double dovezeniePerc, double perc)
     {
         double naklady = 0.0;
@@ -286,5 +314,8 @@ public enum JanStrategy
     A,
     B,
     C,
-    D
+    D,
+    Own1,
+    Own2,
+    Own3
 }
