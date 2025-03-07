@@ -18,6 +18,7 @@ namespace MonteCarloVisualizer
         public MainWindow()
         {
             InitializeComponent();
+            OneComboBox.SelectedIndex = 0;
         }
         #endregion // Constructor
 
@@ -99,7 +100,8 @@ namespace MonteCarloVisualizer
         private void OneSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             int seed = int.TryParse(SeedInput.Text, out int s) ? s : 0;
-            new DenneNakladyGrafWindow(seed).Show();
+            string strategy = OneComboBox.SelectedItem.ToString();
+            new DenneNakladyGrafWindow(seed, strategy).Show();
         }
 
         private void StopSimulation_OnClick(object sender, RoutedEventArgs e)

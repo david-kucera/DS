@@ -58,13 +58,42 @@ namespace MonteCarloLib
             });
         }
 
-        public void StartOne()
+        public void StartOne(JanStrategy strategy)
         {
-            Task.Run(() =>
+            switch(strategy)
             {
-                _janA.NewNaklady += OnNewNaklady;
-                _janA.Run(1);
-            });
+                case JanStrategy.A:
+                    Task.Run(() =>
+                    {
+                        _janA.NewNaklady += OnNewNaklady;
+                        _janA.Run(1);
+                    });
+                    break;
+                case JanStrategy.B:
+                    Task.Run(() =>
+                    {
+                        _janB.NewNaklady += OnNewNaklady;
+                        _janB.Run(1);
+                    });
+                    break;
+                 case JanStrategy.C:
+                    Task.Run(() =>
+                    {
+                        _janC.NewNaklady += OnNewNaklady;
+                        _janC.Run(1);
+                    });
+                    break;
+                case JanStrategy.D:
+                    Task.Run(() =>
+                    {
+                        _janD.NewNaklady += OnNewNaklady;
+                        _janD.Run(1);
+                    });
+                    break;
+                 default:
+                    throw new Exception("An unexpected error occured!");
+            }
+            
         }
 
         public void Stop()

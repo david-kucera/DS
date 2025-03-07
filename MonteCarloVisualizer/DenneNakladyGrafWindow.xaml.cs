@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using DSLib.MonteCarlo;
 using ScottPlot.WPF;
 
 namespace MonteCarloVisualizer
@@ -12,7 +13,7 @@ namespace MonteCarloVisualizer
         #endregion // Class members
 
         #region Constructor
-        public DenneNakladyGrafWindow(int seed)
+        public DenneNakladyGrafWindow(int seed, string strategy)
         {
             InitializeComponent();
             _monteCarloLogic = new MonteCarloLib.MonteCarloLogic(seed);
@@ -20,9 +21,28 @@ namespace MonteCarloVisualizer
             NakladyPlot.Plot.Clear();
             _monteCarloLogic.NewNaklady += NewData;
 
+            JanStrategy strat = JanStrategy.A;
+            switch (strategy)
+            {
+                case "A":
+                    strat = JanStrategy.A;
+                    break;
+                case "B":
+                    strat = JanStrategy.B;
+                    break;
+                case "C":
+                    strat = JanStrategy.C;
+                    break;
+                case "D":
+                    strat = JanStrategy.D;
+                    break;
+                default:
+                    break;
+            }
+
             Task.Run(() =>
             {
-                _monteCarloLogic.StartOne();
+                _monteCarloLogic.StartOne(strat);
             });
         }
         #endregion // Constructor

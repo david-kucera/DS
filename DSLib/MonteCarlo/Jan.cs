@@ -228,10 +228,14 @@ public class Jan : SimCore
         // veci cakaju do piatku ... teda 4 dni po-ut, ut-st, st-stv, stv-pi
         for (int i = 0; i < 4; i++)
         {
+            double nakladden = 0.0;
             naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            nakladden += _pocetTlmicovNaSklade * U_TLMICE;
             naklady += _pocetBrzdNaSklade * U_BRZDY;
+            nakladden += _pocetBrzdNaSklade * U_BRZDY;
             naklady += _pocetSvetielNaSklade * U_SVETLA;
-            OnNewNaklady(naklady);
+            nakladden += _pocetSvetielNaSklade * U_SVETLA;
+            OnNewNaklady(nakladden);
         }
         
         // odberne mnozstva od klienta
@@ -262,10 +266,14 @@ public class Jan : SimCore
         // zvysny tovar na sklade este caka dalsie 3 dni do konca tyzdna... pi-so, so-ne, ne-po
         for (int i = 0; i < 3; i++)
         {
+            double nakladden = 0.0;
             naklady += _pocetTlmicovNaSklade * U_TLMICE;
+            nakladden += _pocetTlmicovNaSklade * U_TLMICE;
             naklady += _pocetBrzdNaSklade * U_BRZDY;
+            nakladden += _pocetBrzdNaSklade * U_BRZDY;
             naklady += _pocetSvetielNaSklade * U_SVETLA;
-            OnNewNaklady(naklady);
+            nakladden += _pocetSvetielNaSklade * U_SVETLA;
+            OnNewNaklady(nakladden);
         }
 
         return naklady;

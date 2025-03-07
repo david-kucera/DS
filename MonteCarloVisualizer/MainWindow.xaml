@@ -27,12 +27,8 @@
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="0 0 0 0">
                     <Label Content="Počet replikácií:" VerticalAlignment="Center"/>
                     <TextBox Name="ReplicationCountInput" Text="1000000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="0 0 0 0">
                     <Label Content="Násada:" VerticalAlignment="Center"/>
                     <TextBox Name="SeedInput" Text="0" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="0 0 0 0">
                     <Label Content="Vykresli každú n-tú hodnotu:" VerticalAlignment="Center"/>
                     <TextBox Name="IntervalInput" Text="1000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
                 </StackPanel>
@@ -40,6 +36,12 @@
                     <Button Name="SpustiButton"  Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick" IsEnabled="True"></Button>
                     <Button Name="ZastavButton" Content="Zastav simuláciu" Margin="5" Click="StopSimulation_OnClick" IsEnabled="False"></Button>
                     <Button Name="JednaButton" Content="Spusti 1 beh" Margin="5" Click="OneSimulation_OnClick" IsEnabled="True"></Button>
+                    <ComboBox Name="OneComboBox" Margin="5" SelectedIndex="0">
+                        <ComboBoxItem Content="A"/>
+                        <ComboBoxItem Content="B"/>
+                        <ComboBoxItem Content="C"/>
+                        <ComboBoxItem Content="D"/>
+                    </ComboBox>
                 </StackPanel>
             </Grid>
             
