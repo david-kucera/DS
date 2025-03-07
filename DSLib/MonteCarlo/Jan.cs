@@ -39,9 +39,15 @@ public class Jan : SimCore
 
     #region Events
     public event EventHandler<(int, double)> NewValue;
+    public event EventHandler<double> NewNaklady;
     private void OnNewValue(int i, double cumulativeResult)
     {
         NewValue?.Invoke(this, (i, cumulativeResult));
+    }
+
+    private void OnNewNaklady(double cumulativeNaklady)
+    {
+        NewNaklady?.Invoke(this, cumulativeNaklady);
     }
     #endregion // Events
 
@@ -225,6 +231,7 @@ public class Jan : SimCore
             naklady += _pocetTlmicovNaSklade * U_TLMICE;
             naklady += _pocetBrzdNaSklade * U_BRZDY;
             naklady += _pocetSvetielNaSklade * U_SVETLA;
+            OnNewNaklady(naklady);
         }
         
         // odberne mnozstva od klienta
@@ -251,13 +258,14 @@ public class Jan : SimCore
             _pocetSvetielNaSklade = 0;
         }
         else _pocetSvetielNaSklade -= odberSvetiel;
-        
+
         // zvysny tovar na sklade este caka dalsie 3 dni do konca tyzdna... pi-so, so-ne, ne-po
         for (int i = 0; i < 3; i++)
         {
             naklady += _pocetTlmicovNaSklade * U_TLMICE;
             naklady += _pocetBrzdNaSklade * U_BRZDY;
             naklady += _pocetSvetielNaSklade * U_SVETLA;
+            OnNewNaklady(naklady);
         }
 
         return naklady;

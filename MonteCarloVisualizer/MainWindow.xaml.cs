@@ -6,17 +6,22 @@ namespace MonteCarloVisualizer
 {
     public partial class MainWindow : Window
     {
+        #region Class members
         private MonteCarloLogic _simulation;
         private List<double> _valuesA = new();
         private List<double> _valuesB = new();
         private List<double> _valuesC = new();
         private List<double> _valuesD = new();
+        #endregion // Class members
 
+        #region Constructor
         public MainWindow()
         {
             InitializeComponent();
         }
+        #endregion // Constructor
 
+        #region Private functions
         private void StartSimulation(int numReps, int interval, int seed)
         {
             _valuesA.Clear();
@@ -82,6 +87,8 @@ namespace MonteCarloVisualizer
                 int.TryParse(SeedInput.Text, out int seed))
             {
                 StartSimulation(numReps, interval, seed);
+                SpustiButton.IsEnabled = false;
+                ZastavButton.IsEnabled = true;
             }
             else
             {
@@ -89,9 +96,18 @@ namespace MonteCarloVisualizer
             }
         }
 
+        private void OneSimulation_OnClick(object sender, RoutedEventArgs e)
+        {
+            int seed = int.TryParse(SeedInput.Text, out int s) ? s : 0;
+            new DenneNakladyGrafWindow(seed).Show();
+        }
+
         private void StopSimulation_OnClick(object sender, RoutedEventArgs e)
         {
+            ZastavButton.IsEnabled = false;
+            SpustiButton.IsEnabled = true;
             _simulation?.Stop();
         }
+        #endregion // Private functions
     }
 }

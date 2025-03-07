@@ -37,8 +37,9 @@
                     <TextBox Name="IntervalInput" Text="1000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0 0 0 0">
-                    <Button Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick"></Button>
-                    <Button Content="Zastav simuláciu" Margin="5" Click="StopSimulation_OnClick"></Button>
+                    <Button Name="SpustiButton"  Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick" IsEnabled="True"></Button>
+                    <Button Name="ZastavButton" Content="Zastav simuláciu" Margin="5" Click="StopSimulation_OnClick" IsEnabled="False"></Button>
+                    <Button Name="JednaButton" Content="Spusti 1 beh" Margin="5" Click="OneSimulation_OnClick" IsEnabled="True"></Button>
                 </StackPanel>
             </Grid>
             

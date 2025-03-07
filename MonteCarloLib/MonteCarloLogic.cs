@@ -18,6 +18,7 @@ namespace MonteCarloLib
         public event EventHandler<double> NewValueB = null;
         public event EventHandler<double> NewValueC = null;
         public event EventHandler<double> NewValueD = null;
+        public event EventHandler<double> NewNaklady = null;
         #endregion // Events
 
         #region Constructor
@@ -57,6 +58,15 @@ namespace MonteCarloLib
             });
         }
 
+        public void StartOne()
+        {
+            Task.Run(() =>
+            {
+                _janA.NewNaklady += OnNewNaklady;
+                _janA.Run(1);
+            });
+        }
+
         public void Stop()
         {
             _janA.Stop();
@@ -71,6 +81,11 @@ namespace MonteCarloLib
         #endregion // Public functions
 
         #region Private functions
+        private void OnNewNaklady(object? sender, double e)
+        {
+            NewNaklady?.Invoke(this, e);
+        }
+
         private void OnNewValueD(object? sender, (int, double) e)
         {
             if (e.Item1 % _interval == 0)
