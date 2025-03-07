@@ -28,9 +28,12 @@
                     <Label Content="Počet replikácií:" VerticalAlignment="Center"/>
                     <TextBox Name="ReplicationCountInput" Text="1000000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
                     <Label Content="Násada:" VerticalAlignment="Center"/>
-                    <TextBox Name="SeedInput" Text="0" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
+                    <TextBox Name="SeedInput" Text="0" TextAlignment="Center" VerticalAlignment="Center" Width="50" Margin="10 0"/>
                     <Label Content="Vykresli každú n-tú hodnotu:" VerticalAlignment="Center"/>
-                    <TextBox Name="IntervalInput" Text="1000" TextAlignment="Center" VerticalAlignment="Center" Width="100" Margin="10 0"/>
+                    <TextBox Name="IntervalInput" Text="1000" TextAlignment="Center" VerticalAlignment="Center" Width="50" Margin="10 0"/>
+                    <Label Content="Preskoč prvých:" VerticalAlignment="Center"/>
+                    <TextBox Name="SkipInput" Text="5" TextAlignment="Center" VerticalAlignment="Center" Width="25" Margin="0 0"/>
+                    <Label Content="% hodnôt"></Label>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="0 0 0 0">
                     <Button Name="SpustiButton"  Content="Spusti simuláciu" Margin="5" Click="RunSimulation_OnClick" IsEnabled="True"></Button>

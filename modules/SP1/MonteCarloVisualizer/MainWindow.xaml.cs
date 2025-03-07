@@ -8,6 +8,7 @@ namespace MonteCarloVisualizer
     {
         #region Class members
         private MonteCarloLogic _simulation = null!;
+        private int _skipFirst = 0;
 		private readonly List<double> _valuesA = [];
         private readonly List<double> _valuesB = [];
         private readonly List<double> _valuesC = [];
@@ -83,8 +84,11 @@ namespace MonteCarloVisualizer
         private void UpdatePlot(List<double> values, WpfPlot plot)
         {
             if (values.Count == 0) return; 
-            
-            double[] xData = Enumerable.Range(1, values.Count).Select(i => (double)i).ToArray();
+            if (values.Count < _skipFirst) return;
+
+			values = values.Skip(_skipFirst).ToList();
+
+			double[] xData = Enumerable.Range(1, values.Count).Select(i => (double)i).ToArray();
             double[] yData = values.ToArray();
 
             plot.Plot.Clear();
@@ -95,22 +99,34 @@ namespace MonteCarloVisualizer
 
         private void RunSimulation_OnClick(object sender, RoutedEventArgs e)
         {
-            if (int.TryParse(ReplicationCountInput.Text, out int numReps) &&
-                int.TryParse(IntervalInput.Text, out int interval) &&
-                int.TryParse(SeedInput.Text, out int seed))
-            {
-                StartSimulation(numReps, interval, seed, MonteCarloLogic.Strategies.Classic);
-                SpustiButton.IsEnabled = false;
-                SpustiMojeStrategieButton.IsEnabled = false;
-				ZastavButton.IsEnabled = true;
-            }
-            else
-            {
-                MessageBox.Show("Zadajte platné čísla pre všetky parametre!", "Chyba", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+			Start(MonteCarloLogic.Strategies.Classic);
         }
 
-        private void StopSimulation_OnClick(object sender, RoutedEventArgs e)
+        private void SpustiMojeStrategieButton_OnClick(object sender, RoutedEventArgs e)
+        {
+	        Start(MonteCarloLogic.Strategies.Own);
+        }
+
+        private void Start(MonteCarloLogic.Strategies strat)
+        {
+			if (int.TryParse(ReplicationCountInput.Text, out int numReps) &&
+	            int.TryParse(IntervalInput.Text, out int interval) &&
+	            int.TryParse(SeedInput.Text, out int seed) &&
+	            int.TryParse(SkipInput.Text, out int skip))
+	        {
+		        StartSimulation(numReps, interval, seed, strat);
+		        _skipFirst = (int)((numReps / interval) * ((double)skip / 100.0));
+				SpustiButton.IsEnabled = false;
+		        SpustiMojeStrategieButton.IsEnabled = false;
+		        ZastavButton.IsEnabled = true;
+	        }
+	        else
+	        {
+		        MessageBox.Show("Zadajte platné čísla pre všetky parametre!", "Chyba", MessageBoxButton.OK, MessageBoxImage.Error);
+	        }
+		}
+
+		private void StopSimulation_OnClick(object sender, RoutedEventArgs e)
         {
             ZastavButton.IsEnabled = false;
             SpustiMojeStrategieButton.IsEnabled = true;
@@ -119,21 +135,6 @@ namespace MonteCarloVisualizer
 		}
         #endregion // Private functions
 
-        private void SpustiMojeStrategieButton_OnClick(object sender, RoutedEventArgs e)
-        {
-			if (int.TryParse(ReplicationCountInput.Text, out int numReps) &&
-			    int.TryParse(IntervalInput.Text, out int interval) &&
-			    int.TryParse(SeedInput.Text, out int seed))
-			{
-				StartSimulation(numReps, interval, seed, MonteCarloLogic.Strategies.Own);
-				SpustiButton.IsEnabled = false;
-				SpustiMojeStrategieButton.IsEnabled = false;
-				ZastavButton.IsEnabled = true;
-			}
-			else
-			{
-				MessageBox.Show("Zadajte platné čísla pre všetky parametre!", "Chyba", MessageBoxButton.OK, MessageBoxImage.Error);
-			}
-		}
+        
     }
 }
