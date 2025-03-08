@@ -33,7 +33,7 @@
                     <TextBox Name="IntervalInput" Text="1000" Width="50" Margin="10 0"/>
                     <TextBlock Text="Preskoč prvých:" VerticalAlignment="Center"/>
                     <TextBox Name="SkipInput" Text="5" Width="25"/>
-                    <TextBlock Text="% hodnôt"/>
+                    <TextBlock Text="% hodnôt" Margin="5"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="3">
