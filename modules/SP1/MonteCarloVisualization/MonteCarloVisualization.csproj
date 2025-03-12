@@ -6,8 +6,8 @@
         <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
         <ApplicationManifest>app.manifest</ApplicationManifest>
         <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
-        <OutputPath Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'AnyCPU'">$(ProjectDir)..\..\..\run64\</OutputPath>
-        <OutputPath Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'AnyCPU'">$(ProjectDir)..\..\..\run64_D\</OutputPath>
+        <OutputPath Condition="'$(Configuration)' == 'Release' and '$(Platform)' == 'AnyCPU'">$(ProjectDir)..\..\..\run\</OutputPath>
+        <OutputPath Condition="'$(Configuration)' == 'Debug' and '$(Platform)' == 'AnyCPU'">$(ProjectDir)..\..\..\run_D\</OutputPath>
         <IntermediateOutputPath>$(ProjectDir)..\..\..\tmp\$(Configuration)\$(Platform)\$(MSBuildProjectName)\obj</IntermediateOutputPath>
     </PropertyGroup>
 
