@@ -2,6 +2,8 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSSimulationLib", "..\modules\SP2\DSSimulationLib\DSSimulationLib.csproj", "{EA936363-55E7-4662-9EAE-60B242C99C31}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSSimulationTest", "..\modules\SP2\DSSimulationTest\DSSimulationTest.csproj", "{BE02B040-CD7B-460F-BD2A-635A60172C98}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +14,9 @@ Global
 		{EA936363-55E7-4662-9EAE-60B242C99C31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EA936363-55E7-4662-9EAE-60B242C99C31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EA936363-55E7-4662-9EAE-60B242C99C31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
