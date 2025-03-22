@@ -3,8 +3,9 @@ namespace DSSimulationLib.Statistics;
 public class WeightedAverage
 {
     #region Class members
+    private double _lastTime = 0.0;
     private double _weightedSum = 0.0;
-    private int _totalWeight = 0;
+    private double _totalWeight = 0.0;
     #endregion // Class members
 
     #region Constructor
@@ -14,9 +15,10 @@ public class WeightedAverage
     #endregion // Constructor
 
     #region Public functions
-    public void AddValue(double value, int weight)
+    public void AddValue(double value, double time)
     {
-        if (weight <= 0) return;
+        double weight = time - _lastTime;
+        _lastTime = time;
         _weightedSum += value * weight;
         _totalWeight += weight;
     }
@@ -33,6 +35,7 @@ public class WeightedAverage
 
     public void Reset()
     {
+        _lastTime = 0.0;
         _weightedSum = 0.0;
         _totalWeight = 0;
     }

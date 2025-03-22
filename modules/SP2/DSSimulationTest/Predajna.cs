@@ -22,7 +22,7 @@ public class Predajna : SimulationCore
     
     public Average GlobalAveragePocetLudi { get; set; } = new();
     public Average GlobalAverageCasVObchode { get; set; } = new();
-    //public Average GlobalAverageDlzkaRadu { get; set; } = new();
+    public Average GlobalAverageDlzkaRadu { get; set; } = new();
     
     public Random Seeder { get; set; } = null!;
     public ExponentialGenerator PrichodLudiGenerator { get; set; } = null!;
@@ -45,7 +45,7 @@ public class Predajna : SimulationCore
 
     protected override void AfterSimulation()
     {
-        // Console.WriteLine($"Primerná dĺžka radu: {GlobalAverageDlzkaRadu.GetValue()}");
+        Console.WriteLine($"Primerná dĺžka radu: {GlobalAverageDlzkaRadu.GetValue()}");
         Console.WriteLine($"Priemerný čas strávený v predajni: {GlobalAverageCasVObchode.GetValue()}");
         Console.WriteLine($"Priemerný počet ľudí v predajni: {GlobalAveragePocetLudi.GetValue()}");
     }
@@ -69,7 +69,7 @@ public class Predajna : SimulationCore
     protected override void AfterSimulationRun()
     {
         GlobalAveragePocetLudi.AddValue(PoradieOsoby);
-        // GlobalAverageDlzkaRadu.AddValue(AverageDlzkaRadu.GetValue());
+        GlobalAverageDlzkaRadu.AddValue(AverageDlzkaRadu.GetValue());
         GlobalAverageCasVObchode.AddValue(AverageCasVPredajni.GetValue());
     }
     #endregion // Public functions

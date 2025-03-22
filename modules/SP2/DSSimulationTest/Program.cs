@@ -12,7 +12,7 @@ static class Program
     {
         Random seeder = new Random(0);
         Predajna predajna = new Predajna(seeder);
-        predajna.Run(1);
+        predajna.Run(10_000);
     }
 
     private static void TestGenerators()
