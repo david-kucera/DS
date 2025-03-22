@@ -23,7 +23,7 @@ public class ZaciatokObsluhyEvent : SimulationEvent
         
         predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
 
-        var koniecObsluhy = predajna.TrvanieObsluhy + predajna.Time;
+        var koniecObsluhy = predajna.TrvanieObsluhy.NextDouble() + predajna.Time;
         predajna.EventQueue.Enqueue(new KoniecObsluhyEvent(predajna, koniecObsluhy, _osoba), koniecObsluhy);
     }
     #endregion // Public functions

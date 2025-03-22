@@ -26,7 +26,7 @@ public class Predajna : SimulationCore
     
     public Random Seeder { get; set; } = null!;
     public ExponentialGenerator PrichodLudiGenerator { get; set; } = null!;
-    public double TrvanieObsluhy = 0;
+    public ExponentialGenerator TrvanieObsluhy = null!;
     #endregion // Properties
     
     #region Constructor
@@ -40,7 +40,7 @@ public class Predajna : SimulationCore
     protected override void BeforeSimulation()
     {
         PrichodLudiGenerator = new ExponentialGenerator(Seeder,0.2);
-        TrvanieObsluhy = 4;
+        TrvanieObsluhy = new ExponentialGenerator(Seeder,0.25);
     }
 
     protected override void AfterSimulation()
