@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSSimulationLib", "..\modul
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSSimulationTest", "..\modules\SP2\DSSimulationTest\DSSimulationTest.csproj", "{BE02B040-CD7B-460F-BD2A-635A60172C98}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DSSimulationVisualization", "..\modules\SP2\DSSimulationVisualization\DSSimulationVisualization.csproj", "{DD1C50A1-7EC6-45E2-86A1-6A2F5E7BFE77}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{BE02B040-CD7B-460F-BD2A-635A60172C98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD1C50A1-7EC6-45E2-86A1-6A2F5E7BFE77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD1C50A1-7EC6-45E2-86A1-6A2F5E7BFE77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD1C50A1-7EC6-45E2-86A1-6A2F5E7BFE77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD1C50A1-7EC6-45E2-86A1-6A2F5E7BFE77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
