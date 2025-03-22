@@ -1,6 +1,7 @@
 using DSSimulationLib.Generators.Exponential;
 using DSSimulationLib.Simulation;
 using DSSimulationLib.Statistics;
+using DSSimulationTest.Events;
 
 namespace DSSimulationTest;
 
@@ -21,11 +22,11 @@ public class Predajna : SimulationCore
     
     public Average GlobalAveragePocetLudi { get; set; } = new();
     public Average GlobalAverageCasVObchode { get; set; } = new();
-    public Average GlobalAverageDlzkaRadu { get; set; } = new();
+    //public Average GlobalAverageDlzkaRadu { get; set; } = new();
     
     public Random Seeder { get; set; } = null!;
     public ExponentialGenerator PrichodLudiGenerator { get; set; } = null!;
-    public int TrvanieObsluhy = 0;
+    public double TrvanieObsluhy = 0;
     #endregion // Properties
     
     #region Constructor
@@ -38,23 +39,38 @@ public class Predajna : SimulationCore
     #region Public functions
     protected override void BeforeSimulation()
     {
-        PrichodLudiGenerator = new ExponentialGenerator(Seeder,(60/12));
+        PrichodLudiGenerator = new ExponentialGenerator(Seeder,0.2);
         TrvanieObsluhy = 4;
     }
 
     protected override void AfterSimulation()
     {
-        throw new NotImplementedException();
+        // Console.WriteLine($"Primerná dĺžka radu: {GlobalAverageDlzkaRadu.GetValue()}");
+        Console.WriteLine($"Priemerný čas strávený v predajni: {GlobalAverageCasVObchode.GetValue()}");
+        Console.WriteLine($"Priemerný počet ľudí v predajni: {GlobalAveragePocetLudi.GetValue()}");
     }
 
     protected override void BeforeSimulationRun()
     {
-        throw new NotImplementedException();
+        Rad.Clear();
+        Time = 0.0;
+        EventQueue.Clear();
+
+        AverageDlzkaRadu.Reset();
+        AverageCasVPredajni.Reset();
+        PoradieOsoby = 0;
+
+        ObsluhovanyClovek = false;
+        
+        var prichod = PrichodLudiGenerator.NextDouble() + Time;
+        EventQueue.Enqueue(new PrichodEvent(this, prichod), prichod);
     }
 
     protected override void AfterSimulationRun()
     {
-        throw new NotImplementedException();
+        GlobalAveragePocetLudi.AddValue(PoradieOsoby);
+        // GlobalAverageDlzkaRadu.AddValue(AverageDlzkaRadu.GetValue());
+        GlobalAverageCasVObchode.AddValue(AverageCasVPredajni.GetValue());
     }
     #endregion // Public functions
 }
