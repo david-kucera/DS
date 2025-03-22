@@ -5,8 +5,8 @@ namespace DSSimulationLib.Simulation;
 public abstract class SimulationCore : SimCore
 {
     #region Class members
-    private PriorityQueue<SimulationEvent, double> _eventQueue;
-    private double _time;
+    private PriorityQueue<SimulationEvent, double> _eventQueue = new PriorityQueue<SimulationEvent, double>();
+    private double _time = 0.0;
     #endregion // Class members
     
     #region Public functions
