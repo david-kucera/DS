@@ -1,40 +1,28 @@
+using DSSimulationLib.MonteCarlo;
+
 namespace DSSimulationLib.Simulation;
 
-public abstract class SimulationCore
+public abstract class SimulationCore : SimCore
 {
     #region Class members
     private PriorityQueue<SimulationEvent, double> _eventQueue;
     private double _time;
-    private Statistics _statistics;
-    public bool _isRunning;
     #endregion // Class members
     
     #region Public functions
-    public double Run(int numReps)
+    protected override double Experiment()
     {
-        _isRunning = true;
-        _eventQueue = new PriorityQueue<SimulationEvent, double>();
-        _time = 0.0;
-        _statistics = new Statistics();
-        BeforeSimulation();
-        double cumulativeResult = 0.0;
-
-        for (int i = 1; i <= numReps; i++)
+        while (_eventQueue.Count > 0 && _isRunning)
         {
-            BeforeSimulationRun();
-            double res = Experiment();
-            cumulativeResult += res;
-            AfterSimulationRun();
+            var evnt = _eventQueue.Dequeue();
+            if (evnt.Time < _time) throw new Exception("Simulation experiment timing problem!");
+            _time += evnt.Time;
+            
+            evnt.Execute();
         }
-        
-        AfterSimulation();
-        return cumulativeResult / numReps;
+        throw new NotImplementedException();
     }
-
-    public void Stop()
-    {
-        _isRunning = false;
-    }
+    
     
     public void ScheduleEvent(SimulationEvent simEvent)
     {
@@ -42,12 +30,4 @@ public abstract class SimulationCore
         _eventQueue.Enqueue(simEvent, simEvent.Time);
     }
     #endregion // Public functions
-    
-    #region Protected functions
-    protected abstract double Experiment();
-    protected abstract void BeforeSimulation();
-    protected abstract void AfterSimulation();
-    protected abstract void BeforeSimulationRun();
-    protected abstract void AfterSimulationRun();
-    #endregion // Protected functions
 }
