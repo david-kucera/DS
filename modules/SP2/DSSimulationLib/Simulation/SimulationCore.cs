@@ -17,7 +17,6 @@ public abstract class SimulationCore : SimCore
             var evnt = EventQueue.Dequeue();
             if (evnt.Time < Time) throw new Exception("Simulation experiment timing problem!");
             Time = evnt.Time;
-            
             evnt.Execute();
         }
     }

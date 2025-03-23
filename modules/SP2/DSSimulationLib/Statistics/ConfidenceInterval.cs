@@ -33,7 +33,6 @@ public class ConfidenceInterval
         return (avg - error, avg + error);
     }
 
-
     public void Reset()
     {
         _count = 0;
