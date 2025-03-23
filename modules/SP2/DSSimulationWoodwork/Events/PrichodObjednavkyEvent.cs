@@ -17,8 +17,8 @@ public class PrichodObjednavkyEvent : SimulationEvent
 
         ObjType type = ObjType.Unknown;
         var perc = stolaren.ObjednavkaTypGenerator.NextDouble();
-        if (perc <= 0.5) type = ObjType.Stol;
-        else if (perc <= 0.85) type = ObjType.Skrina;
+        if (perc < 0.5) type = ObjType.Stol;
+        else if (perc < 0.85) type = ObjType.Skrina;
         else type = ObjType.Stolicka;
         
         Objednavka objednavka = new(type, Time, stolaren.PoradieObjednavky)

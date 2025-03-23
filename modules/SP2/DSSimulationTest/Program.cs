@@ -7,8 +7,8 @@ static class Program
     static void Main()
     {
         // TestGenerators();
-        TestPredajna();
-        // TestStolaren();
+        // TestPredajna();
+        TestStolaren();
     }
 
     private static void TestStolaren()

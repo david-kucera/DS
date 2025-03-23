@@ -28,8 +28,7 @@ public class PrichodEvent : SimulationEvent
 
         var dalsiPrichod = predajna.PrichodLudiGenerator.NextDouble() + predajna.Time;
         if (dalsiPrichod < predajna.STOP_TIME) predajna.EventQueue.Enqueue(new PrichodEvent(predajna, dalsiPrichod), dalsiPrichod);
-        //predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
-        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count);
+        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
     }
     #endregion // Public functions
 }

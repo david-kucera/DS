@@ -21,6 +21,8 @@ public class ZaciatokMoreniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
+        
+        if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
 
         double casPrechoduNaMontazneMiesto;
         if (_stolar.Poloha == Poloha.Sklad) 

@@ -26,7 +26,7 @@ public class Predajna : SimulationCore
     public int PoradieOsoby { get; set; } = 0;
     public bool ObsluhovanyClovek { get; set; } = false;
     
-    public Average AverageDlzkaRadu { get; set; } = new();
+    public WeightedAverage AverageDlzkaRadu { get; set; } = new();
     
     public Average AverageCasStravenyVRade { get; set; } = new();
     public Average AverageCasStravenyObsluhou { get; set; } = new();

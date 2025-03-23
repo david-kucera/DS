@@ -26,12 +26,13 @@ public class KoniecMontazeEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
         // koniec cyklu objednavky ... zber statistik
+        stolaren.PriemernyCasObjednavkyVSysteme.AddValue(Time - _objednavka.ArrivalTime);
         
         // naplanovanie dalsej montaze kovani
         if (stolaren.PoskladaneSkrineQueue.Count >= 1)
         {
             var dalsiaObj = stolaren.PoskladaneSkrineQueue.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokMontazeKovani(stolaren, Time, dalsiaObj, _stolar), Time);
+            stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);
         }
     }
     #endregion // Public functions

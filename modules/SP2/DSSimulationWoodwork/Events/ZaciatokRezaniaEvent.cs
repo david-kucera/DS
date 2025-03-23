@@ -23,6 +23,8 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
         
+        if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
+        
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
         if (_stolar.Poloha == Poloha.MontazneMiesto) 
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();

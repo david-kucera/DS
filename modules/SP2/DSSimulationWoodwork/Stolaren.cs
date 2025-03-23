@@ -37,6 +37,7 @@ public class Stolaren : SimulationCore
     public Average GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = new();
     public Average PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
     public Average GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat  { get; set; } = new();
+    public Average GlobalnyPocetObjednavok { get; set; } = new();
     
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
     public Random ObjednavkaTypGenerator { get; set; } = null!;
@@ -107,6 +108,8 @@ public class Stolaren : SimulationCore
     {
         // vypis konecnych statistik
         Console.WriteLine("[min]");
+        Console.WriteLine("Priemerný počet objednávok:");
+        Console.WriteLine(GlobalnyPocetObjednavok.GetValue());
         Console.WriteLine("Priemerny cas objednavky v systeme");
         Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
         Console.WriteLine("Priemerny pocet nezacatych objednavok");
@@ -164,6 +167,7 @@ public class Stolaren : SimulationCore
         // update globalnych statistik
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
         GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
+        GlobalnyPocetObjednavok.AddValue(PoradieObjednavky);
     }
     #endregion // Protected functions
 }

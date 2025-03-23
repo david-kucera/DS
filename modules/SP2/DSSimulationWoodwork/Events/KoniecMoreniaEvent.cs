@@ -52,7 +52,7 @@ public class KoniecMoreniaEvent : SimulationEvent
         if (stolaren.NarezaneObjednavkyQueue.Count >= 1)
         {
             var dalsiaObj = stolaren.NarezaneObjednavkyQueue.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, _stolar), Time);
+            stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
         }
     }
 }

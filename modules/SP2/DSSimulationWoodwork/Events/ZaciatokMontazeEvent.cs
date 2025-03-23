@@ -2,7 +2,7 @@ using DSSimulationLib.Simulation;
 
 namespace DSSimulationWoodwork.Events;
 
-public class ZaciatokMontazeKovani : SimulationEvent
+public class ZaciatokMontazeEvent : SimulationEvent
 {
     #region Class members
     private Objednavka _objednavka;
@@ -10,7 +10,7 @@ public class ZaciatokMontazeKovani : SimulationEvent
     #endregion // Class members
     
     #region Constructor
-    public ZaciatokMontazeKovani(SimulationCore core, double time, Objednavka objednaka, Stolar stolar) : base(core, time)
+    public ZaciatokMontazeEvent(SimulationCore core, double time, Objednavka objednaka, Stolar stolar) : base(core, time)
     {
         _objednavka = objednaka;
         _stolar = stolar;
@@ -22,6 +22,8 @@ public class ZaciatokMontazeKovani : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
+        
+        if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduNaMontazneMiesto;
         if (_stolar.Poloha == Poloha.Sklad) 

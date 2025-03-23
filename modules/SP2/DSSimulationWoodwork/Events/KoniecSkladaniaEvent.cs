@@ -43,7 +43,7 @@ public class KoniecSkladaniaEvent : SimulationEvent
                     break;
                 }
 
-                if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMontazeKovani(stolaren, Time, _objednavka, stolar), Time);
+                if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, _objednavka, stolar), Time);
                 else
                 {
                     _objednavka.Status = ObjStatus.CakajucaNaMontazKovani;
@@ -61,7 +61,7 @@ public class KoniecSkladaniaEvent : SimulationEvent
         if (stolaren.NamoreneObjednavkyQueue.Count >= 1)
         {
             var dalsiaObj = stolaren.NamoreneObjednavkyQueue.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, _objednavka, _stolar), Time);
+            stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
         }
     }
     #endregion // Public functions

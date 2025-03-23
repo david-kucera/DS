@@ -25,8 +25,7 @@ public class ZaciatokObsluhyEvent : SimulationEvent
 
         _osoba.StartWaitingTimeService = Time;
         
-        // predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
-        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count);
+        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
 
         var koniecObsluhy = predajna.TrvanieObsluhy.NextDouble() + predajna.Time;
         predajna.EventQueue.Enqueue(new KoniecObsluhyEvent(predajna, koniecObsluhy, _osoba), koniecObsluhy);
