@@ -20,6 +20,8 @@ public class KoniecObsluhyEvent : SimulationEvent
     {
         Predajna predajna = Core as Predajna ?? throw new InvalidOperationException();
         predajna.AverageCasVPredajni.AddValue(predajna.Time - _osoba.ArrivalTime);
+        
+        predajna.AverageCasStravenyObsluhou.AddValue(Time - _osoba.StartWaitingTimeService);
 
         if (predajna.Rad.Count >= 1)
         {

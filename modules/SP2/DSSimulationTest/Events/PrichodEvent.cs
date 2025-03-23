@@ -21,13 +21,15 @@ public class PrichodEvent : SimulationEvent
             ArrivalTime = Time,
         };
         predajna.PoradieOsoby++;
-
+        osoba.StartWaitingTimeQueue = Time;
+        
         if (predajna.Rad.Count >= 1 || predajna.ObsluhovanyClovek) predajna.Rad.Enqueue(osoba);
         else predajna.EventQueue.Enqueue(new ZaciatokObsluhyEvent(predajna, predajna.Time, osoba), predajna.Time);
 
         var dalsiPrichod = predajna.PrichodLudiGenerator.NextDouble() + predajna.Time;
         if (dalsiPrichod < predajna.STOP_TIME) predajna.EventQueue.Enqueue(new PrichodEvent(predajna, dalsiPrichod), dalsiPrichod);
-        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
+        //predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
+        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count);
     }
     #endregion // Public functions
 }

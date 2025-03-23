@@ -21,7 +21,12 @@ public class ZaciatokObsluhyEvent : SimulationEvent
         Predajna predajna = Core as Predajna ?? throw new InvalidOperationException();
         predajna.ObsluhovanyClovek = true;
         
-        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
+        predajna.AverageCasStravenyVRade.AddValue(Time - _osoba.StartWaitingTimeQueue);
+
+        _osoba.StartWaitingTimeService = Time;
+        
+        // predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
+        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count);
 
         var koniecObsluhy = predajna.TrvanieObsluhy.NextDouble() + predajna.Time;
         predajna.EventQueue.Enqueue(new KoniecObsluhyEvent(predajna, koniecObsluhy, _osoba), koniecObsluhy);

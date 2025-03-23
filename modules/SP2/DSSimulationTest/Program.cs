@@ -7,8 +7,8 @@ static class Program
     static void Main()
     {
         // TestGenerators();
-        // TestPredajna();
-        TestStolaren();
+        TestPredajna();
+        // TestStolaren();
     }
 
     private static void TestStolaren()
@@ -20,9 +20,9 @@ static class Program
 
     private static void TestPredajna()
     {
-        Random seeder = new Random(0);
+        Random seeder = new Random();
         Predajna predajna = new Predajna(seeder);
-        predajna.Run(10_000);
+        predajna.Run(1_000);
     }
 
     private static void TestGenerators()

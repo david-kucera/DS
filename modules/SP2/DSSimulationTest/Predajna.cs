@@ -15,6 +15,8 @@ public class Predajna : SimulationCore
     #region Class members
     private Random _seeder { get; set; } = null!;
     private Average _globalAveragePocetLudi { get; set; } = new();
+    private Average _globalAverageCasStravenyVRade { get; set; } = new();
+    private Average _globalAverageCasStravenyObsluhou { get; set; } = new();
     private Average _globalAverageCasVObchode { get; set; } = new();
     private Average _globalAverageDlzkaRadu { get; set; } = new();
     #endregion // Class members
@@ -24,7 +26,10 @@ public class Predajna : SimulationCore
     public int PoradieOsoby { get; set; } = 0;
     public bool ObsluhovanyClovek { get; set; } = false;
     
-    public WeightedAverage AverageDlzkaRadu { get; set; } = new();
+    public Average AverageDlzkaRadu { get; set; } = new();
+    
+    public Average AverageCasStravenyVRade { get; set; } = new();
+    public Average AverageCasStravenyObsluhou { get; set; } = new();
     public Average AverageCasVPredajni { get; set; } = new();
     
     public ExponentialGenerator PrichodLudiGenerator { get; set; } = null!;
@@ -49,6 +54,8 @@ public class Predajna : SimulationCore
     {
         Console.WriteLine($"Primerná dĺžka radu: {_globalAverageDlzkaRadu.GetValue()}");
         Console.WriteLine($"Priemerný čas strávený v predajni: {_globalAverageCasVObchode.GetValue()}");
+        Console.WriteLine($"Priemerný čas strávený v rade: {_globalAverageCasStravenyVRade.GetValue()}");
+        Console.WriteLine($"Priemerný čas strávený obsluhou: {_globalAverageCasStravenyObsluhou.GetValue()}");
         Console.WriteLine($"Priemerný počet ľudí v predajni: {_globalAveragePocetLudi.GetValue()}");
     }
 
@@ -71,6 +78,8 @@ public class Predajna : SimulationCore
     protected override void AfterSimulationRun()
     {
         _globalAveragePocetLudi.AddValue(PoradieOsoby);
+        _globalAverageCasStravenyVRade.AddValue(AverageCasStravenyVRade.GetValue());
+        _globalAverageCasStravenyObsluhou.AddValue(AverageCasStravenyObsluhou.GetValue());
         _globalAverageDlzkaRadu.AddValue(AverageDlzkaRadu.GetValue());
         _globalAverageCasVObchode.AddValue(AverageCasVPredajni.GetValue());
     }
