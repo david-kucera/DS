@@ -24,15 +24,16 @@ public class Stolaren : SimulationCore
     
     #region Properties
     public int PoradieObjednavky { get; set; } = 0;
-    public Queue<Objednavka> NezacateObjednavkyQueue = new();
-    public Queue<Objednavka> NarezaneObjednavkyQueue = new();
-    public Queue<Objednavka> NamoreneObjednavkyQueue = new();
-    public Queue<Objednavka> PoskladaneSkrineQueue = new();
+    public Queue<Objednavka> StolariAQueue = new();
+    public PriorityQueue<Objednavka, double> StolariCQueue = new();
+    public Queue<Objednavka> StolariBQueue = new();
     
     public List<Stolar> StolariA = new();
     public List<Stolar> StolariB = new();
     public List<Stolar> StolariC = new();
 
+    public double PocetHotovychObjednavok { get; set; } = 0.0;
+    public Average GlobalnyPocetHotovychObjednavok { get; set; } = new();
     public Average PriemernyCasObjednavkyVSysteme { get; set; } = new();
     public Average GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = new();
     public Average PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
@@ -73,7 +74,7 @@ public class Stolaren : SimulationCore
     #region Protected functions
     protected override void BeforeSimulation()
     {
-        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0);
+        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 0.5);
         ObjednavkaTypGenerator = new Random(_seeder.Next());
         
         MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, (60.0 / 60), (480.0 / 60), (120.0 / 60));
@@ -110,6 +111,8 @@ public class Stolaren : SimulationCore
         Console.WriteLine("[min]");
         Console.WriteLine("Priemerný počet objednávok:");
         Console.WriteLine(GlobalnyPocetObjednavok.GetValue());
+        Console.WriteLine("Priemerný počet hotových objednávok:");
+        Console.WriteLine(GlobalnyPocetHotovychObjednavok.GetValue());
         Console.WriteLine("Priemerny cas objednavky v systeme");
         Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
         Console.WriteLine("Priemerny pocet nezacatych objednavok");
@@ -121,10 +124,10 @@ public class Stolaren : SimulationCore
     protected override void BeforeSimulationRun()
     {
         PoradieObjednavky = 0;
-        NezacateObjednavkyQueue.Clear();
-        NarezaneObjednavkyQueue.Clear();
-        NamoreneObjednavkyQueue.Clear();
-        PoskladaneSkrineQueue.Clear();
+        PocetHotovychObjednavok = 0;
+        StolariAQueue.Clear();
+        StolariCQueue.Clear();
+        StolariBQueue.Clear();
         Time = 0.0;
         
         PriemernyCasObjednavkyVSysteme.Reset();
@@ -162,9 +165,12 @@ public class Stolaren : SimulationCore
         EventQueue.Enqueue(new PrichodObjednavkyEvent(this, prichod), prichod);
     }
 
+    private static int poradie = 0;
     protected override void AfterSimulationRun()
     {
+        Console.WriteLine(++poradie);
         // update globalnych statistik
+        GlobalnyPocetHotovychObjednavok.AddValue(PocetHotovychObjednavok);
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
         GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
         GlobalnyPocetObjednavok.AddValue(PoradieObjednavky);

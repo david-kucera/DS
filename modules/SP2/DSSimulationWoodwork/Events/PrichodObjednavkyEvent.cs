@@ -26,11 +26,11 @@ public class PrichodObjednavkyEvent : SimulationEvent
             Status = ObjStatus.CakajucaNaRezanie
         };
         stolaren.PoradieObjednavky++;
-        stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(stolaren.NezacateObjednavkyQueue.Count);
+        stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(stolaren.StolariAQueue.Count);
         
         // ak je nieco vo fronte, cakaj
         // ak je volny stolar skupiny A - naplanuj rezanie u neho
-        if (stolaren.NezacateObjednavkyQueue.Count >= 1) stolaren.NezacateObjednavkyQueue.Enqueue(objednavka);
+        if (stolaren.StolariAQueue.Count >= 1) stolaren.StolariAQueue.Enqueue(objednavka);
         else
         {
             Stolar stolar = null;
@@ -42,9 +42,10 @@ public class PrichodObjednavkyEvent : SimulationEvent
             }
 
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, stolar, objednavka), Time);
-            else stolaren.NezacateObjednavkyQueue.Enqueue(objednavka);
+            else stolaren.StolariAQueue.Enqueue(objednavka);
         }
         
+        // naplanovanie dalsieho prichodu
         var dalsiPrichod = stolaren.PrichodObjednavokGenerator.NextDouble() + Time;
         if (dalsiPrichod < stolaren.STOP_TIME) stolaren.EventQueue.Enqueue(new PrichodObjednavkyEvent(stolaren, dalsiPrichod), dalsiPrichod);
     }

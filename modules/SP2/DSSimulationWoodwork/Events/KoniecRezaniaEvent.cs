@@ -25,11 +25,11 @@ public class KoniecRezaniaEvent : SimulationEvent
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
 
-        // pokracovanie objednavky na morenie a lakovanie
-        if (stolaren.NarezaneObjednavkyQueue.Count >= 1)
+        // pokracovanie objednavky pre stolara typu C
+        if (stolaren.StolariCQueue.Count >= 1)
         {
             _objednavka.Status = ObjStatus.CakajucaNaMorenie;
-            stolaren.NarezaneObjednavkyQueue.Enqueue(_objednavka);
+            stolaren.StolariCQueue.Enqueue(_objednavka, Time);
         }
         else
         {
@@ -40,20 +40,29 @@ public class KoniecRezaniaEvent : SimulationEvent
                 stolar = st;
                 break;
             }
-
+            
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, stolar), Time);
             else
             {
                 _objednavka.Status = ObjStatus.CakajucaNaMorenie;
-                stolaren.NarezaneObjednavkyQueue.Enqueue(_objednavka);
+                stolaren.StolariCQueue.Enqueue(_objednavka, Time);
             }
         }
         
         // naplanovanie dalsieho rezania
-        if (stolaren.NezacateObjednavkyQueue.Count >= 1)
+        if (stolaren.StolariAQueue.Count >= 1)
         {
-            var dalsiaObj = stolaren.NezacateObjednavkyQueue.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, _stolar, dalsiaObj), Time);
+            Stolar stolar = null;
+            foreach (var st in stolaren.StolariA)
+            {
+                if (st.Obsadeny) continue;
+                stolar = st;
+                break;
+            }
+            if (stolar is null) throw new Exception("Nebol najdeny stolar!");
+            
+            var dalsiaObj = stolaren.StolariAQueue.Dequeue();
+            stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, stolar, dalsiaObj), Time);
         }
     }
     #endregion // Public functions

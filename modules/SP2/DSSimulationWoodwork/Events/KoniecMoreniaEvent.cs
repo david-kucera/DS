@@ -25,10 +25,10 @@ public class KoniecMoreniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
         // pokracovanie objednavky na skladanie
-        if (stolaren.NamoreneObjednavkyQueue.Count >= 1)
+        if (stolaren.StolariBQueue.Count >= 1)
         {
             _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
-            stolaren.NamoreneObjednavkyQueue.Enqueue(_objednavka);
+            stolaren.StolariBQueue.Enqueue(_objednavka);
         }
         else
         {
@@ -44,15 +44,34 @@ public class KoniecMoreniaEvent : SimulationEvent
             else
             {
                 _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
-                stolaren.NamoreneObjednavkyQueue.Enqueue(_objednavka);
+                stolaren.StolariBQueue.Enqueue(_objednavka);
             }
         }
         
-        // naplanovanie dalsieho morenia
-        if (stolaren.NarezaneObjednavkyQueue.Count >= 1)
+        // naplanovanie dalsej aktivity pre stolarov typu C
+        if (stolaren.StolariCQueue.Count >= 1)
         {
-            var dalsiaObj = stolaren.NarezaneObjednavkyQueue.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+            Stolar stolar = null;
+            foreach (var st in stolaren.StolariC)
+            {
+                if (st.Obsadeny) continue;
+                stolar = st;
+                break;
+            }
+            if (stolar is not null)
+            {
+                var dalsiaObj = stolaren.StolariCQueue.Dequeue();
+                if (dalsiaObj.Status == ObjStatus.CakajucaNaMontazKovani)
+                {
+                    stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+                }
+                else if (dalsiaObj.Status == ObjStatus.CakajucaNaMorenie)
+                {
+                    stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+                }
+                else throw new Exception("Chyba statusu objednavky!");
+            }
+            else throw new Exception("Chyba!");
         }
     }
 }

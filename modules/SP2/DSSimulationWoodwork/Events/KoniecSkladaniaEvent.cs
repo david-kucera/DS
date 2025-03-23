@@ -28,10 +28,10 @@ public class KoniecSkladaniaEvent : SimulationEvent
         // ak je objednavka skrina, tak pokracuje na montaz kovani
         if (_objednavka.Type == ObjType.Skrina)
         {
-            if (stolaren.PoskladaneSkrineQueue.Count >= 1)
+            if (stolaren.StolariCQueue.Count >= 1)
             {
                 _objednavka.Status = ObjStatus.CakajucaNaMontazKovani;
-                stolaren.PoskladaneSkrineQueue.Enqueue(_objednavka);
+                stolaren.StolariCQueue.Enqueue(_objednavka, double.MinValue);
             }
             else
             {
@@ -47,20 +47,21 @@ public class KoniecSkladaniaEvent : SimulationEvent
                 else
                 {
                     _objednavka.Status = ObjStatus.CakajucaNaMontazKovani;
-                    stolaren.PoskladaneSkrineQueue.Enqueue(_objednavka);
+                    stolaren.StolariCQueue.Enqueue(_objednavka, double.MinValue);
                 }
             }
         }
         else
         {
             // zber statistik objednavok, ktore koncia v systeme
+            stolaren.PocetHotovychObjednavok++;
             stolaren.PriemernyCasObjednavkyVSysteme.AddValue(Time - _objednavka.ArrivalTime);
         }
         
         // naplanovanie dalsieho skladania
-        if (stolaren.NamoreneObjednavkyQueue.Count >= 1)
+        if (stolaren.StolariBQueue.Count >= 1)
         {
-            var dalsiaObj = stolaren.NamoreneObjednavkyQueue.Dequeue();
+            var dalsiaObj = stolaren.StolariBQueue.Dequeue();
             stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
         }
     }
