@@ -1,11 +1,21 @@
-﻿namespace DSSimulationTest;
+﻿using DSSimulationWoodwork;
+
+namespace DSSimulationTest;
 
 static class Program
 {
     static void Main()
     {
         // TestGenerators();
-        TestPredajna();
+        // TestPredajna();
+        TestStolaren();
+    }
+
+    private static void TestStolaren()
+    {
+        Random seeder = new Random(0);
+        Stolaren stolaren = new(seeder, 1, 1, 1);
+        stolaren.Run(30);
     }
 
     private static void TestPredajna()

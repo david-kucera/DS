@@ -11,7 +11,7 @@ public class Stolaren : SimulationCore
 {
     #region Constants
     public double START_TIME = 0.0;
-    public double STOP_TIME = 8*60; // 8 hodin
+    public double STOP_TIME = 249*8*60; // 249 dni po 8 hodin
     #endregion // Constants
 
     #region Class members
@@ -23,14 +23,17 @@ public class Stolaren : SimulationCore
     
     #region Properties
     public int PoradieObjednavky { get; set; } = 0;
-    public Queue<Objednavka> NezacateObjednavky = new();
+    public Queue<Objednavka> NezacateObjednavkyQueue = new();
+    public Queue<Objednavka> NarezaneObjednavkyQueue = new();
+    public Queue<Objednavka> NamoreneObjednavkyQueue = new();
     
-    public List<Stolar> StolarA = new();
-    public List<Stolar> StolarB = new();
-    public List<Stolar> StolarC = new();
+    public List<Stolar> StolariA = new();
+    public List<Stolar> StolariB = new();
+    public List<Stolar> StolariC = new();
     
     
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
+    public Random ObjednavkaTypGenerator { get; set; } = null!;
     
     public TriangularGenerator MontazneMiestoSkladGenerator { get; set; } = null!;
     public TriangularGenerator PripravaDrevaVSkladeGenerator { get; set; } = null!;
@@ -60,9 +63,11 @@ public class Stolaren : SimulationCore
     }
     #endregion // Constructor
     
+    #region Protected functions
     protected override void BeforeSimulation()
     {
         PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0);
+        ObjednavkaTypGenerator = new Random(_seeder.Next());
         
         MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, (60.0 / 60), (480.0 / 60), (120.0 / 60));
         PripravaDrevaVSkladeGenerator = new TriangularGenerator(_seeder, (300.0 / 60), (900.0 / 60), (500.0 / 60));
@@ -90,55 +95,56 @@ public class Stolaren : SimulationCore
         SkrinaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 600, 700);
         SkrinaSkladanieGenerator = new ContinousUniform(_seeder, 35, 75);
         SkrinaMontazKovaniGenerator = new ContinousUniform(_seeder, 15, 25);
+    }
+
+    protected override void AfterSimulation()
+    {
+        // vypis konecnych statistik
+    }
+
+    protected override void BeforeSimulationRun()
+    {
+        PoradieObjednavky = 0;
+        NezacateObjednavkyQueue.Clear();
+        NarezaneObjednavkyQueue.Clear();
+        NamoreneObjednavkyQueue.Clear();
+        Time = 0.0;
         
-        StolarA = new List<Stolar>(_stolarACount);
+        StolariA = new List<Stolar>(_stolarACount);
         for (int i = 0; i < _stolarACount; i++)
         {
             var stolar = new Stolar(StolarType.A)
             {
                 Poloha = Poloha.Sklad
             };
-            StolarA.Add(stolar);
+            StolariA.Add(stolar);
         }
-        StolarB = new List<Stolar>(_stolarBCount);
+        StolariB = new List<Stolar>(_stolarBCount);
         for (int i = 0; i < _stolarBCount; i++)
         {
             var stolar = new Stolar(StolarType.B)
             {
                 Poloha = Poloha.Sklad
             };
-            StolarB.Add(stolar);
+            StolariB.Add(stolar);
         }
-        StolarC = new List<Stolar>(_stolarCCount);
+        StolariC = new List<Stolar>(_stolarCCount);
         for (int i = 0; i < _stolarCCount; i++)
         {
             var stolar = new Stolar(StolarType.C)
             {
                 Poloha = Poloha.Sklad
             };
-            StolarC.Add(stolar);
+            StolariC.Add(stolar);
         }
-    }
-
-    protected override void AfterSimulation()
-    {
-        // vypis konecnych statistik
-        throw new NotImplementedException();
-    }
-
-    protected override void BeforeSimulationRun()
-    {
-        PoradieObjednavky = 0;
-        NezacateObjednavky.Clear();
-        Time = 0.0;
 
         var prichod = PrichodObjednavokGenerator.NextDouble() + Time;
-        EventQueue.Enqueue(new PrichodObjednavky(this, prichod), prichod);
+        EventQueue.Enqueue(new PrichodObjednavkyEvent(this, prichod), prichod);
     }
 
     protected override void AfterSimulationRun()
     {
         // update globalnych statistik
-        throw new NotImplementedException();
     }
+    #endregion // Protected functions
 }

@@ -4,6 +4,8 @@ public class Objednavka
 {
     #region Properties
     public ObjType Type { get; set; } = ObjType.Unknown;
+    public ObjStatus Status { get; set; } = ObjStatus.Unknown;
+    public int Poradie { get; set; } = -1;
     #endregion // Properties
     
     #region Constructor
@@ -20,4 +22,17 @@ public enum ObjType
     Stol,
     Skrina,
     Stolicka
+}
+
+public enum ObjStatus
+{
+    Unknown,
+    CakajucaNaRezanie,
+    Narezana,
+    CakajucaNaMorenie,
+    Namorena,
+    CakajucaNaSkladanie,
+    Poskladana,
+    CakajucaNaMontazKovani,
+    Hotova
 }

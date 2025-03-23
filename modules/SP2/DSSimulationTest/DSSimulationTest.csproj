@@ -12,6 +12,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\DSSimulationLib\DSSimulationLib.csproj" />
+      <ProjectReference Include="..\DSSimulationWoodwork\DSSimulationWoodwork.csproj" />
     </ItemGroup>
 
 </Project>

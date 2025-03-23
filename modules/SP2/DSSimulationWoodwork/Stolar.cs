@@ -6,6 +6,7 @@ public class Stolar
     public StolarType Type { get; set; } = StolarType.Unknown;
     public Poloha Poloha { get; set; } = Poloha.Unkwnown;
     public int IDMiesta { get; set; } = -1;
+    public bool Obsadeny { get; set; } = false;
     #endregion // Properties
 
     #region Constructor
