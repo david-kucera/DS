@@ -4,14 +4,17 @@ public class Objednavka
 {
     #region Properties
     public ObjType Type { get; set; } = ObjType.Unknown;
+    public double ArrivalTime { get; set; } = double.NaN;
     public ObjStatus Status { get; set; } = ObjStatus.Unknown;
     public int Poradie { get; set; } = -1;
     #endregion // Properties
     
     #region Constructor
-    public Objednavka(ObjType type)
+    public Objednavka(ObjType type, double arrivalTime, int poradie)
     {
         Type = type;
+        ArrivalTime = arrivalTime;
+        Poradie = poradie;
     }
     #endregion // Constructor
 }

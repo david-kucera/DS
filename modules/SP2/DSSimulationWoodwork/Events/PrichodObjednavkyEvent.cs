@@ -21,12 +21,12 @@ public class PrichodObjednavkyEvent : SimulationEvent
         else if (perc <= 0.85) type = ObjType.Skrina;
         else type = ObjType.Stolicka;
         
-        Objednavka objednavka = new(type)
+        Objednavka objednavka = new(type, Time, stolaren.PoradieObjednavky)
         {
-            Poradie = stolaren.PoradieObjednavky,
             Status = ObjStatus.CakajucaNaRezanie
         };
         stolaren.PoradieObjednavky++;
+        stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(stolaren.NezacateObjednavkyQueue.Count);
         
         // ak je nieco vo fronte, cakaj
         // ak je volny stolar skupiny A - naplanuj rezanie u neho

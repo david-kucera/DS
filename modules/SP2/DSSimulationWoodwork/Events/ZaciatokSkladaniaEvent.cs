@@ -2,7 +2,7 @@ using DSSimulationLib.Simulation;
 
 namespace DSSimulationWoodwork.Events;
 
-public class ZaciatokMoreniaEvent : SimulationEvent
+public class ZaciatokSkladaniaEvent : SimulationEvent
 {
     #region Class members
     private Objednavka _objednavka;
@@ -10,18 +10,19 @@ public class ZaciatokMoreniaEvent : SimulationEvent
     #endregion // Class members
     
     #region Constructor
-    public ZaciatokMoreniaEvent(SimulationCore core, double time, Objednavka objednavka, Stolar stolar) : base(core, time)
+    public ZaciatokSkladaniaEvent(SimulationCore core, double time, Objednavka objednavka, Stolar stolar) : base(core, time)
     {
         _objednavka = objednavka;
         _stolar = stolar;
     }
     #endregion // Constructor
 
+    #region Public functions
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
-
+        
         double casPrechoduNaMontazneMiesto;
         if (_stolar.Poloha == Poloha.Sklad) 
             casPrechoduNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
@@ -30,27 +31,28 @@ public class ZaciatokMoreniaEvent : SimulationEvent
         else casPrechoduNaMontazneMiesto = 0.0;
         _stolar.Poloha = Poloha.MontazneMiesto;
         _stolar.IDMiesta = _objednavka.Poradie;
-         
-        double casMorenia = 0.0;
+
+        double casSkladania = 0.0;
         switch (_objednavka.Type)
         {
             case ObjType.Stol:
-                casMorenia = stolaren.StolMorenieLakovanieGenerator.NextDouble();
+                casSkladania = stolaren.StolSkladanieGenerator.NextDouble();
                 break;
             case ObjType.Skrina:
-                casMorenia = stolaren.SkrinaMorenieLakovanieGenerator.NextDouble();
+                casSkladania = stolaren.SkrinaSkladanieGenerator.NextDouble();
                 break;
             case ObjType.Stolicka:
-                casMorenia = stolaren.StolickaMorenieLakovanieGenerator.NextDouble();
+                casSkladania = stolaren.StolickaSkladanieGenerator.NextDouble();
                 break;
             default:
                 throw new Exception("Nie je uvedený typ objednávky!");
         }
-        _objednavka.Status = ObjStatus.Namorena;
-        
-        double trvanieUdalosti =  casPrechoduNaMontazneMiesto + casMorenia;
+        _objednavka.Status = ObjStatus.Poskladana;
+
+        double trvanieUdalosti = casPrechoduNaMontazneMiesto + casSkladania;
         double koniecUdalosti = trvanieUdalosti + Time;
 
-        stolaren.EventQueue.Enqueue(new KoniecMoreniaEvent(stolaren, koniecUdalosti, _objednavka, _stolar), koniecUdalosti);
+        stolaren.EventQueue.Enqueue(new KoniecSkladaniaEvent(stolaren, koniecUdalosti, _objednavka, _stolar), koniecUdalosti);
     }
+    #endregion // Public functions
 }

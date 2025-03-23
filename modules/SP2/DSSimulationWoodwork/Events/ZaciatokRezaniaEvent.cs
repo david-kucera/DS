@@ -21,15 +21,16 @@ public class ZaciatokRezaniaEvent : SimulationEvent
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
-
         _stolar.Obsadeny = true;
+        
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
-        if (_stolar.Poloha == Poloha.MontazneMiesto)
-        {
+        if (_stolar.Poloha == Poloha.MontazneMiesto) 
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();
-        }
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
+        _stolar.Poloha = Poloha.MontazneMiesto;
+        _stolar.IDMiesta = _objednavka.Poradie;
+        
         double casRezania = 0.0;
         switch (_objednavka.Type)
         {
@@ -45,11 +46,12 @@ public class ZaciatokRezaniaEvent : SimulationEvent
             default:
                 throw new Exception("Nie je uvedený typ objednávky!");
         }
-        _stolar.Poloha = Poloha.MontazneMiesto;
-        _stolar.IDMiesta = _objednavka.Poradie;
+        _objednavka.Status = ObjStatus.Narezana;
+        
         
         double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto + casRezania;
         double koniecUdalosti = trvanieUdalosti + Time;
+        
         stolaren.EventQueue.Enqueue(new KoniecRezaniaEvent(stolaren, koniecUdalosti, _stolar, _objednavka), koniecUdalosti);
     }
     #endregion // Public functions

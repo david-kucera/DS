@@ -41,7 +41,7 @@ public class KoniecRezaniaEvent : SimulationEvent
                 break;
             }
 
-            if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, _stolar), Time);
+            if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, stolar), Time);
             else
             {
                 _objednavka.Status = ObjStatus.CakajucaNaMorenie;

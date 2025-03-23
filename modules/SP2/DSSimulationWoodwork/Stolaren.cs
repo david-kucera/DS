@@ -3,6 +3,7 @@ using DSLib.Generators.Uniform;
 using DSSimulationLib.Generators.Exponential;
 using DSSimulationLib.Generators.Triangular;
 using DSSimulationLib.Simulation;
+using DSSimulationLib.Statistics;
 using DSSimulationWoodwork.Events;
 
 namespace DSSimulationWoodwork;
@@ -26,18 +27,23 @@ public class Stolaren : SimulationCore
     public Queue<Objednavka> NezacateObjednavkyQueue = new();
     public Queue<Objednavka> NarezaneObjednavkyQueue = new();
     public Queue<Objednavka> NamoreneObjednavkyQueue = new();
+    public Queue<Objednavka> PoskladaneSkrineQueue = new();
     
     public List<Stolar> StolariA = new();
     public List<Stolar> StolariB = new();
     public List<Stolar> StolariC = new();
-    
+
+    public Average PriemernyCasObjednavkyVSysteme { get; set; } = new();
+    public Average GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = new();
+    public Average PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
+    public Average GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat  { get; set; } = new();
     
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
     public Random ObjednavkaTypGenerator { get; set; } = null!;
     
     public TriangularGenerator MontazneMiestoSkladGenerator { get; set; } = null!;
     public TriangularGenerator PripravaDrevaVSkladeGenerator { get; set; } = null!;
-    public TriangularGenerator PresunMedziMontaznymiMiestami { get; set; } = null!;
+    public TriangularGenerator PresunMedziMontaznymiMiestamiGenerator { get; set; } = null!;
     
     public ContinousEmpirical StolRezanieGenerator { get; set; } = null!;
     public ContinousUniform StolMorenieLakovanieGenerator { get; set; } = null!;
@@ -71,7 +77,7 @@ public class Stolaren : SimulationCore
         
         MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, (60.0 / 60), (480.0 / 60), (120.0 / 60));
         PripravaDrevaVSkladeGenerator = new TriangularGenerator(_seeder, (300.0 / 60), (900.0 / 60), (500.0 / 60));
-        PresunMedziMontaznymiMiestami = new TriangularGenerator(_seeder, (120.0 / 60), (500.0 / 60), (150.0 / 60));
+        PresunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(_seeder, (120.0 / 60), (500.0 / 60), (150.0 / 60));
 
         List<(int,int)> intervals =
         [
@@ -100,6 +106,13 @@ public class Stolaren : SimulationCore
     protected override void AfterSimulation()
     {
         // vypis konecnych statistik
+        Console.WriteLine("[min]");
+        Console.WriteLine("Priemerny cas objednavky v systeme");
+        Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
+        Console.WriteLine("Priemerny pocet nezacatych objednavok");
+        Console.WriteLine(GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
+        if (GlobalnyPriemernyCasObjednavkyVSysteme.GetValue() < 960) Console.WriteLine("VYHOVUJE");
+        else Console.WriteLine("NEVYHOVUJE");
     }
 
     protected override void BeforeSimulationRun()
@@ -108,7 +121,11 @@ public class Stolaren : SimulationCore
         NezacateObjednavkyQueue.Clear();
         NarezaneObjednavkyQueue.Clear();
         NamoreneObjednavkyQueue.Clear();
+        PoskladaneSkrineQueue.Clear();
         Time = 0.0;
+        
+        PriemernyCasObjednavkyVSysteme.Reset();
+        PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.Reset();
         
         StolariA = new List<Stolar>(_stolarACount);
         for (int i = 0; i < _stolarACount; i++)
@@ -145,6 +162,8 @@ public class Stolaren : SimulationCore
     protected override void AfterSimulationRun()
     {
         // update globalnych statistik
+        GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
+        GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
     }
     #endregion // Protected functions
 }
