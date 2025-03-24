@@ -11,7 +11,6 @@ namespace DSSimulationWoodwork;
 public class Stolaren : SimulationCore
 {
     #region Constants
-    public double START_TIME = 0.0;
     public double STOP_TIME = 249*8*60; // 249 dni po 8 hodin
     #endregion // Constants
 
@@ -24,13 +23,13 @@ public class Stolaren : SimulationCore
     
     #region Properties
     public int PoradieObjednavky { get; set; } = 0;
-    public Queue<Objednavka> StolariAQueue = new();
+    public Queue<Objednavka> StolariAQueue = [];
     public PriorityQueue<Objednavka, double> StolariCQueue = new();
-    public Queue<Objednavka> StolariBQueue = new();
+    public Queue<Objednavka> StolariBQueue = [];
     
-    public List<Stolar> StolariA = new();
-    public List<Stolar> StolariB = new();
-    public List<Stolar> StolariC = new();
+    public List<Stolar> StolariA = [];
+    public List<Stolar> StolariB = [];
+    public List<Stolar> StolariC = [];
 
     public double PocetHotovychObjednavok { get; set; } = 0.0;
     public Average GlobalnyPocetHotovychObjednavok { get; set; } = new();
@@ -74,7 +73,7 @@ public class Stolaren : SimulationCore
     #region Protected functions
     protected override void BeforeSimulation()
     {
-        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 0.5);
+        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0/60);
         ObjednavkaTypGenerator = new Random(_seeder.Next());
         
         MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, (60.0 / 60), (480.0 / 60), (120.0 / 60));
@@ -164,11 +163,9 @@ public class Stolaren : SimulationCore
         var prichod = PrichodObjednavokGenerator.NextDouble() + Time;
         EventQueue.Enqueue(new PrichodObjednavkyEvent(this, prichod), prichod);
     }
-
-    private static int poradie = 0;
+    
     protected override void AfterSimulationRun()
     {
-        Console.WriteLine(++poradie);
         // update globalnych statistik
         GlobalnyPocetHotovychObjednavok.AddValue(PocetHotovychObjednavok);
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
