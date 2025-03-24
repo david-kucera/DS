@@ -42,6 +42,7 @@ public partial class MainWindow : Window
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             CurrentSimulationTime.Content = timeString;
+            CurrentSimulationDay.Content = Predajna.Den;
         });
     }
     #endregion // Constructor
@@ -49,7 +50,7 @@ public partial class MainWindow : Window
     #region Private functions
     private void StartSimulation(int numReps, int seed)
     {
-        Task.Run((() => Predajna.Run(1))) ;
+        Task.Run((() => Predajna.Run(2))) ;
         // StabilizationPlot1.Plot.Clear();
         // StabilizationPlot1.Refresh();
     }

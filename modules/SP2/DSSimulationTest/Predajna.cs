@@ -9,7 +9,9 @@ public class Predajna : SimulationCore
 {
     #region Constants
     public double MULTIPLIER = 3600.0;
-    public double STOP_TIME = 8*60*60*1000; // 8 hodin
+    public static double START_TIME = 6 * 60 * 60 * 1000;
+    public double STOP_TIME = START_TIME + 8 * 60 * 60 * 1000; // 8 hodin
+    public int Den = 1;
     #endregion // Constants
     
     #region Class members
@@ -59,11 +61,12 @@ public class Predajna : SimulationCore
         Console.WriteLine($"Priemerný počet ľudí v predajni: {_globalAveragePocetLudi.GetValue()}");
     }
 
-    protected override void BeforeSimulationRun()
+    protected override void BeforeSimulationRun(int poradieReplikacie)
     {
         Rad.Clear();
-        Time = 0.0;
+        Time = START_TIME;
         StopTime = STOP_TIME;
+        Den = poradieReplikacie;
         EventQueue.Clear();
         EventQueue.Enqueue(new SystemEvent(this, Time, MULTIPLIER), Time);
 

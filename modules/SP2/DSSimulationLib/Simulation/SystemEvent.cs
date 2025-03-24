@@ -19,7 +19,7 @@ public class SystemEvent : SimulationEvent
     public override void Execute()
     {
         int sleep = (int)(_duration / _multiplier);
-        if (Time+_shift < Core.StopTime) Core.EventQueue.Enqueue(new SystemEvent(Core, Time+_shift, _multiplier), Time+_shift);
+        if (Time + _shift < Core.StopTime) Core.EventQueue.Enqueue(new SystemEvent(Core, Time + _shift, _multiplier), Time + _shift);
         Thread.Sleep(sleep);
         Core.OnNewSimulationTime(Time);
     }

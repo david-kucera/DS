@@ -26,12 +26,11 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
-        if (_stolar.Poloha == Poloha.MontazneMiesto) 
+        if (_stolar.MontazneMiesto == null) 
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
-        _stolar.Poloha = Poloha.MontazneMiesto;
-        _stolar.IDMiesta = _objednavka.Poradie;
+        _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
         
         double casRezania = 0.0;
         switch (_objednavka.Type)

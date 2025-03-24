@@ -26,13 +26,12 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
         if (_stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduNaMontazneMiesto;
-        if (_stolar.Poloha == Poloha.Sklad) 
+        if (_stolar.MontazneMiesto == null) 
             casPrechoduNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
-        else if (_stolar.IDMiesta != _objednavka.Poradie)
+        else if (_stolar.MontazneMiesto != _objednavka.MontazneMiesto)
             casPrechoduNaMontazneMiesto = stolaren.PresunMedziMontaznymiMiestamiGenerator.NextDouble();
         else casPrechoduNaMontazneMiesto = 0.0;
-        _stolar.Poloha = Poloha.MontazneMiesto;
-        _stolar.IDMiesta = _objednavka.Poradie;
+        _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
 
         double casSkladania = 0.0;
         switch (_objednavka.Type)

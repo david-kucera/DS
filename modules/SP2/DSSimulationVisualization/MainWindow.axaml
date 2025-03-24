@@ -56,6 +56,8 @@
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
                     <Label Content="Aktuálny simulačný čas: " FontSize="14"/>
                     <Label Name="CurrentSimulationTime" FontSize="14" FontWeight="Bold"/>
+                    <Label Content="Deň:" FontSize="14"></Label> 
+                    <Label Name="CurrentSimulationDay" FontSize="14" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </Border>

@@ -11,7 +11,8 @@ namespace DSSimulationWoodwork;
 public class Stolaren : SimulationCore
 {
     #region Constants
-    public double STOP_TIME = 249*8*60; // 249 dni po 8 hodin
+    public static double START_TIME = 6 * 60 * 60;
+    public double STOP_TIME = START_TIME + 249 * 8 * 60; // 249 dni po 8 hodin
     #endregion // Constants
 
     #region Class members
@@ -120,7 +121,7 @@ public class Stolaren : SimulationCore
         else Console.WriteLine("NEVYHOVUJE");
     }
 
-    protected override void BeforeSimulationRun()
+    protected override void BeforeSimulationRun(int poradieReplikacie)
     {
         PoradieObjednavky = 0;
         PocetHotovychObjednavok = 0;
@@ -135,28 +136,19 @@ public class Stolaren : SimulationCore
         StolariA = new List<Stolar>(_stolarACount);
         for (int i = 0; i < _stolarACount; i++)
         {
-            var stolar = new Stolar(StolarType.A)
-            {
-                Poloha = Poloha.Sklad
-            };
+            var stolar = new Stolar(StolarType.A, i);
             StolariA.Add(stolar);
         }
         StolariB = new List<Stolar>(_stolarBCount);
         for (int i = 0; i < _stolarBCount; i++)
         {
-            var stolar = new Stolar(StolarType.B)
-            {
-                Poloha = Poloha.Sklad
-            };
+            var stolar = new Stolar(StolarType.B, i);
             StolariB.Add(stolar);
         }
         StolariC = new List<Stolar>(_stolarCCount);
         for (int i = 0; i < _stolarCCount; i++)
         {
-            var stolar = new Stolar(StolarType.C)
-            {
-                Poloha = Poloha.Sklad
-            };
+            var stolar = new Stolar(StolarType.C, i);
             StolariC.Add(stolar);
         }
 

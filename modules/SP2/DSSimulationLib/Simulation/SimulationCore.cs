@@ -11,10 +11,15 @@ public abstract class SimulationCore : SimCore
     #endregion // Properties
     
     #region Events
-    public Action<double> NewSimulationTime = null;
+    public Action<double> NewSimulationTime = null!;
+    public Action<EventArgs> NewSimulationData = null!;
     public void OnNewSimulationTime(double time)
     {
         NewSimulationTime?.Invoke(time);
+    }
+    public void OnNewSimulationData()
+    {
+        NewSimulationData?.Invoke(EventArgs.Empty);
     }
     #endregion // Events
     

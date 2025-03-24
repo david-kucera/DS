@@ -7,6 +7,7 @@ public class Objednavka
     public double ArrivalTime { get; set; } = double.NaN;
     public ObjStatus Status { get; set; } = ObjStatus.Unknown;
     public int Poradie { get; set; } = -1;
+    public MontazneMiesto MontazneMiesto { get; set; } = null!;
     #endregion // Properties
     
     #region Constructor
