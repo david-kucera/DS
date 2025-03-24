@@ -39,8 +39,9 @@
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="2">
-                    <Slider Name="SpeedSlider" Minimum="-1000" Maximum="1000" Width="200" Margin="5" ValueChanged="SpeedSlider_OnValueChanged"></Slider>
-                    <Label Name="SpeedLabel" Content="1x" Margin="5,15,5,5"></Label>
+                    <Button Name="SpomalButton" HorizontalContentAlignment="Center" Click="SpomalButton_OnClick" Width="100">Spomal</Button>
+                    <Label Name="SpeedLabel" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="60" Margin="5,10,5,5">1x</Label>
+                    <Button Name="ZrychliButton" HorizontalContentAlignment="Center" Click="ZrychliButton_OnClick" Width="100">Zrýchli</Button>
                     <CheckBox Name="VirtualSpeedCheckBox" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
                 </StackPanel>
             </Grid>
@@ -53,8 +54,8 @@
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
                 <StackPanel Orientation="Horizontal" Grid.Column="0">
-                    <TextBlock Text="Aktuálna hodnota A: " FontSize="14"/>
-                    <TextBlock Name="CurrentValueALabel" FontSize="14" FontWeight="Bold"/>
+                    <Label Content="Aktuálny simulačný čas: " FontSize="14"/>
+                    <Label Name="CurrentSimulationTime" FontSize="14" FontWeight="Bold"/>
                 </StackPanel>
             </Grid>
         </Border>

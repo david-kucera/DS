@@ -17,6 +17,8 @@ public class WeightedAverage
     #region Public functions
     public void AddValue(double value, double time)
     {
+        if (time < _lastTime) throw new ArgumentException("Timing error!.");
+        
         double weight = time - _lastTime;
         _lastTime = time;
         _weightedSum += value * weight;
@@ -25,11 +27,7 @@ public class WeightedAverage
 
     public double GetValue()
     {
-        if (_totalWeight > 0)
-        {
-            return _weightedSum / _totalWeight;
-        }
-
+        if (_totalWeight > 0) return _weightedSum / _totalWeight;
         return double.NaN;
     }
 

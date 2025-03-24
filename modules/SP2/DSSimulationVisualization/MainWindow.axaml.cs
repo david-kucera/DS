@@ -1,9 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Avalonia.Controls;
-using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using DSSimulationTest;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ScottPlot.Avalonia;
@@ -14,6 +15,9 @@ public partial class MainWindow : Window
 {
     #region Class members
     private int _skipFirst = 0;
+    private Multipliers _multiplierType = Multipliers.One;
+    private double _multiplier = 1.0;
+    private Predajna Predajna;
     #endregion // Class members
     
     #region Constructor
@@ -21,14 +25,33 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         SeedInput.Text = new Random().Next(0, 1000).ToString();
+        Random rnd = new Random(int.Parse(SeedInput.Text));
+        Predajna = new Predajna(rnd);
+        Predajna.NewSimulationTime += SimulationTime;
+    }
+
+    private void SimulationTime(double obj)
+    {
+        int totalSeconds = (int)(obj / 1000); // Prevod milisekúnd na sekundy
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            CurrentSimulationTime.Content = timeString;
+        });
     }
     #endregion // Constructor
     
     #region Private functions
     private void StartSimulation(int numReps, int seed)
     {
-        StabilizationPlot1.Plot.Clear();
-        StabilizationPlot1.Refresh();
+        Task.Run((() => Predajna.Run(1))) ;
+        // StabilizationPlot1.Plot.Clear();
+        // StabilizationPlot1.Refresh();
     }
     
     private void SimulationEnded(object? sender, EventArgs e)
@@ -126,17 +149,119 @@ public partial class MainWindow : Window
         PokracujButton.IsEnabled = false;
     }
     #endregion // Private functions
-
-    private void SpeedSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
-    {
-        var newVal = (double)e.NewValue;
-        SpeedLabel.Content = $"{newVal:F0}";
-    }
+    
 
     private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
     {
-        if (VirtualSpeedCheckBox.IsChecked == true) SpeedSlider.IsEnabled = false;
-        else SpeedSlider.IsEnabled = true;
+        if (VirtualSpeedCheckBox.IsChecked == true)
+        {
+            SpomalButton.IsEnabled = false;
+            ZrychliButton.IsEnabled = false;
+        }
+        else
+        {
+            VykresliRychlost();
+        }
+    }
+
+    private void ZrychliButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _multiplierType++;
+        VykresliRychlost();
+    }
+
+    private void SpomalButton_OnClick(object? sender, RoutedEventArgs e)
+    {
+        _multiplierType--;
+        VykresliRychlost();
+    }
+
+    private void VykresliRychlost()
+    {
+        if (_multiplierType == Multipliers.Thousand) ZrychliButton.IsEnabled = false;
+        else ZrychliButton.IsEnabled = true;
+        if (_multiplierType == Multipliers.MinusThousand) SpomalButton.IsEnabled = false;
+        else SpomalButton.IsEnabled = true;
         
+        switch (_multiplierType)
+        {
+            case Multipliers.One:
+                _multiplier = 1.0;
+                SpeedLabel.Content = "1x";
+                break;
+            case Multipliers.Two:
+                _multiplier = 2.0;
+                SpeedLabel.Content = "2x";
+                break;
+            case Multipliers.Five:
+                _multiplier = 5.0;
+                SpeedLabel.Content = "5x";
+                break;
+            case Multipliers.Ten:
+                _multiplier = 10.0;
+                SpeedLabel.Content = "10x";
+                break;
+            case Multipliers.TwentyFive:
+                _multiplier = 25.0;
+                SpeedLabel.Content = "25x";
+                break;
+            case Multipliers.Fifty:
+                _multiplier = 50.0;
+                SpeedLabel.Content = "50x";
+                break;
+            case Multipliers.Hundred:
+                _multiplier = 100.0;
+                SpeedLabel.Content = "100x";
+                break;
+            case Multipliers.TwoHundredFifty:
+                _multiplier = 250.0;
+                SpeedLabel.Content = "250x";
+                break;
+            case Multipliers.FiveHundred:
+                _multiplier = 500.0;
+                SpeedLabel.Content = "500x";
+                break;
+            case Multipliers.Thousand:
+                _multiplier = 1000.0;
+                SpeedLabel.Content = "1000x";
+                break;
+            
+            case Multipliers.MinusTwo:
+                _multiplier = 1.0/2.0;
+                SpeedLabel.Content = "1/2x";
+                break;
+            case Multipliers.MinusFive:
+                _multiplier = 1.0/5.0;
+                SpeedLabel.Content = "1/5x";
+                break;
+            case Multipliers.MinusTen:
+                _multiplier = 1.0/10.0;
+                SpeedLabel.Content = "1/10x";
+                break;
+            case Multipliers.MinusTwentyFive:
+                _multiplier = 1.0/25.0;
+                SpeedLabel.Content = "1/25x";
+                break;
+            case Multipliers.MinusFifty:
+                _multiplier = 1.0/50.0;
+                SpeedLabel.Content = "1/50x";
+                break;
+            case Multipliers.MinusHundred:
+                _multiplier = 1.0/100.0;
+                SpeedLabel.Content = "1/100x";
+                break;
+            case Multipliers.MinusTwoHundredFifty:
+                _multiplier = 1.0/250.0;
+                SpeedLabel.Content = "1/250x";
+                break;
+            case Multipliers.MinusFiveHundred:
+                _multiplier = 1.0/500.0;
+                SpeedLabel.Content = "1/500x";
+                break;
+            case Multipliers.MinusThousand:
+                _multiplier = 1.0/1000.0;
+                SpeedLabel.Content = "1/1000x";
+                break;
+        }
     }
 }

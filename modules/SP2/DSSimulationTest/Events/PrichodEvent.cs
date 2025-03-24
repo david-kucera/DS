@@ -14,7 +14,6 @@ public class PrichodEvent : SimulationEvent
     public override void Execute()
     {
         Predajna predajna = Core as Predajna ?? throw new InvalidOperationException();
-
         Osoba osoba = new()
         {
             Id = predajna.PoradieOsoby,
@@ -25,10 +24,10 @@ public class PrichodEvent : SimulationEvent
         
         if (predajna.Rad.Count >= 1 || predajna.ObsluhovanyClovek) predajna.Rad.Enqueue(osoba);
         else predajna.EventQueue.Enqueue(new ZaciatokObsluhyEvent(predajna, predajna.Time, osoba), predajna.Time);
-
+        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
+        
         var dalsiPrichod = predajna.PrichodLudiGenerator.NextDouble() + predajna.Time;
         if (dalsiPrichod < predajna.STOP_TIME) predajna.EventQueue.Enqueue(new PrichodEvent(predajna, dalsiPrichod), dalsiPrichod);
-        predajna.AverageDlzkaRadu.AddValue(predajna.Rad.Count, predajna.Time);
     }
     #endregion // Public functions
 }

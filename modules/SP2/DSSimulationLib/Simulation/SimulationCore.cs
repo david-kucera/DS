@@ -7,7 +7,16 @@ public abstract class SimulationCore : SimCore
     #region Properties
     public PriorityQueue<SimulationEvent, double> EventQueue = new();
     public double Time = 0.0;
+    public double StopTime = 0.0;
     #endregion // Properties
+    
+    #region Events
+    public Action<double> NewSimulationTime = null;
+    public void OnNewSimulationTime(double time)
+    {
+        NewSimulationTime?.Invoke(time);
+    }
+    #endregion // Events
     
     #region Public functions
     protected override void Experiment()

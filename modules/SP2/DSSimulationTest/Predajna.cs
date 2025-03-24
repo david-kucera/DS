@@ -8,8 +8,8 @@ namespace DSSimulationTest;
 public class Predajna : SimulationCore
 {
     #region Constants
-    public double START_TIME = 0.0;
-    public double STOP_TIME = 8*60; // 8 hodin
+    public double MULTIPLIER = 3600.0;
+    public double STOP_TIME = 8*60*60*1000; // 8 hodin
     #endregion // Constants
     
     #region Class members
@@ -46,8 +46,8 @@ public class Predajna : SimulationCore
     #region Public functions
     protected override void BeforeSimulation()
     {
-        PrichodLudiGenerator = new ExponentialGenerator(_seeder,0.2);
-        TrvanieObsluhy = new ExponentialGenerator(_seeder,0.25);
+        PrichodLudiGenerator = new ExponentialGenerator(_seeder, 0.2/60/1000);
+        TrvanieObsluhy = new ExponentialGenerator(_seeder, 0.25/60/1000);
     }
 
     protected override void AfterSimulation()
@@ -63,7 +63,9 @@ public class Predajna : SimulationCore
     {
         Rad.Clear();
         Time = 0.0;
+        StopTime = STOP_TIME;
         EventQueue.Clear();
+        EventQueue.Enqueue(new SystemEvent(this, Time, MULTIPLIER), Time);
 
         AverageDlzkaRadu.Reset();
         AverageCasVPredajni.Reset();

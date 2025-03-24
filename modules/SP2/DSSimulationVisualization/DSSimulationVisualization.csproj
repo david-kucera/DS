@@ -24,4 +24,8 @@
         <PackageReference Include="MessageBox.Avalonia" Version="3.2.0" />
         <PackageReference Include="ScottPlot.Avalonia" Version="5.0.54" />
     </ItemGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\DSSimulationTest\DSSimulationTest.csproj" />
+    </ItemGroup>
 </Project>
