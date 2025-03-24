@@ -24,6 +24,8 @@ public class KoniecRezaniaEvent : SimulationEvent
         _objednavka.Status = ObjStatus.Narezana;
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        
+        if (_stolar.Type != StolarType.A) throw new Exception("Zly stolar!");
 
         // pokracovanie objednavky pre stolara typu C
         if (stolaren.CakajuceNaMorenie.Count >= 1)

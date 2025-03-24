@@ -22,6 +22,9 @@ public class KoniecMontazeEvent : SimulationEvent
     {
         _stolar.Obsadeny = false;
         _objednavka.Status = ObjStatus.Hotova;
+        _objednavka.MontazneMiesto.Objednavka = null;
+
+        if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
@@ -32,33 +35,33 @@ public class KoniecMontazeEvent : SimulationEvent
         // naplanovanie dalsej aktivity pre stolarov typu C
         if (stolaren.CakajuceNaKovanie.Count >= 1)
         {
-            // Stolar stolar = null;
-            // foreach (var st in stolaren.Stolari)
-            // {
-            //     if (st.Obsadeny || st.Type != StolarType.C) continue;
-            //     stolar = st;
-            //     break;
-            // }
-            // if (stolar is not null)
-            // {
+            Stolar stolar = null;
+            foreach (var st in stolaren.Stolari)
+            {
+                if (st.Obsadeny || st.Type != StolarType.C) continue;
+                stolar = st;
+                break;
+            }
+            if (stolar is not null)
+            {
                 var dalsiaObj = stolaren.CakajuceNaKovanie.Dequeue();
-                stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);
-            // }
+                stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, stolar), Time);
+            }
         }
         else if (stolaren.CakajuceNaMorenie.Count >= 1)
         {
-            // Stolar stolar = null;
-            // foreach (var st in stolaren.Stolari)
-            // {
-            //     if (st.Obsadeny || st.Type != StolarType.C) continue;
-            //     stolar = st;
-            //     break;
-            // }
-            // if (stolar is not null)
-            // {
+            Stolar stolar = null;
+            foreach (var st in stolaren.Stolari)
+            {
+                if (st.Obsadeny || st.Type != StolarType.C) continue;
+                stolar = st;
+                break;
+            }
+            if (stolar is not null)
+            {
                 var dalsiaObj = stolaren.CakajuceNaMorenie.Dequeue();
-                stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
-            // }
+                stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, stolar), Time);
+            }
         }
     }
     #endregion // Public functions

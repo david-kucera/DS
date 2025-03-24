@@ -20,6 +20,13 @@ public class Objednavka
         Status = ObjStatus.CakajucaNaRezanie;
     }
     #endregion // Constructor
+    
+    #region Public functions
+    public override string ToString()
+    {
+        return $"{Poradie}. {Type} : {Status}";
+    }
+    #endregion // Public functions
 }
 
 public enum ObjType

@@ -23,11 +23,18 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjStatus.CakajucaNaRezanie;
+        
+        if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
 
         // hladam volne montazne miesto pre objednavku
         foreach (var mm in stolaren.MontazneMiesta)
         {
-            if (mm.Objednavka == null!) _objednavka.MontazneMiesto = mm;
+            if (mm.Objednavka == null || mm.Objednavka.Status == ObjStatus.Hotova)
+            {
+                _objednavka.MontazneMiesto = mm;
+                mm.Objednavka = _objednavka;
+                break;
+            }
         }
         // ak ho nenajdem, vytvorim nove
         if (_objednavka.MontazneMiesto == null!)
@@ -39,9 +46,8 @@ public class ZaciatokRezaniaEvent : SimulationEvent
                 ID = id
             };
             stolaren.MontazneMiesta.Add(montazneMiesto);
+            _objednavka.MontazneMiesto = montazneMiesto;
         }
-        
-        if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
         if (_stolar.MontazneMiesto != null) 

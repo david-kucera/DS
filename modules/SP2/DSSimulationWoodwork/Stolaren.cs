@@ -82,8 +82,8 @@ public class Stolaren : SimulationCore
 
         List<(double,double)> intervals =
         [
-            (10.0 / 60, 25.0 / 60),
-            (25.0 / 60, 50.0 / 60),
+            (10.0 * 60, 25.0 * 60),
+            (25.0 * 60, 50.0 * 60),
         ];
         List<double> percentages =
         [
@@ -91,17 +91,17 @@ public class Stolaren : SimulationCore
             0.4
         ];
         StolRezanieGenerator = new ContinousEmpirical(_seeder, intervals, percentages);
-        StolMorenieLakovanieGenerator = new ContinousUniform(_seeder, 200.0 / 60, 610.0 / 60);
-        StolSkladanieGenerator = new ContinousUniform(_seeder, 30.0 / 60, 60.0 / 60);
+        StolMorenieLakovanieGenerator = new ContinousUniform(_seeder, 200.0 * 60, 610.0 * 60);
+        StolSkladanieGenerator = new ContinousUniform(_seeder, 30.0 * 60, 60.0 * 60);
         
-        StolickaRezanieGenerator = new ContinousUniform(_seeder, 12.0 / 60, 16.0 / 60);
-        StolickaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 210.0 / 60, 540.0 / 60);
-        StolickaSkladanieGenerator = new ContinousUniform(_seeder, 14.0 / 60, 24.0 / 60);
+        StolickaRezanieGenerator = new ContinousUniform(_seeder, 12.0 * 60, 16.0 * 60);
+        StolickaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 210.0 * 60, 540.0 * 60);
+        StolickaSkladanieGenerator = new ContinousUniform(_seeder, 14.0 * 60, 24.0 * 60);
         
-        SkrinaRezanieGenerator = new ContinousUniform(_seeder, 15.0 / 60, 80.0 / 60);
-        SkrinaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 600.0 / 60, 700.0 / 60);
-        SkrinaSkladanieGenerator = new ContinousUniform(_seeder, 35.0 / 60, 75.0 / 60);
-        SkrinaMontazKovaniGenerator = new ContinousUniform(_seeder, 15.0 / 60, 25.0 / 60);
+        SkrinaRezanieGenerator = new ContinousUniform(_seeder, 15.0 * 60, 80.0 * 60);
+        SkrinaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 600.0 * 60, 700.0 * 60);
+        SkrinaSkladanieGenerator = new ContinousUniform(_seeder, 35.0 * 60, 75.0 * 60);
+        SkrinaMontazKovaniGenerator = new ContinousUniform(_seeder, 15.0 * 60, 25.0 * 60);
     }
 
     protected override void AfterSimulation()
@@ -116,7 +116,7 @@ public class Stolaren : SimulationCore
         Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
         Console.WriteLine("Priemerny pocet nezacatych objednavok");
         Console.WriteLine(GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
-        if (GlobalnyPriemernyCasObjednavkyVSysteme.GetValue() < 960) Console.WriteLine("VYHOVUJE");
+        if (GlobalnyPriemernyCasObjednavkyVSysteme.GetValue() < 16*60*60) Console.WriteLine("VYHOVUJE");
         else Console.WriteLine("NEVYHOVUJE");
     }
 
@@ -158,6 +158,8 @@ public class Stolaren : SimulationCore
     
     protected override void AfterSimulationRun()
     {
+        Console.WriteLine("montazne miesta pocet:");
+        Console.WriteLine(MontazneMiesta.Count);
         // update globalnych statistik
         GlobalnyPocetHotovychObjednavok.AddValue(PocetHotovychObjednavok);
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());

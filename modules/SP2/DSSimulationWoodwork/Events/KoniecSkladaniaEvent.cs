@@ -25,6 +25,8 @@ public class KoniecSkladaniaEvent : SimulationEvent
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
+        if (_stolar.Type != StolarType.B) throw new Exception("Zly stolar!");
+        
         // ak je objednavka skrina, tak pokracuje na montaz kovani
         if (_objednavka.Type == ObjType.Skrina)
         {
@@ -55,6 +57,7 @@ public class KoniecSkladaniaEvent : SimulationEvent
         {
             // zber statistik objednavok, ktore koncia v systeme
             _objednavka.Status = ObjStatus.Hotova;
+            _objednavka.MontazneMiesto.Objednavka = null;
             stolaren.PocetHotovychObjednavok++;
             stolaren.PriemernyCasObjednavkyVSysteme.AddValue(Time - _objednavka.ArrivalTime);
         }
@@ -62,8 +65,18 @@ public class KoniecSkladaniaEvent : SimulationEvent
         // naplanovanie dalsieho skladania
         if (stolaren.CakajuceNaSkladanie.Count >= 1)
         {
-            var dalsiaObj = stolaren.CakajuceNaSkladanie.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+            Stolar stolar = null;
+            foreach (var st in stolaren.Stolari)
+            {
+                if (st.Obsadeny || st.Type != StolarType.B) continue;
+                stolar = st;
+                break;
+            }
+            if (stolar is not null)
+            {
+                var dalsiaObj = stolaren.CakajuceNaSkladanie.Dequeue();
+                stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, dalsiaObj, stolar), Time);
+            }
         }
     }
     #endregion // Public functions
