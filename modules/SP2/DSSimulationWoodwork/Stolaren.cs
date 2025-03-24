@@ -11,9 +11,7 @@ namespace DSSimulationWoodwork;
 public class Stolaren : SimulationCore
 {
     #region Constants
-    public static double START_TIME = 6 * 60 * 60;
-    public double END_DAY = START_TIME + 8 * 60 * 60;
-    public double STOP_TIME = START_TIME + 249 * 8 * 60; // 249 dni po 8 hodin
+    public double STOP_TIME = 249 * 8 * 60 * 60; // 249 dni po 8 hodin
     #endregion // Constants
 
     #region Class members

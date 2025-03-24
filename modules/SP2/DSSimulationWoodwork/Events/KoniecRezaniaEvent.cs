@@ -36,7 +36,7 @@ public class KoniecRezaniaEvent : SimulationEvent
             Stolar stolar = null;
             foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny && st.Type != StolarType.C) continue;
+                if (st.Obsadeny || st.Type != StolarType.C) continue;
                 stolar = st;
                 break;
             }
@@ -55,7 +55,7 @@ public class KoniecRezaniaEvent : SimulationEvent
             Stolar stolar = null;
             foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny && st.Type != StolarType.A) continue;
+                if (st.Obsadeny || st.Type != StolarType.A) continue;
                 stolar = st;
                 break;
             }

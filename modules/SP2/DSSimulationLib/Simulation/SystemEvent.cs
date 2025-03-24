@@ -3,7 +3,7 @@ namespace DSSimulationLib.Simulation;
 public class SystemEvent : SimulationEvent
 {
     #region Class members
-    private int _shift = 1000;
+    private int _shift = 1;
     private int _duration = 1000;
     private double _multiplier = 1.0;
     #endregion // Class members

@@ -16,6 +16,8 @@ public class Objednavka
         Type = type;
         ArrivalTime = arrivalTime;
         Poradie = poradie;
+        MontazneMiesto = null;
+        Status = ObjStatus.CakajucaNaRezanie;
     }
     #endregion // Constructor
 }

@@ -35,7 +35,7 @@ public class KoniecMoreniaEvent : SimulationEvent
             Stolar stolar = null;
             foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny && st.Type != StolarType.B) continue;
+                if (st.Obsadeny || st.Type != StolarType.B) continue;
                 stolar = st;
                 break;
             }
@@ -49,29 +49,35 @@ public class KoniecMoreniaEvent : SimulationEvent
         }
         
         // naplanovanie dalsej aktivity pre stolarov typu C
-        if (stolaren.CakajuceNaMorenie.Count >= 1)
+        if (stolaren.CakajuceNaKovanie.Count >= 1)
         {
-            Stolar stolar = null;
-            foreach (var st in stolaren.Stolari)
-            {
-                if (st.Obsadeny && st.Type != StolarType.C) continue;
-                stolar = st;
-                break;
-            }
-            if (stolar is not null)
-            {
+            // Stolar stolar = null;
+            // foreach (var st in stolaren.Stolari)
+            // {
+            //     if (st.Obsadeny || st.Type != StolarType.C) continue;
+            //     stolar = st;
+            //     break;
+            // }
+            // if (stolar is not null)
+            // {
+                var dalsiaObj = stolaren.CakajuceNaKovanie.Dequeue();
+                stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+            // }
+        }
+        else if (stolaren.CakajuceNaMorenie.Count >= 1)
+        {
+            // Stolar stolar = null;
+            // foreach (var st in stolaren.Stolari)
+            // {
+            //     if (st.Obsadeny || st.Type != StolarType.C) continue;
+            //     stolar = st;
+            //     break;
+            // }
+            // if (stolar is not null)
+            // {
                 var dalsiaObj = stolaren.CakajuceNaMorenie.Dequeue();
-                if (dalsiaObj.Status == ObjStatus.CakajucaNaMontazKovani)
-                {
-                    stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);
-                }
-                else if (dalsiaObj.Status == ObjStatus.CakajucaNaMorenie)
-                {
-                    stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
-                }
-                else throw new Exception("Chyba statusu objednavky!");
-            }
-            else throw new Exception("Chyba!");
+                stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, dalsiaObj, _stolar), Time);
+            // }
         }
     }
 }

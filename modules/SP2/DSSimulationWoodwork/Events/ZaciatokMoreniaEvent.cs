@@ -21,6 +21,7 @@ public class ZaciatokMoreniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
+        _objednavka.Status = ObjStatus.CakajucaNaMorenie;
         
         if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
 
@@ -47,7 +48,6 @@ public class ZaciatokMoreniaEvent : SimulationEvent
             default:
                 throw new Exception("Nie je uvedený typ objednávky!");
         }
-        _objednavka.Status = ObjStatus.Namorena;
         
         double trvanieUdalosti =  casPrechoduNaMontazneMiesto + casMorenia;
         double koniecUdalosti = trvanieUdalosti + Time;

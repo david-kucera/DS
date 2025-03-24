@@ -7,15 +7,15 @@ static class Program
     static void Main()
     {
         // TestGenerators();
-        TestPredajna();
-        // TestStolaren();
+        // TestPredajna();
+        TestStolaren();
     }
 
     private static void TestStolaren()
     {
         Random seeder = new Random(0);
-        Stolaren stolaren = new(seeder, 2, 2, 18);
-        stolaren.Run(30);
+        Stolaren stolaren = new(seeder, 1, 1, 1);
+        stolaren.Run(1);
     }
 
     private static void TestPredajna()

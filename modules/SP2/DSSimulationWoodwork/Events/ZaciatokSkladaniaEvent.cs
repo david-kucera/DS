@@ -22,6 +22,7 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
+        _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
         
         if (_stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
         
@@ -48,8 +49,7 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
             default:
                 throw new Exception("Nie je uvedený typ objednávky!");
         }
-        _objednavka.Status = ObjStatus.Poskladana;
-
+        
         double trvanieUdalosti = casPrechoduNaMontazneMiesto + casSkladania;
         double koniecUdalosti = trvanieUdalosti + Time;
 

@@ -22,11 +22,29 @@ public class ZaciatokRezaniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
+        _objednavka.Status = ObjStatus.CakajucaNaRezanie;
+
+        // hladam volne montazne miesto pre objednavku
+        foreach (var mm in stolaren.MontazneMiesta)
+        {
+            if (mm.Objednavka == null!) _objednavka.MontazneMiesto = mm;
+        }
+        // ak ho nenajdem, vytvorim nove
+        if (_objednavka.MontazneMiesto == null!)
+        {
+            var id = stolaren.MontazneMiesta.Count;
+            var montazneMiesto = new MontazneMiesto
+            {
+                Objednavka = _objednavka,
+                ID = id
+            };
+            stolaren.MontazneMiesta.Add(montazneMiesto);
+        }
         
         if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
-        if (_stolar.MontazneMiesto == null) 
+        if (_stolar.MontazneMiesto != null) 
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
@@ -47,8 +65,6 @@ public class ZaciatokRezaniaEvent : SimulationEvent
             default:
                 throw new Exception("Nie je uvedený typ objednávky!");
         }
-        _objednavka.Status = ObjStatus.Narezana;
-        
         
         double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto + casRezania;
         double koniecUdalosti = trvanieUdalosti + Time;

@@ -15,17 +15,15 @@ public class PrichodObjednavkyEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
 
+        // vygenerovanie typu objednavky
         ObjType type = ObjType.Unknown;
         var perc = stolaren.ObjednavkaTypGenerator.NextDouble();
         if (perc < 0.5) type = ObjType.Stol;
         else if (perc < 0.85) type = ObjType.Skrina;
         else type = ObjType.Stolicka;
         
-        Objednavka objednavka = new(type, Time, stolaren.PoradieObjednavky)
-        {
-            Status = ObjStatus.CakajucaNaRezanie
-        };
-        stolaren.PoradieObjednavky++;
+        // vytvorenie objednavky
+        Objednavka objednavka = new(type, Time, stolaren.PoradieObjednavky++);
         stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(stolaren.CakajuceNaRezanie.Count);
         
         // ak je nieco vo fronte, cakaj
@@ -36,7 +34,7 @@ public class PrichodObjednavkyEvent : SimulationEvent
             Stolar stolar = null;
             foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny && st.Type != StolarType.A) continue;
+                if (st.Obsadeny || st.Type != StolarType.A) continue;
                 stolar = st;
                 break;
             }
