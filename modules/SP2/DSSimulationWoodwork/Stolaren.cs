@@ -12,6 +12,7 @@ public class Stolaren : SimulationCore
 {
     #region Constants
     public static double START_TIME = 6 * 60 * 60;
+    public double END_DAY = START_TIME + 8 * 60 * 60;
     public double STOP_TIME = START_TIME + 249 * 8 * 60; // 249 dni po 8 hodin
     #endregion // Constants
 
@@ -24,13 +25,13 @@ public class Stolaren : SimulationCore
     
     #region Properties
     public int PoradieObjednavky { get; set; } = 0;
-    public Queue<Objednavka> StolariAQueue = [];
-    public PriorityQueue<Objednavka, double> StolariCQueue = new();
-    public Queue<Objednavka> StolariBQueue = [];
+    public Queue<Objednavka> CakajuceNaRezanie = [];
+    public Queue<Objednavka> CakajuceNaMorenie = [];
+    public Queue<Objednavka> CakajuceNaSkladanie = [];
+    public Queue<Objednavka> CakajuceNaKovanie = [];
     
-    public List<Stolar> StolariA = [];
-    public List<Stolar> StolariB = [];
-    public List<Stolar> StolariC = [];
+    public List<Stolar> Stolari = [];
+    public List<MontazneMiesto> MontazneMiesta = [];
 
     public double PocetHotovychObjednavok { get; set; } = 0.0;
     public Average GlobalnyPocetHotovychObjednavok { get; set; } = new();
@@ -74,17 +75,17 @@ public class Stolaren : SimulationCore
     #region Protected functions
     protected override void BeforeSimulation()
     {
-        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0/60);
+        PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0 / 60 / 60);
         ObjednavkaTypGenerator = new Random(_seeder.Next());
         
-        MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, (60.0 / 60), (480.0 / 60), (120.0 / 60));
-        PripravaDrevaVSkladeGenerator = new TriangularGenerator(_seeder, (300.0 / 60), (900.0 / 60), (500.0 / 60));
-        PresunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(_seeder, (120.0 / 60), (500.0 / 60), (150.0 / 60));
+        MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, 60.0, 480.0, 120.0);
+        PripravaDrevaVSkladeGenerator = new TriangularGenerator(_seeder, 300.0, 900.0, 500.0);
+        PresunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(_seeder, 120.0, 500.0, 150.0);
 
-        List<(int,int)> intervals =
+        List<(double,double)> intervals =
         [
-            (10, 25),
-            (25, 50)
+            (10.0 / 60, 25.0 / 60),
+            (25.0 / 60, 50.0 / 60),
         ];
         List<double> percentages =
         [
@@ -92,17 +93,17 @@ public class Stolaren : SimulationCore
             0.4
         ];
         StolRezanieGenerator = new ContinousEmpirical(_seeder, intervals, percentages);
-        StolMorenieLakovanieGenerator = new ContinousUniform(_seeder, 200, 610);
-        StolSkladanieGenerator = new ContinousUniform(_seeder, 30, 60);
+        StolMorenieLakovanieGenerator = new ContinousUniform(_seeder, 200.0 / 60, 610.0 / 60);
+        StolSkladanieGenerator = new ContinousUniform(_seeder, 30.0 / 60, 60.0 / 60);
         
-        StolickaRezanieGenerator = new ContinousUniform(_seeder, 12, 16);
-        StolickaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 210, 540);
-        StolickaSkladanieGenerator = new ContinousUniform(_seeder, 14, 24);
+        StolickaRezanieGenerator = new ContinousUniform(_seeder, 12.0 / 60, 16.0 / 60);
+        StolickaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 210.0 / 60, 540.0 / 60);
+        StolickaSkladanieGenerator = new ContinousUniform(_seeder, 14.0 / 60, 24.0 / 60);
         
-        SkrinaRezanieGenerator = new ContinousUniform(_seeder, 15, 80);
-        SkrinaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 600, 700);
-        SkrinaSkladanieGenerator = new ContinousUniform(_seeder, 35, 75);
-        SkrinaMontazKovaniGenerator = new ContinousUniform(_seeder, 15, 25);
+        SkrinaRezanieGenerator = new ContinousUniform(_seeder, 15.0 / 60, 80.0 / 60);
+        SkrinaMorenieLakovanieGenerator = new ContinousUniform(_seeder, 600.0 / 60, 700.0 / 60);
+        SkrinaSkladanieGenerator = new ContinousUniform(_seeder, 35.0 / 60, 75.0 / 60);
+        SkrinaMontazKovaniGenerator = new ContinousUniform(_seeder, 15.0 / 60, 25.0 / 60);
     }
 
     protected override void AfterSimulation()
@@ -125,31 +126,32 @@ public class Stolaren : SimulationCore
     {
         PoradieObjednavky = 0;
         PocetHotovychObjednavok = 0;
-        StolariAQueue.Clear();
-        StolariCQueue.Clear();
-        StolariBQueue.Clear();
+        CakajuceNaRezanie.Clear();
+        CakajuceNaMorenie.Clear();
+        CakajuceNaSkladanie.Clear();
+        CakajuceNaKovanie.Clear();
         Time = 0.0;
+        
+        MontazneMiesta.Clear();
         
         PriemernyCasObjednavkyVSysteme.Reset();
         PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.Reset();
         
-        StolariA = new List<Stolar>(_stolarACount);
+        Stolari = new List<Stolar>(_stolarACount + _stolarBCount + _stolarCCount);
         for (int i = 0; i < _stolarACount; i++)
         {
             var stolar = new Stolar(StolarType.A, i);
-            StolariA.Add(stolar);
+            Stolari.Add(stolar);
         }
-        StolariB = new List<Stolar>(_stolarBCount);
         for (int i = 0; i < _stolarBCount; i++)
         {
             var stolar = new Stolar(StolarType.B, i);
-            StolariB.Add(stolar);
+            Stolari.Add(stolar);
         }
-        StolariC = new List<Stolar>(_stolarCCount);
         for (int i = 0; i < _stolarCCount; i++)
         {
             var stolar = new Stolar(StolarType.C, i);
-            StolariC.Add(stolar);
+            Stolari.Add(stolar);
         }
 
         var prichod = PrichodObjednavokGenerator.NextDouble() + Time;

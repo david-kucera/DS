@@ -4,12 +4,12 @@ public abstract class EmpiricalGenerator : Random
 {
     #region Class members
     private List<Random> _generators = new();
-    private List<(int, int)> _intervals;
+    private List<(double, double)> _intervals;
     private List<double> _cumulativeProbabilities = new();
     #endregion // Class members
     
     #region Constructor
-    protected EmpiricalGenerator(Random seeder, List<(int,int)> intervals, List<double> probabilities)
+    protected EmpiricalGenerator(Random seeder, List<(double,double)> intervals, List<double> probabilities)
     {
         if (intervals.Count != probabilities.Count) throw new ArgumentException("Incorrect number of parameters!");
 
@@ -28,7 +28,7 @@ public abstract class EmpiricalGenerator : Random
     #endregion // Constructor
 
     #region Protected functions
-    protected (Random generator, (int min, int max) interval) GetIntervalGeneratorAndMinMax()
+    protected (Random generator, (double min, double max) interval) GetIntervalGeneratorAndMinMax()
     {
         var probabilityGenerator = _generators[0];
         double genProbability = probabilityGenerator.NextDouble();

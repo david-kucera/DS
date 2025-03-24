@@ -26,17 +26,17 @@ public class KoniecRezaniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
 
         // pokracovanie objednavky pre stolara typu C
-        if (stolaren.StolariCQueue.Count >= 1)
+        if (stolaren.CakajuceNaMorenie.Count >= 1)
         {
             _objednavka.Status = ObjStatus.CakajucaNaMorenie;
-            stolaren.StolariCQueue.Enqueue(_objednavka, Time);
+            stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
         }
         else
         {
             Stolar stolar = null;
-            foreach (var st in stolaren.StolariC)
+            foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny) continue;
+                if (st.Obsadeny && st.Type != StolarType.C) continue;
                 stolar = st;
                 break;
             }
@@ -45,23 +45,23 @@ public class KoniecRezaniaEvent : SimulationEvent
             else
             {
                 _objednavka.Status = ObjStatus.CakajucaNaMorenie;
-                stolaren.StolariCQueue.Enqueue(_objednavka, Time);
+                stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
             }
         }
         
         // naplanovanie dalsieho rezania
-        if (stolaren.StolariAQueue.Count >= 1)
+        if (stolaren.CakajuceNaRezanie.Count >= 1)
         {
             Stolar stolar = null;
-            foreach (var st in stolaren.StolariA)
+            foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny) continue;
+                if (st.Obsadeny && st.Type != StolarType.A) continue;
                 stolar = st;
                 break;
             }
             if (stolar is null) throw new Exception("Nebol najdeny stolar!");
             
-            var dalsiaObj = stolaren.StolariAQueue.Dequeue();
+            var dalsiaObj = stolaren.CakajuceNaRezanie.Dequeue();
             stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, stolar, dalsiaObj), Time);
         }
     }

@@ -4,12 +4,12 @@ public abstract class UniformGenerator : Random
 {
     #region Class members
     protected Random _random;
-    protected int _min;
-    protected int _max;
+    protected double _min;
+    protected double _max;
     #endregion // Class members
 
     #region Constructor
-    protected UniformGenerator(Random seeder, int min, int max)
+    protected UniformGenerator(Random seeder, double min, double max)
     {
         _random = new Random(seeder.Next());
         _min = min;

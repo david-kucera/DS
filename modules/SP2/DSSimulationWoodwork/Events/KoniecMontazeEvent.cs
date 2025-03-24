@@ -30,18 +30,18 @@ public class KoniecMontazeEvent : SimulationEvent
         stolaren.PriemernyCasObjednavkyVSysteme.AddValue(Time - _objednavka.ArrivalTime);
         
         // naplanovanie dalsej aktivity pre stolarov typu C
-        if (stolaren.StolariCQueue.Count >= 1)
+        if (stolaren.CakajuceNaMorenie.Count >= 1)
         {
             Stolar stolar = null;
-            foreach (var st in stolaren.StolariC)
+            foreach (var st in stolaren.Stolari)
             {
-                if (st.Obsadeny) continue;
+                if (st.Obsadeny && st.Type != StolarType.C) continue;
                 stolar = st;
                 break;
             }
             if (stolar is not null)
             {
-                var dalsiaObj = stolaren.StolariCQueue.Dequeue();
+                var dalsiaObj = stolaren.CakajuceNaMorenie.Dequeue();
                 if (dalsiaObj.Status == ObjStatus.CakajucaNaMontazKovani)
                 {
                     stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, dalsiaObj, _stolar), Time);

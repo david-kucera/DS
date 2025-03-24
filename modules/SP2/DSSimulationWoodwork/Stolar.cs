@@ -14,6 +14,8 @@ public class Stolar
     {
         ID = id;
         Type = stolarType;
+        MontazneMiesto = null!;
+        Obsadeny = false;
     }
     #endregion // Constructor
 }

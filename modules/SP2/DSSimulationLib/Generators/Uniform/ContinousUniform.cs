@@ -3,7 +3,7 @@ namespace DSLib.Generators.Uniform;
 public class ContinousUniform : UniformGenerator
 {
     #region Constructor
-    public ContinousUniform(Random seeder, int min, int max) : base(seeder, min, max)
+    public ContinousUniform(Random seeder, double min, double  max) : base(seeder, min, max)
     {
     }
     #endregion // Constructor

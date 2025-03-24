@@ -3,7 +3,7 @@ namespace DSLib.Generators.Empirical;
 public class DiscreteEmpirical : EmpiricalGenerator
 {
     #region Constructor
-    public DiscreteEmpirical(Random seeder, List<(int,int)> intervals, List<double> probabilities) : base(seeder, intervals, probabilities)
+    public DiscreteEmpirical(Random seeder, List<(double,double)> intervals, List<double> probabilities) : base(seeder, intervals, probabilities)
     {
         
     }
@@ -13,7 +13,7 @@ public class DiscreteEmpirical : EmpiricalGenerator
     public override int Next()
     {
         var (intervalGenerator, (min, max)) = GetIntervalGeneratorAndMinMax();
-        return intervalGenerator.Next(min, max);
+        return intervalGenerator.Next((int)min, (int)max);
     }
 
     public override double NextDouble()

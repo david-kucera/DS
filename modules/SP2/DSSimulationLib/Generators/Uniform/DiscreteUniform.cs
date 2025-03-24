@@ -3,7 +3,7 @@ namespace DSLib.Generators.Uniform;
 public class DiscreteUniform : UniformGenerator
 {
     #region Constructor
-    public DiscreteUniform(Random seeder, int min, int max) : base(seeder, min, max)
+    public DiscreteUniform(Random seeder, double min, double max) : base(seeder, min, max)
     {
     }
     #endregion // Constructor
@@ -11,7 +11,7 @@ public class DiscreteUniform : UniformGenerator
     #region Public functions
     public override int Next()
     {
-        return _random.Next(_min, _max);
+        return _random.Next((int)_min, (int)_max);
     }
 
     public override double NextDouble()
