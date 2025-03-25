@@ -61,6 +61,7 @@
             <Grid Margin="0 10 0 0">
                 <Grid.RowDefinitions>
                     <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
 
@@ -71,25 +72,28 @@
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="5">
                     <Label Content="Aktuálny simulačný čas: " FontSize="14"/>
-                    <Label Name="CurrentSimulationTime" FontSize="14" FontWeight="Bold"/>
+                    <Label Name="CurrentSimulationTime" Content="06:00:00" Width="80" FontSize="14" FontWeight="Bold"/>
                     <Label Content="Deň:" FontSize="14"/>
-                    <Label Name="CurrentSimulationDay" FontSize="14" FontWeight="Bold"/>
+                    <Label Name="CurrentSimulationDay" Content="1" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+                    
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5">
+                    <Label Content="Rad rezanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueRezanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad morenie:" FontSize="14"/>
+                    <Label Name="WaitingQueueMorenie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad skladanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueSkladanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad kovanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueKovanie" Content="0" FontSize="14" FontWeight="Bold"/>
                 </StackPanel>
                 
-                <Border Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">
-                    <ListBox Name="MontazneMiestaList">
-                        <ListBox.ItemTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Spacing="10">
-                                    <Label Name="IdMontaznehoMiestaLabel" FontWeight="Bold"/>
-                                    <Label Name="StolarIdLabel"/>
-                                    <Label Name="StolarTypeLabel"/>
-                                    <Label Name="ObjednavkaTypeLabel"/>
-                                    <Label Name="ObjednavkaStatusLabel"/>
-                                </StackPanel>
-                            </DataTemplate>
-                        </ListBox.ItemTemplate>
-                    </ListBox>
+                <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">
+                    <ItemsControl x:Name="ItemsControlMontazneMiesta">
+                    </ItemsControl>
                 </Border>
             </Grid>
         </Border>
