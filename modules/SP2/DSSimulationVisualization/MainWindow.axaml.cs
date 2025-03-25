@@ -36,6 +36,9 @@ public partial class MainWindow : Window
     private void StartSimulation(int numReps, int seed, int a, int b, int c)
     {
         Random rnd = new Random(seed);
+        _multiplier = 1.0;
+        _multiplierType = Multipliers.One;
+        VykresliRychlost();
         Stolaren = new Stolaren(rnd, a, b, c);
         Stolaren.NewSimulationTime += SimulationTime;
         Stolaren.NewSimulationData += SimulationData;
