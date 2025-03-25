@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
-using DSSimulationTest;
+using DSSimulationWoodwork;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ScottPlot.Avalonia;
@@ -17,7 +17,7 @@ public partial class MainWindow : Window
     private int _skipFirst = 0;
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
-    private Predajna Predajna;
+    private Stolaren Stolaren;
     #endregion // Class members
     
     #region Constructor
@@ -25,34 +25,17 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         SeedInput.Text = new Random().Next(0, 1000).ToString();
-        Random rnd = new Random(int.Parse(SeedInput.Text));
-        Predajna = new Predajna(rnd);
-        Predajna.NewSimulationTime += SimulationTime;
-    }
-
-    private void SimulationTime(double obj)
-    {
-        int totalSeconds = (int)(obj / 1000); // Prevod milisekúnd na sekundy
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-
-        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
-
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            CurrentSimulationTime.Content = timeString;
-            CurrentSimulationDay.Content = Predajna.Den;
-        });
     }
     #endregion // Constructor
     
     #region Private functions
-    private void StartSimulation(int numReps, int seed)
+    private void StartSimulation(int numReps, int seed, int a, int b, int c)
     {
-        Task.Run((() => Predajna.Run(2))) ;
-        // StabilizationPlot1.Plot.Clear();
-        // StabilizationPlot1.Refresh();
+        Random rnd = new Random(seed);
+        Stolaren = new Stolaren(rnd, a, b, c);
+        Stolaren.NewSimulationTime += SimulationTime;
+        Stolaren.NewSimulationData += SimulationData;
+        Task.Run((() => Stolaren.Run(numReps))) ;
     }
     
     private void SimulationEnded(object? sender, EventArgs e)
@@ -63,46 +46,25 @@ public partial class MainWindow : Window
         });
     }
     
-    private void UpdateUi(List<double> values, double newValue, TextBlock label, AvaPlot plot)
-    {
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            values.Add(newValue);
-            label.Text = $"{newValue:F4}";
-            UpdatePlot(values, plot);
-        });
-    }
-
-    private void UpdatePlot(List<double> values, AvaPlot plot)
-    {
-        if (values.Count == 0) return; 
-        if (values.Count < _skipFirst) return;
-
-        values = values.Skip(_skipFirst).ToList();
-
-        double[] xData = Enumerable.Range(1 + _skipFirst, values.Count).Select(i => (double)i).ToArray();
-        double[] yData = values.ToArray();
-
-        plot.Plot.Clear();
-        plot.Plot.Add.Scatter(xData, yData);
-        plot.Plot.Axes.AutoScale();
-        plot.Refresh();
-    }
     
     private void Start()
     {
         if (int.TryParse((string?)ReplicationCountInput.Text, out int numReps) &&
             int.TryParse((string?)SeedInput.Text, out int seed) &&
-            int.TryParse((string?)SkipInput.Text, out int skip))
+            int.TryParse((string?)SkipInput.Text, out int skip) &&
+            int.TryParse((string?)ACountInput.Text, out int a) &&
+            int.TryParse((string?)BCountInput.Text, out int b) &&
+            int.TryParse((string?)CCountInput.Text, out int c)
+            )
         {
-            if (numReps < 30)
-            {
-                MessageBoxManager
-                    .GetMessageBoxStandard("Chyba", "Počet replikacií musí byť väčší ako 30!", ButtonEnum.Ok)
-                    .ShowAsync();
-                return;
-            }
-            StartSimulation(numReps, seed);
+            // if (numReps < 30)
+            // {
+            //     MessageBoxManager
+            //         .GetMessageBoxStandard("Chyba", "Počet replikacií musí byť väčší ako 30!", ButtonEnum.Ok)
+            //         .ShowAsync();
+            //     return;
+            // }
+            StartSimulation(numReps, seed, a, b, c);
             _skipFirst = (int)((numReps) * ((double)skip / 100.0));
         }
         else
@@ -167,23 +129,30 @@ public partial class MainWindow : Window
 
     private void ZrychliButton_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (_multiplierType == Multipliers.Thousand)
+        {
+            VykresliRychlost();
+            return;
+        }
+        
         _multiplierType++;
         VykresliRychlost();
     }
 
     private void SpomalButton_OnClick(object? sender, RoutedEventArgs e)
     {
+        if (_multiplierType == Multipliers.One)
+        {
+            VykresliRychlost();
+            return;
+        }
+        
         _multiplierType--;
         VykresliRychlost();
     }
 
     private void VykresliRychlost()
     {
-        if (_multiplierType == Multipliers.Thousand) ZrychliButton.IsEnabled = false;
-        else ZrychliButton.IsEnabled = true;
-        if (_multiplierType == Multipliers.MinusThousand) SpomalButton.IsEnabled = false;
-        else SpomalButton.IsEnabled = true;
-        
         switch (_multiplierType)
         {
             case Multipliers.One:
@@ -226,43 +195,36 @@ public partial class MainWindow : Window
                 _multiplier = 1000.0;
                 SpeedLabel.Content = "1000x";
                 break;
-            
-            case Multipliers.MinusTwo:
-                _multiplier = 1.0/2.0;
-                SpeedLabel.Content = "1/2x";
-                break;
-            case Multipliers.MinusFive:
-                _multiplier = 1.0/5.0;
-                SpeedLabel.Content = "1/5x";
-                break;
-            case Multipliers.MinusTen:
-                _multiplier = 1.0/10.0;
-                SpeedLabel.Content = "1/10x";
-                break;
-            case Multipliers.MinusTwentyFive:
-                _multiplier = 1.0/25.0;
-                SpeedLabel.Content = "1/25x";
-                break;
-            case Multipliers.MinusFifty:
-                _multiplier = 1.0/50.0;
-                SpeedLabel.Content = "1/50x";
-                break;
-            case Multipliers.MinusHundred:
-                _multiplier = 1.0/100.0;
-                SpeedLabel.Content = "1/100x";
-                break;
-            case Multipliers.MinusTwoHundredFifty:
-                _multiplier = 1.0/250.0;
-                SpeedLabel.Content = "1/250x";
-                break;
-            case Multipliers.MinusFiveHundred:
-                _multiplier = 1.0/500.0;
-                SpeedLabel.Content = "1/500x";
-                break;
-            case Multipliers.MinusThousand:
-                _multiplier = 1.0/1000.0;
-                SpeedLabel.Content = "1/1000x";
-                break;
         }
+        
+        if (_multiplierType == Multipliers.Thousand) ZrychliButton.IsEnabled = false;
+        else ZrychliButton.IsEnabled = true;
+        
+        if (_multiplierType == Multipliers.One) SpomalButton.IsEnabled = false;
+        else SpomalButton.IsEnabled = true;
+    }
+    
+    private void SimulationData(EventArgs obj)
+    {
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            // todo update list of montazne miesta
+        });
+    }
+
+    private void SimulationTime(double obj)
+    {
+        int totalSeconds = (int)(obj / 1000); // Prevod milisekúnd na sekundy
+        int hours = totalSeconds / 3600;
+        int minutes = (totalSeconds % 3600) / 60;
+        int seconds = totalSeconds % 60;
+
+        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            CurrentSimulationTime.Content = timeString;
+            //CurrentSimulationDay.Content = Stolaren.Den;
+        });
     }
 }
