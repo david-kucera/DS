@@ -19,6 +19,7 @@ public class Stolaren : SimulationCore
     private int _stolarACount = 0;
     private int _stolarBCount = 0;
     private int _stolarCCount = 0;
+    private bool _virtualTime = false;
     #endregion // Class members
     
     #region Properties
@@ -61,12 +62,13 @@ public class Stolaren : SimulationCore
     #endregion // Properties
     
     #region Constructor
-    public Stolaren(Random seeder, int a, int b, int c)
+    public Stolaren(Random seeder, int a, int b, int c, bool virtualTime)
     {
         _seeder = seeder;
         _stolarACount = a;
         _stolarBCount = b;
         _stolarCCount = c;
+        _virtualTime = virtualTime;
     }
     #endregion // Constructor
     
@@ -137,7 +139,7 @@ public class Stolaren : SimulationCore
         MontazneMiesta.Clear();
         
         EventQueue.Clear();
-        EventQueue.Enqueue(new SystemEvent(this, Time), Time);
+        if (!_virtualTime) EventQueue.Enqueue(new SystemEvent(this, Time), Time);
         
         PriemernyCasObjednavkyVSysteme.Reset();
         PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.Reset();

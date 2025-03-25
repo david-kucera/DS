@@ -34,9 +34,14 @@ public partial class MainWindow : Window
         _multiplier = 1.0;
         _multiplierType = Multipliers.One;
         VykresliRychlost();
-        Stolaren = new Stolaren(rnd, a, b, c);
-        Stolaren.NewSimulationTime += SimulationTime;
-        Stolaren.NewSimulationData += SimulationData;
+        if (VirtualSpeedCheckBox.IsChecked == false)
+        {
+            Stolaren = new Stolaren(rnd, a, b, c, false);
+            Stolaren.NewSimulationTime += SimulationTime;
+            Stolaren.NewSimulationData += SimulationData;
+        }
+        else Stolaren = new Stolaren(rnd, a, b, c, true);
+        
         Stolaren.StopSimulation += SimulationEnd;
         Task.Run((() => Stolaren.Run(numReps))) ;
     }
@@ -83,6 +88,19 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = true;
         PokracujButton.IsEnabled = false;
+
+        CurrentSimulationDay.Content = 1;
+        CurrentSimulationTime.Content = "06:00:00";
+        
+        ItemsControlMontazneMiesta.Items.Clear();
+
+        WaitingQueueRezanie.Content = 0;
+        WaitingQueueMorenie.Content = 0;
+        WaitingQueueSkladanie.Content = 0;
+        WaitingQueueKovanie.Content = 0;
+
+        NumberOfOrders.Content = 0;
+        NumberOfFinishedOrders.Content = 0;
         
         VirtualSpeedCheckBox.IsEnabled = false;
         Start();
@@ -97,6 +115,9 @@ public partial class MainWindow : Window
 
         VirtualSpeedCheckBox.IsEnabled = true;
         Stolaren.Stop();
+        Stolaren.NewSimulationTime -= SimulationTime;
+        Stolaren.NewSimulationData -= SimulationData;
+        Stolaren.StopSimulation -= SimulationEnd;
     }
     
     private void PozastavButton_OnClick(object? sender, RoutedEventArgs e)
