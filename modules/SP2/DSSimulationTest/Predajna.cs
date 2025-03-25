@@ -68,7 +68,7 @@ public class Predajna : SimulationCore
         StopTime = STOP_TIME;
         Den = poradieReplikacie;
         EventQueue.Clear();
-        EventQueue.Enqueue(new SystemEvent(this, Time, MULTIPLIER), Time);
+        EventQueue.Enqueue(new SystemEvent(this, Time), Time);
 
         AverageDlzkaRadu.Reset();
         AverageCasVPredajni.Reset();

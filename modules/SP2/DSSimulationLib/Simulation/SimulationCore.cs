@@ -6,13 +6,15 @@ public abstract class SimulationCore : SimCore
 {
     #region Properties
     public PriorityQueue<SimulationEvent, double> EventQueue = new();
-    public double Time = 0.0;
-    public double StopTime = 0.0;
+    public double Multiplier { get; set; } = 1.0;
+    public double Time { get; set; } = 0.0;
+    public double StopTime { get; set; } = 0.0;
     #endregion // Properties
     
     #region Events
     public Action<double> NewSimulationTime = null!;
     public Action<EventArgs> NewSimulationData = null!;
+    public Action<EventArgs> StopSimulation = null!;
     public void OnNewSimulationTime(double time)
     {
         NewSimulationTime?.Invoke(time);
@@ -20,6 +22,10 @@ public abstract class SimulationCore : SimCore
     public void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
+    }
+    public void OnStopSimulation()
+    {
+        StopSimulation?.Invoke(EventArgs.Empty);
     }
     #endregion // Events
     
@@ -35,6 +41,7 @@ public abstract class SimulationCore : SimCore
             if (evnt.GetType() != typeof(SystemEvent)) OnNewSimulationData();
             else OnNewSimulationTime(evnt.Time);
         }
+        OnStopSimulation();
     }
     #endregion // Public functions
 }

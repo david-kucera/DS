@@ -1,13 +1,10 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
 using DSSimulationWoodwork;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
-using ScottPlot.Avalonia;
 
 namespace DSSimulationVisualization;
 
@@ -18,7 +15,7 @@ public partial class MainWindow : Window
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
     private Stolaren Stolaren;
-    #endregion // Class members
+    #endregion // Class memberss
     
     #region Constructor
     public MainWindow()
@@ -35,17 +32,17 @@ public partial class MainWindow : Window
         Stolaren = new Stolaren(rnd, a, b, c);
         Stolaren.NewSimulationTime += SimulationTime;
         Stolaren.NewSimulationData += SimulationData;
+        Stolaren.StopSimulation += SimulationEnd;
         Task.Run((() => Stolaren.Run(numReps))) ;
     }
-    
-    private void SimulationEnded(object? sender, EventArgs e)
+
+    private void SimulationEnd(EventArgs obj)
     {
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             UkonciButton_OnClick(null, null!);
         });
     }
-    
     
     private void Start()
     {
@@ -111,9 +108,7 @@ public partial class MainWindow : Window
         PozastavButton.IsEnabled = true;
         PokracujButton.IsEnabled = false;
     }
-    #endregion // Private functions
     
-
     private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
     {
         if (VirtualSpeedCheckBox.IsChecked == true)
@@ -137,6 +132,7 @@ public partial class MainWindow : Window
         
         _multiplierType++;
         VykresliRychlost();
+        Stolaren.Multiplier = _multiplier;
     }
 
     private void SpomalButton_OnClick(object? sender, RoutedEventArgs e)
@@ -149,6 +145,7 @@ public partial class MainWindow : Window
         
         _multiplierType--;
         VykresliRychlost();
+        Stolaren.Multiplier = _multiplier;
     }
 
     private void VykresliRychlost()
@@ -204,6 +201,25 @@ public partial class MainWindow : Window
         else SpomalButton.IsEnabled = true;
     }
     
+    private void SimulationTime(double obj)
+    {
+        int day = (int)(obj / (8 * 60 * 60)) + 1; // Calculate the day (1-based index)
+        double timeInDay = obj % (8 * 60 * 60); // Time elapsed in the current simulation day
+
+        // Convert to hours, minutes, and seconds
+        int hours = (int)(timeInDay / 3600) + 6; // Add 6 to shift to 6:00 start
+        int minutes = (int)(timeInDay % 3600) / 60;
+        int seconds = (int)timeInDay % 60;
+
+        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            CurrentSimulationTime.Content = timeString;
+            CurrentSimulationDay.Content = day;
+        });
+    }
+    
     private void SimulationData(EventArgs obj)
     {
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
@@ -211,20 +227,5 @@ public partial class MainWindow : Window
             // todo update list of montazne miesta
         });
     }
-
-    private void SimulationTime(double obj)
-    {
-        int totalSeconds = (int)(obj / 1000); // Prevod milisekúnd na sekundy
-        int hours = totalSeconds / 3600;
-        int minutes = (totalSeconds % 3600) / 60;
-        int seconds = totalSeconds % 60;
-
-        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
-
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            CurrentSimulationTime.Content = timeString;
-            //CurrentSimulationDay.Content = Stolaren.Den;
-        });
-    }
+    #endregion // Private functions
 }
