@@ -17,6 +17,7 @@ public class KoniecMoreniaEvent : SimulationEvent
     }
     #endregion // Constructor
 
+    #region Public functions
     public override void Execute()
     {
         _stolar.Obsadeny = false;
@@ -82,4 +83,5 @@ public class KoniecMoreniaEvent : SimulationEvent
             }
         }
     }
+    #endregion // Public functions
 }

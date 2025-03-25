@@ -17,6 +17,7 @@ public class ZaciatokMoreniaEvent : SimulationEvent
     }
     #endregion // Constructor
 
+    #region Public functions
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
@@ -54,4 +55,5 @@ public class ZaciatokMoreniaEvent : SimulationEvent
 
         stolaren.EventQueue.Enqueue(new KoniecMoreniaEvent(stolaren, koniecUdalosti, _objednavka, _stolar), koniecUdalosti);
     }
+    #endregion // Public functions
 }

@@ -21,7 +21,6 @@ public class SystemEvent : SimulationEvent
         int sleep = (int)(_duration / _multiplier);
         if (Time + _shift < Core.StopTime) Core.EventQueue.Enqueue(new SystemEvent(Core, Time + _shift, _multiplier), Time + _shift);
         Thread.Sleep(sleep);
-        Core.OnNewSimulationTime(Time);
     }
     #endregion // Public functions
 }

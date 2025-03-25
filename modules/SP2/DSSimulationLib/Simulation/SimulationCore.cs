@@ -32,6 +32,8 @@ public abstract class SimulationCore : SimCore
             if (evnt.Time < Time) throw new Exception("Simulation experiment timing problem!");
             Time = evnt.Time;
             evnt.Execute();
+            if (evnt.GetType() != typeof(SystemEvent)) OnNewSimulationData();
+            else OnNewSimulationTime(evnt.Time);
         }
     }
     #endregion // Public functions
