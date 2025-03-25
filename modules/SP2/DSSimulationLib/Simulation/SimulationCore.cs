@@ -4,6 +4,10 @@ namespace DSSimulationLib.Simulation;
 
 public abstract class SimulationCore : SimCore
 {
+    #region Class members
+    private bool _pause = false;
+    #endregion // Class members
+    
     #region Properties
     public PriorityQueue<SimulationEvent, double> EventQueue = new();
     public double Multiplier { get; set; } = 1.0;
@@ -34,6 +38,10 @@ public abstract class SimulationCore : SimCore
     {
         while (EventQueue.Count > 0 && _isRunning)
         {
+            while (_pause)
+            {
+                Thread.Sleep(100);
+            }
             var evnt = EventQueue.Dequeue();
             if (evnt.Time < Time) throw new Exception("Simulation experiment timing problem!");
             Time = evnt.Time;
@@ -42,6 +50,16 @@ public abstract class SimulationCore : SimCore
             else OnNewSimulationTime(evnt.Time);
         }
         OnStopSimulation();
+    }
+
+    public void Pause()
+    {
+        _pause = true;
+    }
+    
+    public void Continue()
+    {
+        _pause = false;
     }
     #endregion // Public functions
 }

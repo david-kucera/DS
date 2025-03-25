@@ -107,6 +107,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = true;
+        Stolaren.Pause();
     }
 
     private void PokracujButton_OnClick(object? sender, RoutedEventArgs e)
@@ -115,6 +116,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = true;
         PokracujButton.IsEnabled = false;
+        Stolaren.Continue();
     }
     
     private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
