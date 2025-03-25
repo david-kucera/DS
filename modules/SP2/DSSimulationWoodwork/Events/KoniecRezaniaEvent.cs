@@ -21,7 +21,7 @@ public class KoniecRezaniaEvent : SimulationEvent
     public override void Execute()
     {
         _stolar.Obsadeny = false;
-        _objednavka.Status = ObjStatus.Narezana;
+        _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
@@ -30,7 +30,7 @@ public class KoniecRezaniaEvent : SimulationEvent
         // pokracovanie objednavky pre stolara typu C
         if (stolaren.CakajuceNaMorenie.Count >= 1)
         {
-            _objednavka.Status = ObjStatus.CakajucaNaMorenie;
+            _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
             stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
         }
         else
@@ -46,7 +46,7 @@ public class KoniecRezaniaEvent : SimulationEvent
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, stolar), Time);
             else
             {
-                _objednavka.Status = ObjStatus.CakajucaNaMorenie;
+                _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
                 stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
             }
         }

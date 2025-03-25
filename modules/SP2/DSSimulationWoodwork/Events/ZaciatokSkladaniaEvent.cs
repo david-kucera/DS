@@ -22,7 +22,7 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
-        _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
+        _objednavka.Status = ObjednavkaStatus.PriebehSkladania;
         
         if (_stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
         
@@ -37,13 +37,13 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
         double casSkladania = 0.0;
         switch (_objednavka.Type)
         {
-            case ObjType.Stol:
+            case ObjednavkaType.Stol:
                 casSkladania = stolaren.StolSkladanieGenerator.NextDouble();
                 break;
-            case ObjType.Skrina:
+            case ObjednavkaType.Skrina:
                 casSkladania = stolaren.SkrinaSkladanieGenerator.NextDouble();
                 break;
-            case ObjType.Stolicka:
+            case ObjednavkaType.Stolicka:
                 casSkladania = stolaren.StolickaSkladanieGenerator.NextDouble();
                 break;
             default:

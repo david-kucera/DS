@@ -3,10 +3,10 @@ namespace DSSimulationWoodwork;
 public class Stolar
 {
     #region Properties
-    public int ID { get; set; } = -1;
-    public StolarType Type { get; set; } = StolarType.Unknown;
-    public MontazneMiesto MontazneMiesto { get; set; } = null!;
-    public bool Obsadeny { get; set; } = false;
+    public int ID { get; set; }
+    public StolarType Type { get; set; }
+    public MontazneMiesto MontazneMiesto { get; set; }
+    public bool Obsadeny { get; set; }
     #endregion // Properties
 
     #region Constructor

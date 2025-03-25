@@ -21,7 +21,7 @@ public class KoniecMoreniaEvent : SimulationEvent
     public override void Execute()
     {
         _stolar.Obsadeny = false;
-        _objednavka.Status = ObjStatus.Namorena;
+        _objednavka.Status = ObjednavkaStatus.CakajucaNaSkladanie;
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
@@ -30,7 +30,6 @@ public class KoniecMoreniaEvent : SimulationEvent
         // pokracovanie objednavky na skladanie
         if (stolaren.CakajuceNaSkladanie.Count >= 1)
         {
-            _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
             stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
         }
         else
@@ -46,7 +45,6 @@ public class KoniecMoreniaEvent : SimulationEvent
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, _objednavka, stolar), Time);
             else
             {
-                _objednavka.Status = ObjStatus.CakajucaNaSkladanie;
                 stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
             }
         }

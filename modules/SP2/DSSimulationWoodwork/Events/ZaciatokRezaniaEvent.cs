@@ -22,14 +22,14 @@ public class ZaciatokRezaniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
-        _objednavka.Status = ObjStatus.CakajucaNaRezanie;
+        _objednavka.Status = ObjednavkaStatus.PriebehRezania;
         
         if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
 
         // hladam volne montazne miesto pre objednavku
         foreach (var mm in stolaren.MontazneMiesta)
         {
-            if (mm.Objednavka == null || mm.Objednavka.Status == ObjStatus.Hotova)
+            if (mm.Objednavka == null || mm.Objednavka.Status == ObjednavkaStatus.Hotova)
             {
                 _objednavka.MontazneMiesto = mm;
                 mm.Objednavka = _objednavka;
@@ -39,11 +39,11 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         // ak ho nenajdem, vytvorim nove
         if (_objednavka.MontazneMiesto == null!)
         {
-            var id = stolaren.MontazneMiesta.Count;
-            var montazneMiesto = new MontazneMiesto
+            var idNovehoMiesta = stolaren.MontazneMiesta.Count;
+            var montazneMiesto = new MontazneMiesto(idNovehoMiesta)
             {
                 Objednavka = _objednavka,
-                ID = id
+                Stolar = _stolar
             };
             stolaren.MontazneMiesta.Add(montazneMiesto);
             _objednavka.MontazneMiesto = montazneMiesto;
@@ -55,17 +55,18 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
         _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
+        _stolar.MontazneMiesto.Stolar = _stolar;
         
         double casRezania = 0.0;
         switch (_objednavka.Type)
         {
-            case ObjType.Stol:
+            case ObjednavkaType.Stol:
                 casRezania = stolaren.StolRezanieGenerator.NextDouble();
                 break;
-            case ObjType.Skrina:
+            case ObjednavkaType.Skrina:
                 casRezania = stolaren.SkrinaRezanieGenerator.NextDouble();
                 break;
-            case ObjType.Stolicka:
+            case ObjednavkaType.Stolicka:
                 casRezania = stolaren.StolickaRezanieGenerator.NextDouble();
                 break;
             default:

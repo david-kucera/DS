@@ -22,7 +22,7 @@ public class ZaciatokMoreniaEvent : SimulationEvent
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         _stolar.Obsadeny = true;
-        _objednavka.Status = ObjStatus.CakajucaNaMorenie;
+        _objednavka.Status = ObjednavkaStatus.PriebehMorenia;
         
         if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
 
@@ -37,13 +37,13 @@ public class ZaciatokMoreniaEvent : SimulationEvent
         double casMorenia = 0.0;
         switch (_objednavka.Type)
         {
-            case ObjType.Stol:
+            case ObjednavkaType.Stol:
                 casMorenia = stolaren.StolMorenieLakovanieGenerator.NextDouble();
                 break;
-            case ObjType.Skrina:
+            case ObjednavkaType.Skrina:
                 casMorenia = stolaren.SkrinaMorenieLakovanieGenerator.NextDouble();
                 break;
-            case ObjType.Stolicka:
+            case ObjednavkaType.Stolicka:
                 casMorenia = stolaren.StolickaMorenieLakovanieGenerator.NextDouble();
                 break;
             default:

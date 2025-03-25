@@ -21,7 +21,7 @@ public class KoniecMontazeEvent : SimulationEvent
     public override void Execute()
     {
         _stolar.Obsadeny = false;
-        _objednavka.Status = ObjStatus.Hotova;
+        _objednavka.Status = ObjednavkaStatus.Hotova;
         _objednavka.MontazneMiesto.Objednavka = null;
 
         if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");

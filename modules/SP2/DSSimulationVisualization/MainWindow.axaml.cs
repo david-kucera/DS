@@ -18,16 +18,11 @@ public partial class MainWindow : Window
     private double _multiplier = 1.0;
     private Stolaren Stolaren;
     #endregion // Class members
-
-    #region Properties
-    public ObservableCollection<MontMiestoViewModel> MontazneMiesta { get; set; } = new();
-    #endregion // Properties
     
     #region Constructor
     public MainWindow()
     {
         InitializeComponent();
-        DataContext = new MontMiestoViewModel(0,0,StolarType.A, ObjType.Skrina, ObjStatus.Hotova);
         SeedInput.Text = new Random().Next(0, 1000).ToString();
     }
     #endregion // Constructor
@@ -249,7 +244,6 @@ public partial class MainWindow : Window
             
             foreach (var mm in Stolaren.MontazneMiesta)
             {
-                //var mmm = new MontMiestoViewModel(mm.ID, mm.Stolar.ID, mm.Stolar.Type, mm.Objednavka.Type, mm.Objednavka.Status);
                 ItemsControlMontazneMiesta.Items.Add(mm.ToString());
             }
         });

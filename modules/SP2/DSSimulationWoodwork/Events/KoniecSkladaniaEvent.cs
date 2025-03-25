@@ -21,20 +21,16 @@ public class KoniecSkladaniaEvent : SimulationEvent
     public override void Execute()
     {
         _stolar.Obsadeny = false;
-        _objednavka.Status = ObjStatus.Poskladana;
+        _objednavka.Status = ObjednavkaStatus.CakajucaNaMontazKovani;
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
         if (_stolar.Type != StolarType.B) throw new Exception("Zly stolar!");
         
         // ak je objednavka skrina, tak pokracuje na montaz kovani
-        if (_objednavka.Type == ObjType.Skrina)
+        if (_objednavka.Type == ObjednavkaType.Skrina)
         {
-            if (stolaren.CakajuceNaKovanie.Count >= 1)
-            {
-                _objednavka.Status = ObjStatus.CakajucaNaMontazKovani;
-                stolaren.CakajuceNaKovanie.Enqueue(_objednavka);
-            }
+            if (stolaren.CakajuceNaKovanie.Count >= 1) stolaren.CakajuceNaKovanie.Enqueue(_objednavka);
             else
             {
                 Stolar stolar = null;
@@ -46,17 +42,13 @@ public class KoniecSkladaniaEvent : SimulationEvent
                 }
 
                 if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMontazeEvent(stolaren, Time, _objednavka, stolar), Time);
-                else
-                {
-                    _objednavka.Status = ObjStatus.CakajucaNaMontazKovani;
-                    stolaren.CakajuceNaKovanie.Enqueue(_objednavka);
-                }
+                else stolaren.CakajuceNaKovanie.Enqueue(_objednavka);
             }
         }
         else
         {
             // zber statistik objednavok, ktore koncia v systeme
-            _objednavka.Status = ObjStatus.Hotova;
+            _objednavka.Status = ObjednavkaStatus.Hotova;
             _objednavka.MontazneMiesto.Objednavka = null;
             stolaren.PocetHotovychObjednavok++;
             stolaren.PriemernyCasObjednavkyVSysteme.AddValue(Time - _objednavka.ArrivalTime);

@@ -16,11 +16,11 @@ public class PrichodObjednavkyEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
 
         // vygenerovanie typu objednavky
-        ObjType type = ObjType.Unknown;
+        ObjednavkaType type;
         var perc = stolaren.ObjednavkaTypGenerator.NextDouble();
-        if (perc < 0.5) type = ObjType.Stol;
-        else if (perc < 0.85) type = ObjType.Skrina;
-        else type = ObjType.Stolicka;
+        if (perc < 0.5) type = ObjednavkaType.Stol;
+        else if (perc < 0.85) type = ObjednavkaType.Skrina;
+        else type = ObjednavkaType.Stolicka;
         
         // vytvorenie objednavky
         Objednavka objednavka = new(type, Time, stolaren.PoradieObjednavky++);

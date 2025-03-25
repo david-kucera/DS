@@ -3,21 +3,21 @@ namespace DSSimulationWoodwork;
 public class Objednavka
 {
     #region Properties
-    public ObjType Type { get; set; } = ObjType.Unknown;
-    public double ArrivalTime { get; set; } = double.NaN;
-    public ObjStatus Status { get; set; } = ObjStatus.Unknown;
-    public int Poradie { get; set; } = -1;
-    public MontazneMiesto MontazneMiesto { get; set; } = null!;
+    public int Poradie { get; set; }
+    public double ArrivalTime { get; set; }
+    public ObjednavkaType Type { get; set; }
+    public ObjednavkaStatus Status { get; set; }
+    public MontazneMiesto MontazneMiesto { get; set; }
     #endregion // Properties
     
     #region Constructor
-    public Objednavka(ObjType type, double arrivalTime, int poradie)
+    public Objednavka(ObjednavkaType type, double arrivalTime, int poradie)
     {
         Type = type;
         ArrivalTime = arrivalTime;
         Poradie = poradie;
+        Status = ObjednavkaStatus.CakajucaNaRezanie;
         MontazneMiesto = null;
-        Status = ObjStatus.CakajucaNaRezanie;
     }
     #endregion // Constructor
     
@@ -29,7 +29,7 @@ public class Objednavka
     #endregion // Public functions
 }
 
-public enum ObjType
+public enum ObjednavkaType
 {
     Unknown,
     Stol,
@@ -37,15 +37,16 @@ public enum ObjType
     Stolicka
 }
 
-public enum ObjStatus
+public enum ObjednavkaStatus
 {
     Unknown,
     CakajucaNaRezanie,
-    Narezana,
+    PriebehRezania,
     CakajucaNaMorenie,
-    Namorena,
+    PriebehMorenia,
     CakajucaNaSkladanie,
-    Poskladana,
+    PriebehSkladania,
     CakajucaNaMontazKovani,
+    PriebehMontazeKovani,
     Hotova
 }
