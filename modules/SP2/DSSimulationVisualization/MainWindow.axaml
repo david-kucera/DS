@@ -89,6 +89,12 @@
                     
                     <Label Content="Rad kovanie:" FontSize="14"/>
                     <Label Name="WaitingQueueKovanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Počet objednávok:" FontSize="14"/>
+                    <Label Name="NumberOfOrders" Content="0" FontSize="14"/>
+                    
+                    <Label Content="Počet hotových:" FontSize="14"/>
+                    <Label Name="NumberOfFinishedOrders" Content="0" FontSize="14"/>
                 </StackPanel>
                 
                 <Border Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">

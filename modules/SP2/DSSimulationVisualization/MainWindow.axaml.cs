@@ -238,6 +238,9 @@ public partial class MainWindow : Window
             WaitingQueueMorenie.Content = Stolaren.CakajuceNaMorenie.Count;
             WaitingQueueSkladanie.Content = Stolaren.CakajuceNaSkladanie.Count;
             WaitingQueueKovanie.Content = Stolaren.CakajuceNaKovanie.Count;
+
+            NumberOfOrders.Content = Stolaren.PoradieObjednavky;
+            NumberOfFinishedOrders.Content = Stolaren.PocetHotovychObjednavok;
             
             foreach (var mm in Stolaren.MontazneMiesta)
             {
