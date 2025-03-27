@@ -32,6 +32,8 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
         else if (_stolar.MontazneMiesto != _objednavka.MontazneMiesto)
             casPrechoduNaMontazneMiesto = stolaren.PresunMedziMontaznymiMiestamiGenerator.NextDouble();
         else casPrechoduNaMontazneMiesto = 0.0;
+        if (_stolar.MontazneMiesto != null && _stolar.MontazneMiesto.Stolar != null && _stolar.MontazneMiesto.Stolar.ID == _stolar.ID && _stolar.MontazneMiesto.Stolar.Type == _stolar.Type) 
+            _stolar.MontazneMiesto.Stolar = null;
         _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
         _stolar.MontazneMiesto.Stolar = _stolar;
 

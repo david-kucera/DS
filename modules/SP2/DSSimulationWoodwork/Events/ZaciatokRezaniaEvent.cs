@@ -53,6 +53,8 @@ public class ZaciatokRezaniaEvent : SimulationEvent
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();
+        if (_stolar.MontazneMiesto != null && _stolar.MontazneMiesto.Stolar != null && _stolar.MontazneMiesto.Stolar.ID == _stolar.ID && _stolar.MontazneMiesto.Stolar.Type == _stolar.Type)
+            _stolar.MontazneMiesto.Stolar = null;
         _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
         _stolar.MontazneMiesto.Stolar = _stolar;
         
