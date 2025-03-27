@@ -17,6 +17,14 @@ public class Stolar
         MontazneMiesto = null!;
         Obsadeny = false;
     }
+
+    public Stolar()
+    {
+        ID = -1;
+        Type = StolarType.Unknown;
+        MontazneMiesto = null!;
+        Obsadeny = false;
+    }
     #endregion // Constructor
 }
 

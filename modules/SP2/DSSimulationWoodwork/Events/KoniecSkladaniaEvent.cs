@@ -20,12 +20,11 @@ public class KoniecSkladaniaEvent : SimulationEvent
     #region Public functions
     public override void Execute()
     {
+        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.B) throw new Exception("Zly stolar!");
+        
         _stolar.Obsadeny = false;
         _objednavka.Status = ObjednavkaStatus.CakajucaNaMontazKovani;
-        
-        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
-        
-        if (_stolar.Type != StolarType.B) throw new Exception("Zly stolar!");
         
         // ak je objednavka skrina, tak pokracuje na montaz kovani
         if (_objednavka.Type == ObjednavkaType.Skrina)

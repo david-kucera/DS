@@ -24,15 +24,10 @@ public class KoniecRezaniaEvent : SimulationEvent
         _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
         
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
-        
         if (_stolar.Type != StolarType.A) throw new Exception("Zly stolar!");
 
         // pokracovanie objednavky pre stolara typu C
-        if (stolaren.CakajuceNaMorenie.Count >= 1)
-        {
-            _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
-            stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
-        }
+        if (stolaren.CakajuceNaMorenie.Count >= 1) stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
         else
         {
             Stolar stolar = null;
@@ -44,11 +39,7 @@ public class KoniecRezaniaEvent : SimulationEvent
             }
             
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokMoreniaEvent(stolaren, Time, _objednavka, stolar), Time);
-            else
-            {
-                _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
-                stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
-            }
+            else stolaren.CakajuceNaMorenie.Enqueue(_objednavka);
         }
         
         // naplanovanie dalsieho rezania

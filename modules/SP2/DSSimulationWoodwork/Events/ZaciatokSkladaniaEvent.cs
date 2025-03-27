@@ -21,10 +21,10 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
+        
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.PriebehSkladania;
-        
-        if (_stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduNaMontazneMiesto;
         if (_stolar.MontazneMiesto == null) 
@@ -33,6 +33,7 @@ public class ZaciatokSkladaniaEvent : SimulationEvent
             casPrechoduNaMontazneMiesto = stolaren.PresunMedziMontaznymiMiestamiGenerator.NextDouble();
         else casPrechoduNaMontazneMiesto = 0.0;
         _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
+        _stolar.MontazneMiesto.Stolar = _stolar;
 
         double casSkladania = 0.0;
         switch (_objednavka.Type)

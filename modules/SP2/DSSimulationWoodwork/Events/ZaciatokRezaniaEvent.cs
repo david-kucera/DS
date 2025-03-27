@@ -21,10 +21,10 @@ public class ZaciatokRezaniaEvent : SimulationEvent
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
+        
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.PriebehRezania;
-        
-        if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
 
         // hladam volne montazne miesto pre objednavku
         foreach (var mm in stolaren.MontazneMiesta)
@@ -43,14 +43,13 @@ public class ZaciatokRezaniaEvent : SimulationEvent
             var montazneMiesto = new MontazneMiesto(idNovehoMiesta)
             {
                 Objednavka = _objednavka,
-                Stolar = _stolar
             };
             stolaren.MontazneMiesta.Add(montazneMiesto);
             _objednavka.MontazneMiesto = montazneMiesto;
         }
         
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
-        if (_stolar.MontazneMiesto != null) 
+        if (_stolar.MontazneMiesto != null)
             casPrechoduZMontaznehoMiestaDoSkladu = stolaren.MontazneMiestoSkladGenerator.NextDouble();
         double casPripravyDrevaVSklade = stolaren.PripravaDrevaVSkladeGenerator.NextDouble();
         double casPrechoduZoSkladuNaMontazneMiesto = stolaren.MontazneMiestoSkladGenerator.NextDouble();

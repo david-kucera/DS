@@ -20,18 +20,14 @@ public class KoniecMoreniaEvent : SimulationEvent
     #region Public functions
     public override void Execute()
     {
+        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");
+        
         _stolar.Obsadeny = false;
         _objednavka.Status = ObjednavkaStatus.CakajucaNaSkladanie;
         
-        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
-        
-        if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");
-        
         // pokracovanie objednavky na skladanie
-        if (stolaren.CakajuceNaSkladanie.Count >= 1)
-        {
-            stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
-        }
+        if (stolaren.CakajuceNaSkladanie.Count >= 1) stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
         else
         {
             Stolar stolar = null;
@@ -43,10 +39,7 @@ public class KoniecMoreniaEvent : SimulationEvent
             }
 
             if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokSkladaniaEvent(stolaren, Time, _objednavka, stolar), Time);
-            else
-            {
-                stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
-            }
+            else stolaren.CakajuceNaSkladanie.Enqueue(_objednavka);
         }
         
         // naplanovanie dalsej aktivity pre stolarov typu C

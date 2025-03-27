@@ -2,7 +2,7 @@ using DSSimulationLib.MonteCarlo;
 
 namespace DSSimulationLib.Simulation;
 
-public abstract class SimulationCore : SimCore
+public class SimulationCore : SimCore
 {
     #region Class members
     private bool _pause = false;
@@ -38,18 +38,38 @@ public abstract class SimulationCore : SimCore
     {
         while (EventQueue.Count > 0 && _isRunning)
         {
-            while (_pause)
-            {
-                Thread.Sleep(100);
-            }
+            while (_pause) Thread.Sleep(100);
+            
             var evnt = EventQueue.Dequeue();
             if (evnt.Time < Time) throw new Exception("Simulation experiment timing problem!");
+            
             Time = evnt.Time;
             evnt.Execute();
+            
             if (evnt.GetType() != typeof(SystemEvent)) OnNewSimulationData();
             else OnNewSimulationTime(evnt.Time);
         }
         OnStopSimulation();
+    }
+
+    protected override void BeforeSimulation()
+    {
+        
+    }
+
+    protected override void AfterSimulation()
+    {
+        
+    }
+
+    protected override void BeforeSimulationRun(int cisloReplikacie)
+    {
+        EventQueue.Enqueue(new SystemEvent(this, Time), Time);
+    }
+
+    protected override void AfterSimulationRun()
+    {
+        
     }
 
     public void Pause()

@@ -20,13 +20,12 @@ public class KoniecMontazeEvent : SimulationEvent
     #region Public functions
     public override void Execute()
     {
+        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");
+        
         _stolar.Obsadeny = false;
         _objednavka.Status = ObjednavkaStatus.Hotova;
         _objednavka.MontazneMiesto.Objednavka = null;
-
-        if (_stolar.Type != StolarType.C) throw new Exception("Zly stolar!");
-        
-        Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         
         // koniec cyklu objednavky ... zber statistik
         stolaren.PocetHotovychObjednavok++;

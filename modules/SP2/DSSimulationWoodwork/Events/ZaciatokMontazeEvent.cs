@@ -21,10 +21,10 @@ public class ZaciatokMontazeEvent : SimulationEvent
     public override void Execute()
     {
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
+        if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
+        
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.PriebehMontazeKovani;
-        
-        if (_stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
         
         double casPrechoduNaMontazneMiesto;
         if (_stolar.MontazneMiesto == null) 
@@ -33,9 +33,10 @@ public class ZaciatokMontazeEvent : SimulationEvent
             casPrechoduNaMontazneMiesto = stolaren.PresunMedziMontaznymiMiestamiGenerator.NextDouble();
         else casPrechoduNaMontazneMiesto = 0.0;
         _stolar.MontazneMiesto = _objednavka.MontazneMiesto;
+        _stolar.MontazneMiesto.Stolar = _stolar;
 
         double casMontaze = stolaren.SkrinaMontazKovaniGenerator.NextDouble();
-
+        
         double trvanieUdalosti = casPrechoduNaMontazneMiesto + casMontaze;
         double koniecUdalosti = trvanieUdalosti + Time;
         
