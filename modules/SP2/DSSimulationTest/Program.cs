@@ -14,8 +14,8 @@ static class Program
     private static void TestStolaren()
     {
         Random seeder = new Random(0);
-        Stolaren stolaren = new(seeder, 2, 2, 17, true);
-        stolaren.Run(1);
+        Stolaren stolaren = new(seeder, 2, 2, 18, true);
+        stolaren.Run(30);
     }
 
     private static void TestPredajna()
