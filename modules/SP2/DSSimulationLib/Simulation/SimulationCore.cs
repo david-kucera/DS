@@ -36,7 +36,7 @@ public class SimulationCore : SimCore
     #region Public functions
     protected override void Experiment()
     {
-        while (EventQueue.Count > 0 && _isRunning)
+        while (EventQueue.Count > 0 && _isRunning && EventQueue.Peek().Time < StopTime)
         {
             while (_pause) Thread.Sleep(100);
             
