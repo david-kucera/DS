@@ -16,13 +16,8 @@ public class SimulationCore : SimCore
     #endregion // Properties
     
     #region Events
-    public Action<double> NewSimulationTime = null!;
     public Action<EventArgs> NewSimulationData = null!;
     public Action<EventArgs> StopSimulation = null!;
-    public void OnNewSimulationTime(double time)
-    {
-        NewSimulationTime?.Invoke(time);
-    }
     public void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
@@ -46,8 +41,7 @@ public class SimulationCore : SimCore
             Time = evnt.Time;
             evnt.Execute();
             
-            if (evnt.GetType() != typeof(SystemEvent)) OnNewSimulationData();
-            else OnNewSimulationTime(evnt.Time);
+            OnNewSimulationData();
         }
         OnStopSimulation();
     }

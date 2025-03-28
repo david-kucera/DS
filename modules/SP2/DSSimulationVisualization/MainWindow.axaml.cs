@@ -1,6 +1,4 @@
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -16,7 +14,7 @@ public partial class MainWindow : Window
     private int _skipFirst = 0;
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
-    private Stolaren Stolaren;
+    private Stolaren _stolaren;
     #endregion // Class members
     
     #region Constructor
@@ -36,14 +34,13 @@ public partial class MainWindow : Window
         VykresliRychlost();
         if (VirtualSpeedCheckBox.IsChecked == false)
         {
-            Stolaren = new Stolaren(rnd, a, b, c, false);
-            Stolaren.NewSimulationTime += SimulationTime;
-            Stolaren.NewSimulationData += SimulationData;
+            _stolaren = new Stolaren(rnd, a, b, c, false);
+            _stolaren.NewSimulationData += SimulationData;
         }
-        else Stolaren = new Stolaren(rnd, a, b, c, true);
+        else _stolaren = new Stolaren(rnd, a, b, c, true);
         
-        Stolaren.StopSimulation += SimulationEnd;
-        Task.Run((() => Stolaren.Run(numReps))) ;
+        _stolaren.StopSimulation += SimulationEnd;
+        Task.Run((() => _stolaren.Run(numReps))) ;
     }
 
     private void SimulationEnd(EventArgs obj)
@@ -64,13 +61,6 @@ public partial class MainWindow : Window
             int.TryParse((string?)CCountInput.Text, out int c)
             )
         {
-            // if (numReps < 30)
-            // {
-            //     MessageBoxManager
-            //         .GetMessageBoxStandard("Chyba", "Počet replikacií musí byť väčší ako 30!", ButtonEnum.Ok)
-            //         .ShowAsync();
-            //     return;
-            // }
             StartSimulation(numReps, seed, a, b, c);
             _skipFirst = (int)((numReps) * ((double)skip / 100.0));
         }
@@ -114,10 +104,9 @@ public partial class MainWindow : Window
         PokracujButton.IsEnabled = false;
 
         VirtualSpeedCheckBox.IsEnabled = true;
-        Stolaren.Stop();
-        Stolaren.NewSimulationTime -= SimulationTime;
-        Stolaren.NewSimulationData -= SimulationData;
-        Stolaren.StopSimulation -= SimulationEnd;
+        _stolaren.Stop();
+        _stolaren.NewSimulationData -= SimulationData;
+        _stolaren.StopSimulation -= SimulationEnd;
     }
     
     private void PozastavButton_OnClick(object? sender, RoutedEventArgs e)
@@ -126,7 +115,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = true;
-        Stolaren.Pause();
+        _stolaren.Pause();
     }
 
     private void PokracujButton_OnClick(object? sender, RoutedEventArgs e)
@@ -135,7 +124,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = true;
         PokracujButton.IsEnabled = false;
-        Stolaren.Continue();
+        _stolaren.Continue();
     }
     
     private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
@@ -145,10 +134,7 @@ public partial class MainWindow : Window
             SpomalButton.IsEnabled = false;
             ZrychliButton.IsEnabled = false;
         }
-        else
-        {
-            VykresliRychlost();
-        }
+        else VykresliRychlost();
     }
 
     private void ZrychliButton_OnClick(object? sender, RoutedEventArgs e)
@@ -161,7 +147,7 @@ public partial class MainWindow : Window
         
         _multiplierType++;
         VykresliRychlost();
-        Stolaren.Multiplier = _multiplier;
+        _stolaren.Multiplier = _multiplier;
     }
 
     private void SpomalButton_OnClick(object? sender, RoutedEventArgs e)
@@ -174,7 +160,7 @@ public partial class MainWindow : Window
         
         _multiplierType--;
         VykresliRychlost();
-        Stolaren.Multiplier = _multiplier;
+        _stolaren.Multiplier = _multiplier;
     }
 
     private void VykresliRychlost()
@@ -230,10 +216,11 @@ public partial class MainWindow : Window
         else SpomalButton.IsEnabled = true;
     }
     
-    private void SimulationTime(double obj)
+    private void SimulationData(EventArgs obj)
     {
-        int day = (int)(obj / (8 * 60 * 60)) + 1; // Calculate the day (1-based index)
-        double timeInDay = obj % (8 * 60 * 60); // Time elapsed in the current simulation day
+        var time = _stolaren.Time;
+        int day = (int)(time / (8 * 60 * 60)) + 1; // Calculate the day (1-based index)
+        double timeInDay = time % (8 * 60 * 60); // Time elapsed in the current simulation day
 
         // Convert to hours, minutes, and seconds
         int hours = (int)(timeInDay / 3600) + 6; // Add 6 to shift to 6:00 start
@@ -241,29 +228,23 @@ public partial class MainWindow : Window
         int seconds = (int)timeInDay % 60;
 
         string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
-
+        
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             CurrentSimulationTime.Content = timeString;
             CurrentSimulationDay.Content = day;
-        });
-    }
-    
-    private void SimulationData(EventArgs obj)
-    {
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
+            
             ItemsControlMontazneMiesta.Items.Clear();
 
-            WaitingQueueRezanie.Content = Stolaren.CakajuceNaRezanie.Count;
-            WaitingQueueMorenie.Content = Stolaren.CakajuceNaMorenie.Count;
-            WaitingQueueSkladanie.Content = Stolaren.CakajuceNaSkladanie.Count;
-            WaitingQueueKovanie.Content = Stolaren.CakajuceNaKovanie.Count;
+            WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
+            WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
+            WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
+            WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
 
-            NumberOfOrders.Content = Stolaren.PoradieObjednavky;
-            NumberOfFinishedOrders.Content = Stolaren.PocetHotovychObjednavok;
+            NumberOfOrders.Content = _stolaren.PoradieObjednavky;
+            NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
             
-            foreach (var mm in Stolaren.MontazneMiesta)
+            foreach (var mm in _stolaren.MontazneMiesta)
             {
                 ItemsControlMontazneMiesta.Items.Add(mm.ToString());
             }
