@@ -17,10 +17,15 @@ public class SimulationCore : SimCore
     
     #region Events
     public Action<EventArgs> NewSimulationData = null!;
+    public Action<double> NewSimulationTime = null!;
     public Action<EventArgs> StopSimulation = null!;
     public void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
+    }
+    public void OnNewSimulationTime(double time)
+    {
+        NewSimulationTime?.Invoke(time);
     }
     public void OnStopSimulation()
     {
@@ -41,7 +46,12 @@ public class SimulationCore : SimCore
             Time = evnt.Time;
             evnt.Execute();
             
-            OnNewSimulationData();
+            if (evnt.GetType() != typeof(SystemEvent))
+            {
+                OnNewSimulationTime(Time);
+                OnNewSimulationData();
+            }
+            else OnNewSimulationTime(Time);
         }
         OnStopSimulation();
     }

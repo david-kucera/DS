@@ -36,9 +36,9 @@ public partial class MainWindow : Window
         {
             _stolaren = new Stolaren(rnd, a, b, c, false);
             _stolaren.NewSimulationData += SimulationData;
+            _stolaren.NewSimulationTime += SimulationTime;
         }
         else _stolaren = new Stolaren(rnd, a, b, c, true);
-        
         _stolaren.StopSimulation += SimulationEnd;
         Task.Run((() => _stolaren.Run(numReps))) ;
     }
@@ -106,6 +106,7 @@ public partial class MainWindow : Window
         VirtualSpeedCheckBox.IsEnabled = true;
         _stolaren.Stop();
         _stolaren.NewSimulationData -= SimulationData;
+        _stolaren.NewSimulationTime -= SimulationTime;
         _stolaren.StopSimulation -= SimulationEnd;
     }
     
@@ -215,25 +216,29 @@ public partial class MainWindow : Window
         if (_multiplierType == Multipliers.One) SpomalButton.IsEnabled = false;
         else SpomalButton.IsEnabled = true;
     }
-    
-    private void SimulationData(EventArgs obj)
-    {
-        var time = _stolaren.Time;
-        int day = (int)(time / (8 * 60 * 60)) + 1; // Calculate the day (1-based index)
-        double timeInDay = time % (8 * 60 * 60); // Time elapsed in the current simulation day
 
-        // Convert to hours, minutes, and seconds
-        int hours = (int)(timeInDay / 3600) + 6; // Add 6 to shift to 6:00 start
+    private void SimulationTime(double time)
+    {
+        int day = (int)(time / (8 * 60 * 60)) + 1;
+        double timeInDay = time % (8 * 60 * 60); 
+        
+        int hours = (int)(timeInDay / 3600) + 6; 
         int minutes = (int)(timeInDay % 3600) / 60;
         int seconds = (int)timeInDay % 60;
 
         string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
-        
+
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             CurrentSimulationTime.Content = timeString;
             CurrentSimulationDay.Content = day;
-            
+        });
+    }
+    
+    private void SimulationData(EventArgs obj)
+    {
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
             ItemsControlMontazneMiesta.Items.Clear();
 
             WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
