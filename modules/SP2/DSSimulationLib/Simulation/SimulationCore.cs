@@ -11,18 +11,18 @@ public class SimulationCore : SimCore
     #region Properties
     public PriorityQueue<SimulationEvent, double> EventQueue = new();
     public double Multiplier { get; set; } = 1.0;
-    public double Time { get; set; } = 0.0;
+    protected double Time { get; set; } = 0.0;
     public double StopTime { get; set; } = 0.0;
     #endregion // Properties
     
     #region Events
     public Action<EventArgs> NewSimulationData = null!;
     public Action<double> NewSimulationTime = null!;
-    public void OnNewSimulationData()
+    private void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
     }
-    public void OnNewSimulationTime(double time)
+    private void OnNewSimulationTime(double time)
     {
         NewSimulationTime?.Invoke(time);
     }
