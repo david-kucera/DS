@@ -102,8 +102,9 @@
                 </StackPanel>
                 
                 <Border Grid.Row="2" Grid.Column="0" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">
-                    <ItemsControl x:Name="ItemsControlMontazneMiesta">
-                    </ItemsControl>
+                    <ScrollViewer>
+                        <ItemsControl x:Name="ItemsControlMontazneMiesta"/>
+                    </ScrollViewer>
                 </Border>
                 
                 <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">

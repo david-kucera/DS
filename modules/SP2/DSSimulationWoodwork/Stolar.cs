@@ -1,3 +1,5 @@
+using DSSimulationLib.Statistics;
+
 namespace DSSimulationWoodwork;
 
 public class Stolar
@@ -7,6 +9,7 @@ public class Stolar
     public StolarType Type { get; set; }
     public MontazneMiesto MontazneMiesto { get; set; }
     public bool Obsadeny { get; set; }
+    public Workload Workload { get; set; }
     #endregion // Properties
 
     #region Constructor
@@ -16,14 +19,7 @@ public class Stolar
         Type = stolarType;
         MontazneMiesto = null!;
         Obsadeny = false;
-    }
-
-    public Stolar()
-    {
-        ID = -1;
-        Type = StolarType.Unknown;
-        MontazneMiesto = null!;
-        Obsadeny = false;
+        Workload = new Workload();
     }
     #endregion // Constructor
 }

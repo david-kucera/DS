@@ -20,11 +20,12 @@ public class KoniecRezaniaEvent : SimulationEvent
     #region Public functions
     public override void Execute()
     {
-        _stolar.Obsadeny = false;
-        _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
-        
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         if (_stolar.Type != StolarType.A) throw new Exception("Zly stolar!");
+        
+        _stolar.Workload.AddValue(_stolar.Obsadeny, Time);
+        _stolar.Obsadeny = false;
+        _objednavka.Status = ObjednavkaStatus.CakajucaNaMorenie;
 
         // pokracovanie objednavky pre stolara typu C
         if (stolaren.CakajuceNaMorenie.Count >= 1) stolaren.CakajuceNaMorenie.Enqueue(_objednavka);

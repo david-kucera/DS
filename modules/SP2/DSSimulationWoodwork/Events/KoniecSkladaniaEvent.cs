@@ -23,6 +23,7 @@ public class KoniecSkladaniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         if (_stolar.Type != StolarType.B) throw new Exception("Zly stolar!");
         
+        _stolar.Workload.AddValue(_stolar.Obsadeny, Time);
         _stolar.Obsadeny = false;
         _objednavka.Status = ObjednavkaStatus.CakajucaNaMontazKovani;
         

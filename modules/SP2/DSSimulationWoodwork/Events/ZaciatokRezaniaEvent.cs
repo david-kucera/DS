@@ -23,6 +23,7 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         if (_stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
         
+        _stolar.Workload.AddValue(_stolar.Obsadeny, Time);
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.PriebehRezania;
 

@@ -2,6 +2,7 @@ using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
+using DSSimulationLib.Statistics;
 using DSSimulationWoodwork;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
@@ -122,6 +123,12 @@ public partial class MainWindow : Window
 
         NumberOfOrders.Content = 0;
         NumberOfFinishedOrders.Content = 0;
+
+        AverageObjednavkaTimeInSystem.Content = 0;
+        AverageObjednavkasNotStarted.Content = 0;
+        AverageWorkloadAStolar.Content = 0;
+        AverageWorkloadBStolar.Content = 0;
+        AverageWorkloadCStolar.Content = 0;
         
         VirtualSpeedCheckBox.IsEnabled = false;
         Start();
@@ -280,6 +287,32 @@ public partial class MainWindow : Window
 
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
             NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
+
+            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue();
+            AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+
+            Average priemernaVytazenostA = new();
+            Average priemernaVytazenostB = new();
+            Average priemernaVytazenostC = new();
+            foreach (var stolar in _stolaren.Stolari)
+            {
+                switch (stolar.Type)
+                {
+                    case StolarType.A:
+                        priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+                        break;
+                    case StolarType.B:
+                        priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+                        break;
+                    default:
+                        priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
+                        break;
+                }
+            }
+            
+            AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
+            AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
+            AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
             
             foreach (var mm in _stolaren.MontazneMiesta)
             {
