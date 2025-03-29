@@ -8,9 +8,14 @@ public abstract class SimCore
     
     #region Events
     public Action<EventArgs> NewReplicationData = null;
+    public Action<EventArgs> StopSimulation = null!;
     public void OnNewReplicationData(EventArgs e)
     {
         NewReplicationData?.Invoke(e);
+    }
+    public void OnStopSimulation()
+    {
+        StopSimulation?.Invoke(EventArgs.Empty);
     }
     #endregion // Events
 
@@ -30,6 +35,7 @@ public abstract class SimCore
         }
 
         AfterSimulation();
+        OnStopSimulation();
     }
 
     public void Stop()

@@ -164,11 +164,9 @@ public class Stolaren : SimulationCore
         var prichod = PrichodObjednavokGenerator.NextDouble() + Time;
         EventQueue.Enqueue(new PrichodObjednavkyEvent(this, prichod), prichod);
     }
-
-    public static int poradie = 0;
+    
     protected override void AfterSimulationRun()
     {
-        Console.WriteLine(++poradie);
         // update globalnych statistik
         GlobalnyPocetHotovychObjednavok.AddValue(PocetHotovychObjednavok);
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());

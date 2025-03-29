@@ -18,7 +18,6 @@ public class SimulationCore : SimCore
     #region Events
     public Action<EventArgs> NewSimulationData = null!;
     public Action<double> NewSimulationTime = null!;
-    public Action<EventArgs> StopSimulation = null!;
     public void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
@@ -26,10 +25,6 @@ public class SimulationCore : SimCore
     public void OnNewSimulationTime(double time)
     {
         NewSimulationTime?.Invoke(time);
-    }
-    public void OnStopSimulation()
-    {
-        StopSimulation?.Invoke(EventArgs.Empty);
     }
     #endregion // Events
     
@@ -53,7 +48,6 @@ public class SimulationCore : SimCore
             }
             else OnNewSimulationTime(Time);
         }
-        OnStopSimulation();
     }
 
     protected override void BeforeSimulation()
