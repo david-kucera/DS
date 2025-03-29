@@ -5,6 +5,7 @@
         xmlns:plot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
         mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
         x:Class="DSSimulationVisualization.MainWindow"
+        Width="1920" Height="1080"
         Title="Udalostná simulácia stolárskej dielne - Najlepší nábytok s.r.o">
     <Grid Margin="10">
         <Grid.RowDefinitions>
@@ -30,7 +31,9 @@
                     <TextBox Name="SeedInput" Text="0" Width="50" Margin="10 0"/>
                     <TextBlock Text="Preskoč prvých:" VerticalAlignment="Center"/>
                     <TextBox Name="SkipInput" Text="5" Width="25"/>
-                    <TextBlock Text="% hodnôt" Margin="5"/>
+                    <TextBlock Text="% hodnôt" Margin="7"/>
+                    <TextBlock Text="Vykresli každú n-tú hodnotu:" VerticalAlignment="Center"/>
+                    <TextBox Name="IntervalInput" Text="1000" Width="50"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">

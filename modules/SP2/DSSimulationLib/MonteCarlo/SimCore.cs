@@ -5,6 +5,14 @@ public abstract class SimCore
     #region Class members
     protected bool _isRunning = false;
     #endregion // Class members
+    
+    #region Events
+    public Action<EventArgs> NewReplicationData = null;
+    public void OnNewReplicationData(EventArgs e)
+    {
+        NewReplicationData?.Invoke(e);
+    }
+    #endregion // Events
 
     #region Public functions
     public void Run(int numReps)
@@ -18,6 +26,7 @@ public abstract class SimCore
             BeforeSimulationRun(i);
             Experiment();
             AfterSimulationRun();
+            OnNewReplicationData(EventArgs.Empty);
         }
 
         AfterSimulation();

@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using DSSimulationWoodwork;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ScottPlot.Plottables;
 
 namespace DSSimulationVisualization;
 
@@ -12,6 +13,8 @@ public partial class MainWindow : Window
 {
     #region Class members
     private int _skipFirst = 0;
+    private int _interval = 1000;
+    private DataLogger _replicationValuesMean = new();
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
     private Stolaren _stolaren;
@@ -38,9 +41,13 @@ public partial class MainWindow : Window
             _stolaren.NewSimulationData += SimulationData;
             _stolaren.NewSimulationTime += SimulationTime;
         }
-        else _stolaren = new Stolaren(rnd, a, b, c, true);
+        else
+        {
+            _stolaren = new Stolaren(rnd, a, b, c, true);
+            _stolaren.NewReplicationData += ReplicationData;
+        }
         _stolaren.StopSimulation += SimulationEnd;
-        Task.Run((() => _stolaren.Run(numReps))) ;
+        Task.Run(() => _stolaren.Run(numReps)) ;
     }
 
     private void SimulationEnd(EventArgs obj)
@@ -58,11 +65,13 @@ public partial class MainWindow : Window
             int.TryParse((string?)SkipInput.Text, out int skip) &&
             int.TryParse((string?)ACountInput.Text, out int a) &&
             int.TryParse((string?)BCountInput.Text, out int b) &&
-            int.TryParse((string?)CCountInput.Text, out int c)
+            int.TryParse((string?)CCountInput.Text, out int c) &&
+            int.TryParse((string?)IntervalInput.Text, out int interval)
             )
         {
-            StartSimulation(numReps, seed, a, b, c);
+            _interval = interval;
             _skipFirst = (int)((numReps) * ((double)skip / 100.0));
+            StartSimulation(numReps, seed, a, b, c);
         }
         else
         {
@@ -83,6 +92,13 @@ public partial class MainWindow : Window
         CurrentSimulationTime.Content = "06:00:00";
         
         ItemsControlMontazneMiesta.Items.Clear();
+        
+        StabilizationPlot.Plot.Clear();
+        _replicationValuesMean.Clear();
+        var logger = StabilizationPlot.Plot.Add.DataLogger();
+        _replicationValuesMean = logger;
+        StabilizationPlot.Refresh();
+        StabilizationPlot.Plot.Axes.AutoScale();
 
         WaitingQueueRezanie.Content = 0;
         WaitingQueueMorenie.Content = 0;
@@ -107,6 +123,7 @@ public partial class MainWindow : Window
         _stolaren.Stop();
         _stolaren.NewSimulationData -= SimulationData;
         _stolaren.NewSimulationTime -= SimulationTime;
+        _stolaren.NewReplicationData -= ReplicationData;
         _stolaren.StopSimulation -= SimulationEnd;
     }
     
@@ -253,6 +270,18 @@ public partial class MainWindow : Window
             {
                 ItemsControlMontazneMiesta.Items.Add(mm.ToString());
             }
+        });
+    }
+    
+    private void ReplicationData(EventArgs obj)
+    {
+        var timeOfObjednavka = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
+        _replicationValuesMean.Add(timeOfObjednavka);
+        
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            CurrentValueLabel.Content = timeOfObjednavka;
+            StabilizationPlot.Refresh();
         });
     }
     #endregion // Private functions
