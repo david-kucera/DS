@@ -33,12 +33,12 @@ public class Stolaren : SimulationCore
     public List<MontazneMiesto> MontazneMiesta = [];
 
     public double PocetHotovychObjednavok { get; set; } = 0.0;
-    public Average GlobalnyPocetHotovychObjednavok { get; set; } = new();
-    public Average PriemernyCasObjednavkyVSysteme { get; set; } = new();
-    public Average GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = new();
-    public Average PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
-    public Average GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat  { get; set; } = new();
-    public Average GlobalnyPocetObjednavok { get; set; } = new();
+    public ConfidenceInterval GlobalnyPocetHotovychObjednavok { get; set; } = new();
+    public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; } = new();
+    public ConfidenceInterval GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = new();
+    public ConfidenceInterval PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
+    public ConfidenceInterval GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat  { get; set; } = new();
+    public ConfidenceInterval GlobalnyPocetObjednavok { get; set; } = new();
     
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
     public Random ObjednavkaTypGenerator { get; set; } = null!;

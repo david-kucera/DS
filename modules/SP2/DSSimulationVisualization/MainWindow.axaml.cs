@@ -5,6 +5,7 @@ using Avalonia.Interactivity;
 using DSSimulationWoodwork;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using ScottPlot;
 using ScottPlot.Plottables;
 
 namespace DSSimulationVisualization;
@@ -15,6 +16,8 @@ public partial class MainWindow : Window
     private int _skipFirst = 0;
     private int _interval = 1000;
     private DataLogger _replicationValuesMean = new();
+    private DataLogger _replicationValuesTop = new();
+    private DataLogger _replicationValuesBottom = new();
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
     private Stolaren _stolaren;
@@ -95,10 +98,18 @@ public partial class MainWindow : Window
         
         StabilizationPlot.Plot.Clear();
         _replicationValuesMean.Clear();
-        var logger = StabilizationPlot.Plot.Add.DataLogger();
-        _replicationValuesMean = logger;
+        _replicationValuesTop.Clear();
+        _replicationValuesBottom.Clear();
+
+        _replicationValuesMean = StabilizationPlot.Plot.Add.DataLogger();
+        _replicationValuesMean.Color = Colors.Blue;
+        _replicationValuesTop = StabilizationPlot.Plot.Add.DataLogger();
+        _replicationValuesTop.Color = Colors.Red;
+        _replicationValuesBottom = StabilizationPlot.Plot.Add.DataLogger();
+        _replicationValuesBottom.Color = Colors.Green;
+        
         StabilizationPlot.Refresh();
-        StabilizationPlot.Plot.Axes.AutoScale();
+        
 
         WaitingQueueRezanie.Content = 0;
         WaitingQueueMorenie.Content = 0;
@@ -276,11 +287,16 @@ public partial class MainWindow : Window
     private void ReplicationData(EventArgs obj)
     {
         var timeOfObjednavka = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
+        var confidenceInterval = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
+        
         _replicationValuesMean.Add(timeOfObjednavka);
+        _replicationValuesTop.Add(confidenceInterval.Item2);
+        _replicationValuesBottom.Add(confidenceInterval.Item1);
         
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             CurrentValueLabel.Content = timeOfObjednavka;
+            StabilizationPlot.Plot.Axes.AutoScale();
             StabilizationPlot.Refresh();
         });
     }

@@ -23,9 +23,15 @@ public class ConfidenceInterval
         _sumSquared += value * value;
     }
 
+    public double GetValue()
+    {
+        if (_count <= 0) return 0;
+        return _sum / _count;
+    }
+
     public (double, double) GetConfidenceInterval(double confidenceLevel = 1.96)
     {
-        if (_count < 2) throw new InvalidOperationException("Confidence interval can't be made from less than 2 numbers.");
+        //if (_count < 2) throw new InvalidOperationException("Confidence interval can't be made from less than 2 numbers.");
         
         var error = confidenceLevel * StdDev() / Math.Sqrt(_count);
         var avg = _sum / _count;
