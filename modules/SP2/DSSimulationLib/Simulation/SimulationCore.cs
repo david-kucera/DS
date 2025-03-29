@@ -17,6 +17,7 @@ public class SimulationCore : SimCore
     
     #region Events
     public Action<EventArgs> NewSimulationData = null!;
+    public Action<EventArgs> NewReplicationEnd = null!;
     public Action<double> NewSimulationTime = null!;
     private void OnNewSimulationData()
     {
@@ -25,6 +26,10 @@ public class SimulationCore : SimCore
     private void OnNewSimulationTime(double time)
     {
         NewSimulationTime?.Invoke(time);
+    }
+    private void OnNewReplicationEnd()
+    {
+        NewReplicationEnd?.Invoke(EventArgs.Empty);
     }
     #endregion // Events
     
@@ -67,7 +72,7 @@ public class SimulationCore : SimCore
 
     protected override void AfterSimulationRun()
     {
-        
+        OnNewReplicationEnd();
     }
 
     public void Pause()

@@ -54,7 +54,7 @@
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
                     <Button Name="SpomalButton" HorizontalContentAlignment="Center" Click="SpomalButton_OnClick" Width="100" IsEnabled="False">Spomal</Button>
-                    <Label Name="SpeedLabel" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="60" Margin="5,10,5,5">1x</Label>
+                    <Label Name="SpeedLabel" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="100" Margin="5,10,5,5">1x</Label>
                     <Button Name="ZrychliButton" HorizontalContentAlignment="Center" Click="ZrychliButton_OnClick" Width="100">Zrýchli</Button>
                     <CheckBox Name="VirtualSpeedCheckBox" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
                 </StackPanel>

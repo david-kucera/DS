@@ -12,4 +12,8 @@ public enum Multipliers
     TwoHundredFifty,
     FiveHundred,
     Thousand,
+    TenThousand,
+    HundredThousand,
+    Million,
+    TenMillion
 }

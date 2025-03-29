@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -23,6 +24,7 @@ public partial class MainWindow : Window
     private DataLogger _replicationValuesBottom = new();
     private Multipliers _multiplierType = Multipliers.One;
     private double _multiplier = 1.0;
+    private bool _ignoreData = false;
     private Stolaren _stolaren;
     #endregion // Class members
     
@@ -43,11 +45,13 @@ public partial class MainWindow : Window
         _multiplier = 1.0;
         _multiplierType = Multipliers.One;
         VykresliRychlost();
+        
         if (VirtualSpeedCheckBox.IsChecked == false)
         {
             _stolaren = new Stolaren(rnd, a, b, c, false);
             _stolaren.NewSimulationData += SimulationData;
             _stolaren.NewSimulationTime += SimulationTime;
+            _stolaren.NewReplicationEnd += ReplicationEnd;
         }
         else
         {
@@ -140,12 +144,15 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = false;
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = false;
+        
+        if (VirtualSpeedCheckBox.IsChecked == false) ReplicationEnd(EventArgs.Empty);
 
         VirtualSpeedCheckBox.IsEnabled = true;
         _stolaren.Stop();
         _stolaren.NewSimulationData -= SimulationData;
         _stolaren.NewSimulationTime -= SimulationTime;
         _stolaren.NewReplicationData -= ReplicationData;
+        _stolaren.NewReplicationEnd -= ReplicationEnd;
         _stolaren.StopSimulation -= SimulationEnd;
     }
     
@@ -179,7 +186,7 @@ public partial class MainWindow : Window
 
     private void ZrychliButton_OnClick(object? sender, RoutedEventArgs e)
     {
-        if (_multiplierType == Multipliers.Thousand)
+        if (_multiplierType == Multipliers.TenMillion)
         {
             VykresliRychlost();
             return;
@@ -209,47 +216,77 @@ public partial class MainWindow : Window
         {
             case Multipliers.One:
                 _multiplier = 1.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "1x";
                 break;
             case Multipliers.Two:
                 _multiplier = 2.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "2x";
                 break;
             case Multipliers.Five:
                 _multiplier = 5.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "5x";
                 break;
             case Multipliers.Ten:
                 _multiplier = 10.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "10x";
                 break;
             case Multipliers.TwentyFive:
                 _multiplier = 25.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "25x";
                 break;
             case Multipliers.Fifty:
                 _multiplier = 50.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "50x";
                 break;
             case Multipliers.Hundred:
                 _multiplier = 100.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "100x";
                 break;
             case Multipliers.TwoHundredFifty:
                 _multiplier = 250.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "250x";
                 break;
             case Multipliers.FiveHundred:
                 _multiplier = 500.0;
+                _ignoreData = false;
                 SpeedLabel.Content = "500x";
                 break;
             case Multipliers.Thousand:
-                _multiplier = 1000.0;
-                SpeedLabel.Content = "1000x";
+                _multiplier = 1_000.0;
+                _ignoreData = false;
+                SpeedLabel.Content = "1 000x";
+                break;
+            case Multipliers.TenThousand:
+                _multiplier = 10_000.0;
+                _ignoreData = false;
+                SpeedLabel.Content = "10 000x";
+                break;
+            case Multipliers.HundredThousand:
+                _multiplier = 100_000.0;
+                _ignoreData = true;
+                SpeedLabel.Content = "100 000x";
+                break;
+            case Multipliers.Million:
+                _multiplier = 1_000_000.0;
+                _ignoreData = true;
+                SpeedLabel.Content = "1 000 000x";
+                break;
+            case Multipliers.TenMillion:
+                _multiplier = 10_000_000.0;
+                _ignoreData = true;
+                SpeedLabel.Content = "10 000 000x";
                 break;
         }
         
-        if (_multiplierType == Multipliers.Thousand) ZrychliButton.IsEnabled = false;
+        if (_multiplierType == Multipliers.TenMillion) ZrychliButton.IsEnabled = false;
         else ZrychliButton.IsEnabled = true;
         
         if (_multiplierType == Multipliers.One) SpomalButton.IsEnabled = false;
@@ -278,12 +315,14 @@ public partial class MainWindow : Window
     {
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            ItemsControlMontazneMiesta.Items.Clear();
-
-            WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
-            WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
-            WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
-            WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
+            if (!_ignoreData)
+            {
+                ItemsControlMontazneMiesta.Items.Clear();
+                WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
+                WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
+                WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
+                WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
+            }
 
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
             NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
@@ -291,32 +330,35 @@ public partial class MainWindow : Window
             AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue();
             AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
 
-            Average priemernaVytazenostA = new();
-            Average priemernaVytazenostB = new();
-            Average priemernaVytazenostC = new();
-            foreach (var stolar in _stolaren.Stolari)
+            if (!_ignoreData)
             {
-                switch (stolar.Type)
+                Average priemernaVytazenostA = new();
+                Average priemernaVytazenostB = new();
+                Average priemernaVytazenostC = new();
+                foreach (var stolar in _stolaren.Stolari)
                 {
-                    case StolarType.A:
-                        priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
-                        break;
-                    case StolarType.B:
-                        priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
-                        break;
-                    default:
-                        priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
-                        break;
+                    switch (stolar.Type)
+                    {
+                        case StolarType.A:
+                            priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+                            break;
+                        case StolarType.B:
+                            priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+                            break;
+                        default:
+                            priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
+                            break;
+                    }
                 }
-            }
             
-            AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
-            AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
-            AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
+                AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
+                AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
+                AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
             
-            foreach (var mm in _stolaren.MontazneMiesta)
-            {
-                ItemsControlMontazneMiesta.Items.Add(mm.ToString());
+                foreach (var mm in _stolaren.MontazneMiesta)
+                {
+                    ItemsControlMontazneMiesta.Items.Add(mm.ToString());
+                }
             }
         });
     }
@@ -347,6 +389,49 @@ public partial class MainWindow : Window
             CurrentValueLabel.Content = timeOfObjednavka;
             StabilizationPlot.Plot.Axes.AutoScale();
             StabilizationPlot.Refresh();
+        });
+    }
+    
+    private void ReplicationEnd(EventArgs obj)
+    {
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            ItemsControlMontazneMiesta.Items.Clear();
+            WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
+            WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
+            WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
+            WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
+            
+            NumberOfOrders.Content = _stolaren.PoradieObjednavky;
+            NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
+
+            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue();
+            AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+            
+            Average priemernaVytazenostA = new();
+            Average priemernaVytazenostB = new();
+            Average priemernaVytazenostC = new();
+            foreach (var stolar in _stolaren.Stolari)
+            {
+                switch (stolar.Type)
+                {
+                    case StolarType.A:
+                        priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+                        break;
+                    case StolarType.B:
+                        priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+                        break;
+                    default:
+                        priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
+                        break;
+                }
+            }
+        
+            AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
+            AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
+            AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
+        
+            foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
         });
     }
     #endregion // Private functions
