@@ -14,7 +14,9 @@ public partial class MainWindow : Window
 {
     #region Class members
     private int _skipFirst = 0;
+    private int _totalValuesProcessed = 0;
     private int _interval = 1000;
+    private int _dataCounter = 0;
     private DataLogger _replicationValuesMean = new();
     private DataLogger _replicationValuesTop = new();
     private DataLogger _replicationValuesBottom = new();
@@ -35,6 +37,8 @@ public partial class MainWindow : Window
     private void StartSimulation(int numReps, int seed, int a, int b, int c)
     {
         Random rnd = new Random(seed);
+        _dataCounter = 0;
+        _totalValuesProcessed = 0;
         _multiplier = 1.0;
         _multiplierType = Multipliers.One;
         VykresliRychlost();
@@ -286,7 +290,19 @@ public partial class MainWindow : Window
     
     private void ReplicationData(EventArgs obj)
     {
+        _totalValuesProcessed++;
+
+        if (_totalValuesProcessed <= _skipFirst) return;
+        
+        _dataCounter++;
         var timeOfObjednavka = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
+        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+        {
+            CurrentValueLabel.Content = timeOfObjednavka;
+        });
+        
+        if (_dataCounter % _interval != 0 && _dataCounter != 1) return;
+        
         var confidenceInterval = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
         
         _replicationValuesMean.Add(timeOfObjednavka);
