@@ -130,9 +130,9 @@ public partial class MainWindow : Window
 
         AverageObjednavkaTimeInSystem.Content = 0;
         AverageObjednavkasNotStarted.Content = 0;
-        AverageWorkloadAStolar.Content = 0;
-        AverageWorkloadBStolar.Content = 0;
-        AverageWorkloadCStolar.Content = 0;
+        AverageWorkloadAStolar.Content = "0 %";
+        AverageWorkloadBStolar.Content = "0 %";
+        AverageWorkloadCStolar.Content = "0 %";
         
         VirtualSpeedCheckBox.IsEnabled = false;
         Start();
@@ -295,19 +295,10 @@ public partial class MainWindow : Window
 
     private void SimulationTime(double time)
     {
-        int day = (int)(time / (8 * 60 * 60)) + 1;
-        double timeInDay = time % (8 * 60 * 60); 
-        
-        int hours = (int)(timeInDay / 3600) + 6; 
-        int minutes = (int)(timeInDay % 3600) / 60;
-        int seconds = (int)timeInDay % 60;
-
-        string timeString = $"{hours:D2}:{minutes:D2}:{seconds:D2}";
-
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentSimulationTime.Content = timeString;
-            CurrentSimulationDay.Content = day;
+            CurrentSimulationTime.Content = FormatTimeAndDay(time);
+            CurrentSimulationDay.Content = GetDay(time);
         });
     }
     
@@ -327,7 +318,7 @@ public partial class MainWindow : Window
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
             NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
 
-            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue();
+            AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
             AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
 
             if (!_ignoreData)
@@ -351,9 +342,9 @@ public partial class MainWindow : Window
                     }
                 }
             
-                AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
-                AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
-                AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
+                AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
+                AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
+                AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
             
                 foreach (var mm in _stolaren.MontazneMiesta)
                 {
@@ -366,16 +357,16 @@ public partial class MainWindow : Window
     private void ReplicationData(EventArgs obj)
     {
         _totalValuesProcessed++;
-
-        if (_totalValuesProcessed <= _skipFirst) return;
         
-        _dataCounter++;
         var timeOfObjednavka = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentValueLabel.Content = timeOfObjednavka;
+            CurrentValueLabel.Content = FormatTime(timeOfObjednavka);
         });
         
+        if (_totalValuesProcessed <= _skipFirst) return;
+        
+        _dataCounter++;
         if (_dataCounter % _interval != 0 && _dataCounter != 1) return;
         
         var confidenceInterval = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
@@ -386,7 +377,7 @@ public partial class MainWindow : Window
         
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentValueLabel.Content = timeOfObjednavka;
+            CurrentValueLabel.Content = FormatTime(timeOfObjednavka);
             StabilizationPlot.Plot.Axes.AutoScale();
             StabilizationPlot.Refresh();
         });
@@ -405,7 +396,7 @@ public partial class MainWindow : Window
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
             NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
 
-            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue();
+            AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
             AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
             
             Average priemernaVytazenostA = new();
@@ -427,12 +418,37 @@ public partial class MainWindow : Window
                 }
             }
         
-            AverageWorkloadAStolar.Content = priemernaVytazenostA.GetValue();
-            AverageWorkloadBStolar.Content = priemernaVytazenostB.GetValue();
-            AverageWorkloadCStolar.Content = priemernaVytazenostC.GetValue();
+            AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
+            AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
+            AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
         
             foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
         });
+    }
+
+    private string FormatTimeAndDay(double time)
+    {
+        double timeInDay = time % (8 * 60 * 60); 
+        
+        int hours = (int)(timeInDay / 3600) + 6; 
+        int minutes = (int)(timeInDay % 3600) / 60;
+        int seconds = (int)timeInDay % 60;
+
+        return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+    }
+
+    private string FormatTime(double time)
+    {
+        int hours = (int)(time / 3600); 
+        int minutes = (int)(time % 3600) / 60;
+        int seconds = (int)time % 60;
+
+        return $"{hours:D2}:{minutes:D2}:{seconds:D2}";
+    }
+
+    private int GetDay(double time)
+    {
+        return (int)(time / (8 * 60 * 60)) + 1;
     }
     #endregion // Private functions
 }
