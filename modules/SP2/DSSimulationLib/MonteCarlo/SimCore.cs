@@ -7,12 +7,7 @@ public abstract class SimCore
     #endregion // Class members
     
     #region Events
-    public Action<EventArgs> NewReplicationData = null;
     public Action<EventArgs> StopSimulation = null!;
-    public void OnNewReplicationData(EventArgs e)
-    {
-        NewReplicationData?.Invoke(e);
-    }
     public void OnStopSimulation()
     {
         StopSimulation?.Invoke(EventArgs.Empty);
@@ -28,10 +23,9 @@ public abstract class SimCore
         for (int i = 1; i <= numReps; i++)
         {
             if (!_isRunning) break;
-            BeforeSimulationRun(i);
+            BeforeSimulationRun();
             Experiment();
-            AfterSimulationRun();
-            OnNewReplicationData(EventArgs.Empty);
+            AfterSimulationRun(i);
         }
 
         AfterSimulation();
@@ -48,7 +42,7 @@ public abstract class SimCore
     protected abstract void Experiment();
     protected abstract void BeforeSimulation();
     protected abstract void AfterSimulation();
-    protected abstract void BeforeSimulationRun(int cisloReplikacie);
-    protected abstract void AfterSimulationRun();
+    protected abstract void BeforeSimulationRun();
+    protected abstract void AfterSimulationRun(int i);
 	#endregion // Protected functions
 }

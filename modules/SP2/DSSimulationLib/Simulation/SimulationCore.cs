@@ -17,8 +17,9 @@ public class SimulationCore : SimCore
     
     #region Events
     public Action<EventArgs> NewSimulationData = null!;
-    public Action<EventArgs> NewReplicationEnd = null!;
     public Action<double> NewSimulationTime = null!;
+    public Action<double> NewReplicationData = null;
+    
     private void OnNewSimulationData()
     {
         NewSimulationData?.Invoke(EventArgs.Empty);
@@ -27,9 +28,9 @@ public class SimulationCore : SimCore
     {
         NewSimulationTime?.Invoke(time);
     }
-    private void OnNewReplicationEnd()
+    public void OnNewReplicationData(double e)
     {
-        NewReplicationEnd?.Invoke(EventArgs.Empty);
+        NewReplicationData?.Invoke(e);
     }
     #endregion // Events
     
@@ -65,14 +66,14 @@ public class SimulationCore : SimCore
         
     }
 
-    protected override void BeforeSimulationRun(int cisloReplikacie)
+    protected override void BeforeSimulationRun()
     {
         EventQueue.Enqueue(new SystemEvent(this, Time), Time);
     }
 
-    protected override void AfterSimulationRun()
+    protected override void AfterSimulationRun(int i)
     {
-        OnNewReplicationEnd();
+        OnNewReplicationData(i);
     }
 
     public void Pause()

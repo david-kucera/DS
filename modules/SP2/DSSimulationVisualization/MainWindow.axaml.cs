@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Interactivity;
@@ -33,6 +32,14 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         SeedInput.Text = new Random().Next(0, 1000).ToString();
+        IntervalInput.Text = "1";
+        ACountInput.Text = "2";
+        BCountInput.Text = "2";
+        CCountInput.Text = "18";
+        ReplicationCountInput.Text = "1000";
+        SkipInput.Text = "0";
+        StabilizationPlot.Plot.XLabel("Replication");
+        StabilizationPlot.Plot.YLabel("Hodnota");
     }
     #endregion // Constructor
     
@@ -51,7 +58,6 @@ public partial class MainWindow : Window
             _stolaren = new Stolaren(rnd, a, b, c, false);
             _stolaren.NewSimulationData += SimulationData;
             _stolaren.NewSimulationTime += SimulationTime;
-            _stolaren.NewReplicationEnd += ReplicationEnd;
         }
         else
         {
@@ -145,14 +151,13 @@ public partial class MainWindow : Window
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = false;
         
-        if (VirtualSpeedCheckBox.IsChecked == false) ReplicationEnd(EventArgs.Empty);
+        if (VirtualSpeedCheckBox.IsChecked == false) ReplicationEnd();
 
         VirtualSpeedCheckBox.IsEnabled = true;
         _stolaren.Stop();
         _stolaren.NewSimulationData -= SimulationData;
         _stolaren.NewSimulationTime -= SimulationTime;
         _stolaren.NewReplicationData -= ReplicationData;
-        _stolaren.NewReplicationEnd -= ReplicationEnd;
         _stolaren.StopSimulation -= SimulationEnd;
     }
     
@@ -354,14 +359,21 @@ public partial class MainWindow : Window
         });
     }
     
-    private void ReplicationData(EventArgs obj)
+    private void ReplicationData(double i)
     {
         _totalValuesProcessed++;
         
         var timeOfObjednavka = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentValueLabel.Content = FormatTime(timeOfObjednavka);
+            CurrentReplicationLabel.Content = i;
+            CurrentValueLabel.Content = timeOfObjednavka;
+            AverageWorkloadAStolar.Content = (int)_stolaren.GlobalneVytazenieA.GetValue() + " %";
+            AverageWorkloadBStolar.Content = (int)_stolaren.GlobalneVytazenieB.GetValue() + " %";
+            AverageWorkloadCStolar.Content = (int)_stolaren.GlobalneVytazenieC.GetValue() + " %";
+            AverageObjednavkasNotStarted.Content =
+                _stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+            AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
         });
         
         if (_totalValuesProcessed <= _skipFirst) return;
@@ -377,13 +389,13 @@ public partial class MainWindow : Window
         
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentValueLabel.Content = FormatTime(timeOfObjednavka);
+            CurrentValueLabel.Content = timeOfObjednavka + " <" +_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1 + ", " + _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2 + ">";
             StabilizationPlot.Plot.Axes.AutoScale();
             StabilizationPlot.Refresh();
         });
     }
     
-    private void ReplicationEnd(EventArgs obj)
+    private void ReplicationEnd()
     {
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
@@ -392,35 +404,18 @@ public partial class MainWindow : Window
             WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
             WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
             WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
+
+            CurrentReplicationLabel.Content = "1";
             
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
             NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
 
-            AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
-            AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
-            
-            Average priemernaVytazenostA = new();
-            Average priemernaVytazenostB = new();
-            Average priemernaVytazenostC = new();
-            foreach (var stolar in _stolaren.Stolari)
-            {
-                switch (stolar.Type)
-                {
-                    case StolarType.A:
-                        priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
-                        break;
-                    case StolarType.B:
-                        priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
-                        break;
-                    default:
-                        priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
-                        break;
-                }
-            }
+            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue() + "<" +_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1 + ", " + _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2 + ">";
+            AverageObjednavkasNotStarted.Content = _stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
         
-            AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
-            AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
-            AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
+            AverageWorkloadAStolar.Content = (int)_stolaren.GlobalneVytazenieA.GetValue() + " %";
+            AverageWorkloadBStolar.Content = (int)_stolaren.GlobalneVytazenieB.GetValue() + " %";
+            AverageWorkloadCStolar.Content = (int)_stolaren.GlobalneVytazenieC.GetValue() + " %";
         
             foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
         });

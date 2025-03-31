@@ -39,6 +39,9 @@ public class Stolaren : SimulationCore
     public ConfidenceInterval PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat { get; set; } = new();
     public ConfidenceInterval GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat  { get; set; } = new();
     public ConfidenceInterval GlobalnyPocetObjednavok { get; set; } = new();
+    public ConfidenceInterval GlobalneVytazenieA { get; set; } = new();
+    public ConfidenceInterval GlobalneVytazenieB { get; set; } = new();
+    public ConfidenceInterval GlobalneVytazenieC { get; set; } = new();
     
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
     public Random ObjednavkaTypGenerator { get; set; } = null!;
@@ -124,7 +127,7 @@ public class Stolaren : SimulationCore
         else Console.WriteLine("NEVYHOVUJE");
     }
 
-    protected override void BeforeSimulationRun(int poradieReplikacie)
+    protected override void BeforeSimulationRun()
     {
         PoradieObjednavky = 0;
         PocetHotovychObjednavok = 0;
@@ -139,7 +142,7 @@ public class Stolaren : SimulationCore
         MontazneMiesta.Clear();
         
         EventQueue.Clear();
-        if (!_virtualTime) base.BeforeSimulationRun(poradieReplikacie);
+        if (!_virtualTime) base.BeforeSimulationRun();
         
         PriemernyCasObjednavkyVSysteme.Reset();
         PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.Reset();
@@ -165,13 +168,37 @@ public class Stolaren : SimulationCore
         EventQueue.Enqueue(new PrichodObjednavkyEvent(this, prichod), prichod);
     }
     
-    protected override void AfterSimulationRun()
+    protected override void AfterSimulationRun(int i)
     {
         // update globalnych statistik
         GlobalnyPocetHotovychObjednavok.AddValue(PocetHotovychObjednavok);
         GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
         GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.AddValue(PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
         GlobalnyPocetObjednavok.AddValue(PoradieObjednavky);
+
+        Average priemernaVytazenostA = new();
+        Average priemernaVytazenostB = new();
+        Average priemernaVytazenostC = new();
+        foreach (var stolar in Stolari)
+        {
+            switch (stolar.Type)
+            {
+                case StolarType.A:
+                    priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+                    break;
+                case StolarType.B:
+                    priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+                    break;
+                default:
+                    priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
+                    break;
+            }
+        }
+        GlobalneVytazenieA.AddValue(priemernaVytazenostA.GetValue());
+        GlobalneVytazenieB.AddValue(priemernaVytazenostB.GetValue());
+        GlobalneVytazenieC.AddValue(priemernaVytazenostC.GetValue());
+        
+        base.AfterSimulationRun(i);
     }
     #endregion // Protected functions
 }

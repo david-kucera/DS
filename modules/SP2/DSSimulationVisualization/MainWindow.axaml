@@ -136,6 +136,9 @@
                     <RowDefinition Height="*"/>
                 </Grid.RowDefinitions>
                 <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label Content="Replikácia: " FontSize="14"></Label>
+                    <Label Content="1" Name="CurrentReplicationLabel" FontWeight="Bold" Width="100"></Label>
+                    
                     <TextBlock Text="Priemerný čas objednávky v systéme: " FontSize="14"/>
                     <Label Name="CurrentValueLabel" Content="0.0" FontSize="14" FontWeight="Bold"/>
                 </StackPanel>
