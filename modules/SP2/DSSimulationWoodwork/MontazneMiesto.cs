@@ -26,13 +26,15 @@ public class MontazneMiesto
         int objednavkaId = -1;
         ObjednavkaType objednavkaType = ObjednavkaType.Unknown;
         ObjednavkaStatus objednavkaStatus = ObjednavkaStatus.Unknown;
+        int vytazenost = -1;
         if (Stolar is not null) obsadeny = Stolar.Obsadeny;
         if (Stolar is not null) stolarType = Stolar.Type;
         if (Stolar is not null) stolarId = Stolar.ID;
+        if (Stolar is not null) vytazenost = (int)Stolar.Workload.GetValue();
         if (Objednavka is not null) objednavkaId = Objednavka.Poradie;
         if (Objednavka is not null) objednavkaType = Objednavka.Type;
         if (Objednavka is not null) objednavkaStatus = Objednavka.Status;
-        return $"Miesto: {ID},\t Objednavka: {objednavkaId}. {objednavkaType}, {objednavkaStatus},\t Stolar: {stolarType}{stolarId} {obsadeny}";
+        return $"Miesto: {ID},\t Objednavka: {objednavkaId}. {objednavkaType}, {objednavkaStatus},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
     }
     #endregion // Public functions
 }
