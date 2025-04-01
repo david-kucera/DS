@@ -115,14 +115,14 @@
                         <Label Content="Priemerný počet nezačatých objednávok:" FontSize="14"/>
                         <Label Name="AverageObjednavkasNotStarted" Content="0" FontSize="14" FontWeight="Bold"/>
                         
-                        <Label Content="Priemerná vyťaženosť stolárov typu A:" FontSize="14" Margin="10,0,0,0"/>
-                        <Label Name="AverageWorkloadAStolar" Content="0" FontSize="14" FontWeight="Bold" Margin="10,0,0,0"/>
+                        <Label Content="Priemerná vyťaženosť stolárov typu A:" FontSize="14"/>
+                        <Label Name="AverageWorkloadAStolar" Content="0" FontSize="14" FontWeight="Bold"/>
                         
-                        <Label Content="Priemerná vyťaženosť stolárov typu B:" FontSize="14" Margin="10,0,0,0"/>
-                        <Label Name="AverageWorkloadBStolar" Content="0" FontSize="14" FontWeight="Bold" Margin="10,0,0,0"/>
+                        <Label Content="Priemerná vyťaženosť stolárov typu B:" FontSize="14"/>
+                        <Label Name="AverageWorkloadBStolar" Content="0" FontSize="14" FontWeight="Bold"/>
                         
-                        <Label Content="Priemerná vyťaženosť stolárov typu C:" FontSize="14" Margin="10,0,0,0"/>
-                        <Label Name="AverageWorkloadCStolar" Content="0" FontSize="14" FontWeight="Bold" Margin="10,0,0,0"/>
+                        <Label Content="Priemerná vyťaženosť stolárov typu C:" FontSize="14"/>
+                        <Label Name="AverageWorkloadCStolar" Content="0" FontSize="14" FontWeight="Bold"/>
                     </StackPanel>
                 </Border>
             </Grid>

@@ -37,7 +37,7 @@ public partial class MainWindow : Window
         BCountInput.Text = "2";
         CCountInput.Text = "18";
         ReplicationCountInput.Text = "1000";
-        SkipInput.Text = "0";
+        SkipInput.Text = "5";
         StabilizationPlot.Plot.XLabel("Replication");
         StabilizationPlot.Plot.YLabel("Hodnota");
     }
@@ -321,10 +321,10 @@ public partial class MainWindow : Window
             }
 
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
-            NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
+            NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
 
             AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
-            AverageObjednavkasNotStarted.Content = _stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+            AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
 
             if (!_ignoreData)
             {
@@ -347,6 +347,10 @@ public partial class MainWindow : Window
                     }
                 }
             
+                // AverageWorkloadAStolar.Content = Math.Round(priemernaVytazenostA.GetValue(), 4) + " %";
+                // AverageWorkloadBStolar.Content = Math.Round(priemernaVytazenostB.GetValue(), 4) + " %";
+                // AverageWorkloadCStolar.Content = Math.Round(priemernaVytazenostC.GetValue(), 4) + " %";
+                
                 AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
                 AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
                 AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
@@ -367,12 +371,15 @@ public partial class MainWindow : Window
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
             CurrentReplicationLabel.Content = i;
-            CurrentValueLabel.Content = timeOfObjednavka;
+            CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4);
+            // AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " %";
+            // AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " %";
+            // AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " %";
             AverageWorkloadAStolar.Content = (int)_stolaren.GlobalneVytazenieA.GetValue() + " %";
             AverageWorkloadBStolar.Content = (int)_stolaren.GlobalneVytazenieB.GetValue() + " %";
             AverageWorkloadCStolar.Content = (int)_stolaren.GlobalneVytazenieC.GetValue() + " %";
             AverageObjednavkasNotStarted.Content =
-                _stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+                Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
             AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
         });
         
@@ -389,8 +396,14 @@ public partial class MainWindow : Window
         
         Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
         {
-            CurrentValueLabel.Content = timeOfObjednavka + " <" +_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1 + ", " + _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2 + ">";
-            StabilizationPlot.Plot.Axes.AutoScale();
+            CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4) 
+                                        + " <" 
+                                        + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
+                                        + ", " 
+                                        + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4)
+                                        + ">";
+            if (_dataCounter % 100 == 0) 
+                StabilizationPlot.Plot.Axes.AutoScale();
             StabilizationPlot.Refresh();
         });
     }
@@ -408,14 +421,17 @@ public partial class MainWindow : Window
             CurrentReplicationLabel.Content = "1";
             
             NumberOfOrders.Content = _stolaren.PoradieObjednavky;
-            NumberOfFinishedOrders.Content = _stolaren.PocetHotovychObjednavok;
+            NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
 
-            AverageObjednavkaTimeInSystem.Content = _stolaren.PriemernyCasObjednavkyVSysteme.GetValue() + "<" +_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1 + ", " + _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2 + ">";
-            AverageObjednavkasNotStarted.Content = _stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue();
+            AverageObjednavkaTimeInSystem.Content = Math.Round(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue(), 4) 
+                                                    + "<" + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
+                                                    + ", " + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4) 
+                                                    + ">";
+            AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
         
-            AverageWorkloadAStolar.Content = (int)_stolaren.GlobalneVytazenieA.GetValue() + " %";
-            AverageWorkloadBStolar.Content = (int)_stolaren.GlobalneVytazenieB.GetValue() + " %";
-            AverageWorkloadCStolar.Content = (int)_stolaren.GlobalneVytazenieC.GetValue() + " %";
+            AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " %";
+            AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " %";
+            AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " %";
         
             foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
         });
