@@ -372,14 +372,19 @@ public partial class MainWindow : Window
         {
             CurrentReplicationLabel.Content = i;
             CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4);
-            // AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " %";
-            // AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " %";
-            // AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " %";
-            AverageWorkloadAStolar.Content = (int)_stolaren.GlobalneVytazenieA.GetValue() + " %";
-            AverageWorkloadBStolar.Content = (int)_stolaren.GlobalneVytazenieB.GetValue() + " %";
-            AverageWorkloadCStolar.Content = (int)_stolaren.GlobalneVytazenieC.GetValue() + " %";
+            AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " % " +
+                                             " <" + Math.Round(_stolaren.GlobalneVytazenieA.GetConfidenceInterval().Item1, 4) + ";" +
+                                             "" + Math.Round(_stolaren.GlobalneVytazenieA.GetConfidenceInterval().Item2, 4) + ">";
+            AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " % " +
+                                             " <" + Math.Round(_stolaren.GlobalneVytazenieB.GetConfidenceInterval().Item1, 4) + ";" +
+                                             "" + Math.Round(_stolaren.GlobalneVytazenieB.GetConfidenceInterval().Item2, 4) + ">";
+            AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " % " +
+                                             " <" + Math.Round(_stolaren.GlobalneVytazenieC.GetConfidenceInterval().Item1, 4) + ";" +
+                                             "" + Math.Round(_stolaren.GlobalneVytazenieC.GetConfidenceInterval().Item2, 4) + ">";
             AverageObjednavkasNotStarted.Content =
-                Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
+                Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4) + "" +
+                " <" + Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetConfidenceInterval().Item2, 4) + ">";
             AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
         });
         
