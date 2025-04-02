@@ -112,19 +112,19 @@ public class Stolaren : SimulationCore
     protected override void AfterSimulation()
     {
         // vypis konecnych statistik
-        Console.WriteLine("montazne miesta pocet:");
-        Console.WriteLine(MontazneMiesta.Count);
-        Console.WriteLine("[seconds]");
-        Console.WriteLine("Priemerný počet objednávok:");
-        Console.WriteLine(GlobalnyPocetObjednavok.GetValue());
-        Console.WriteLine("Priemerný počet hotových objednávok:");
-        Console.WriteLine(GlobalnyPocetHotovychObjednavok.GetValue());
-        Console.WriteLine("Priemerny cas objednavky v systeme");
-        Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
-        Console.WriteLine("Priemerny pocet nezacatych objednavok");
-        Console.WriteLine(GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
-        if (GlobalnyPriemernyCasObjednavkyVSysteme.GetValue() < 16*60*60) Console.WriteLine("VYHOVUJE");
-        else Console.WriteLine("NEVYHOVUJE");
+        // Console.WriteLine("montazne miesta pocet:");
+        // Console.WriteLine(MontazneMiesta.Count);
+        // Console.WriteLine("[seconds]");
+        // Console.WriteLine("Priemerný počet objednávok:");
+        // Console.WriteLine(GlobalnyPocetObjednavok.GetValue());
+        // Console.WriteLine("Priemerný počet hotových objednávok:");
+        // Console.WriteLine(GlobalnyPocetHotovychObjednavok.GetValue());
+        // Console.WriteLine("Priemerny cas objednavky v systeme");
+        // Console.WriteLine(GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
+        // Console.WriteLine("Priemerny pocet nezacatych objednavok");
+        // Console.WriteLine(GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue());
+        // if (GlobalnyPriemernyCasObjednavkyVSysteme.GetValue() < 16*60*60) Console.WriteLine("VYHOVUJE");
+        // else Console.WriteLine("NEVYHOVUJE");
     }
 
     protected override void BeforeSimulationRun()
