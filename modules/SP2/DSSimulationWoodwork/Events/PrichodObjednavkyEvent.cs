@@ -39,7 +39,7 @@ public class PrichodObjednavkyEvent : SimulationEvent
                 break;
             }
 
-            if (stolar is not null) stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, stolar, objednavka), Time);
+            if (stolar is not null) stolaren.EventQueue.Enqueue(new PrebratieObjednavkyEvent(stolaren, Time, stolar, objednavka), Time);
             else stolaren.CakajuceNaRezanie.Enqueue(objednavka);
         }
         

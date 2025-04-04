@@ -40,6 +40,7 @@ public enum ObjednavkaType
 public enum ObjednavkaStatus
 {
     Unknown,
+    Preberana,
     CakajucaNaRezanie,
     PriebehRezania,
     CakajucaNaMorenie,

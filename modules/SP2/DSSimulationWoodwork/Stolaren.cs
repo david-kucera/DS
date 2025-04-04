@@ -46,6 +46,8 @@ public class Stolaren : SimulationCore
     public ExponentialGenerator PrichodObjednavokGenerator { get; set; } = null!;
     public Random ObjednavkaTypGenerator { get; set; } = null!;
     
+    public TriangularGenerator PrebratieObjednavokGenerator { get; set; } = null!;
+    
     public TriangularGenerator MontazneMiestoSkladGenerator { get; set; } = null!;
     public TriangularGenerator PripravaDrevaVSkladeGenerator { get; set; } = null!;
     public TriangularGenerator PresunMedziMontaznymiMiestamiGenerator { get; set; } = null!;
@@ -80,6 +82,8 @@ public class Stolaren : SimulationCore
     {
         PrichodObjednavokGenerator = new ExponentialGenerator(_seeder, 2.0 / 60 / 60);
         ObjednavkaTypGenerator = new Random(_seeder.Next());
+
+        PrebratieObjednavokGenerator = new TriangularGenerator(_seeder, 2.0 * 60, 8.0 * 60, 4.0 * 60);
         
         MontazneMiestoSkladGenerator = new TriangularGenerator(_seeder, 60.0, 480.0, 120.0);
         PripravaDrevaVSkladeGenerator = new TriangularGenerator(_seeder, 300.0, 900.0, 500.0);

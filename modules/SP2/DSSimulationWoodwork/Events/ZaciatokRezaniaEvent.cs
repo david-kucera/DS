@@ -26,28 +26,6 @@ public class ZaciatokRezaniaEvent : SimulationEvent
         _stolar.Workload.AddValue(_stolar.Obsadeny, Time);
         _stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.PriebehRezania;
-
-        // hladam volne montazne miesto pre objednavku
-        foreach (var mm in stolaren.MontazneMiesta)
-        {
-            if (mm.Objednavka == null || mm.Objednavka.Status == ObjednavkaStatus.Hotova)
-            {
-                _objednavka.MontazneMiesto = mm;
-                mm.Objednavka = _objednavka;
-                break;
-            }
-        }
-        // ak ho nenajdem, vytvorim nove
-        if (_objednavka.MontazneMiesto == null!)
-        {
-            var idNovehoMiesta = stolaren.MontazneMiesta.Count;
-            var montazneMiesto = new MontazneMiesto(idNovehoMiesta)
-            {
-                Objednavka = _objednavka,
-            };
-            stolaren.MontazneMiesta.Add(montazneMiesto);
-            _objednavka.MontazneMiesto = montazneMiesto;
-        }
         
         double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
         if (_stolar.MontazneMiesto != null)

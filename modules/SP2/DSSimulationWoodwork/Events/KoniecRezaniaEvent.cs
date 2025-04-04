@@ -56,7 +56,7 @@ public class KoniecRezaniaEvent : SimulationEvent
             if (stolar is null) throw new Exception("Nebol najdeny stolar!");
             
             var dalsiaObj = stolaren.CakajuceNaRezanie.Dequeue();
-            stolaren.EventQueue.Enqueue(new ZaciatokRezaniaEvent(stolaren, Time, stolar, dalsiaObj), Time);
+            stolaren.EventQueue.Enqueue(new PrebratieObjednavkyEvent(stolaren, Time, stolar, dalsiaObj), Time);
         }
     }
     #endregion // Public functions
