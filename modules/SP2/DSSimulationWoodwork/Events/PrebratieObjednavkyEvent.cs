@@ -17,8 +17,6 @@ public class PrebratieObjednavkyEvent : SimulationEvent
         Stolaren stolaren = Core as Stolaren ?? throw new InvalidOperationException();
         if (_stolar.Type != StolarType.A) throw new Exception("Zly stolar!");
         
-        //_stolar.Workload.AddValue(_stolar.Obsadeny, Time);
-        //_stolar.Obsadeny = true;
         _objednavka.Status = ObjednavkaStatus.Preberana;
         
         // hladam volne montazne miesto pre objednavku
