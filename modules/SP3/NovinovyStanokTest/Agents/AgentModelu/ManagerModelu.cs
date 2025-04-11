@@ -1,9 +1,10 @@
 using OSPABA;
 using Simulation;
+
 namespace Agents.AgentModelu
 {
 	//meta! id="1"
-	public class ManagerModelu : OSPABA.Manager
+	public class ManagerModelu : Manager
 	{
 		public ManagerModelu(int id, OSPABA.Simulation mySim, Agent myAgent) :
 			base(id, mySim, myAgent)
@@ -22,12 +23,16 @@ namespace Agents.AgentModelu
 			}
 		}
 
-		//meta! sender="AgentOkolia", id="6", type="Notice"
+		//meta! sender="AgentOkolia", id="8", type="Notice"
 		public void ProcessPrichodZakaznika(MessageForm message)
 		{
+			var mess = (MyMessage)message.CreateCopy();
+			mess.Addressee = MySim.FindAgent(SimId.AgentStanku);
+			mess.Code = Mc.Obsluha;
+			Request(mess);
 		}
 
-		//meta! sender="AgentObsluhy", id="11", type="Response"
+		//meta! sender="AgentStanku", id="9", type="Response"
 		public void ProcessObsluha(MessageForm message)
 		{
 		}
@@ -40,6 +45,15 @@ namespace Agents.AgentModelu
 			}
 		}
 
+		//meta! sender="AgentStanku", id="35", type="Notice"
+		public void ProcessNoticeKoniecObsluhy(MessageForm message)
+		{
+			var mess = (MyMessage)message.CreateCopy();
+			mess.Addressee = MySim.FindAgent(SimId.AgentOkolia);
+			mess.Code = Mc.OdchodZakaznika;
+			Notice(mess);
+		}
+
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		public void Init()
 		{
@@ -49,17 +63,21 @@ namespace Agents.AgentModelu
 		{
 			switch (message.Code)
 			{
-			case Mc.PrichodZakaznika:
-				ProcessPrichodZakaznika(message);
-			break;
+				case Mc.PrichodZakaznika:
+					ProcessPrichodZakaznika(message);
+					break;
 
-			case Mc.Obsluha:
-				ProcessObsluha(message);
-			break;
+				case Mc.NoticeKoniecObsluhy:
+					ProcessNoticeKoniecObsluhy(message);
+					break;
 
-			default:
-				ProcessDefault(message);
-			break;
+				case Mc.Obsluha:
+					ProcessObsluha(message);
+					break;
+
+				default:
+					ProcessDefault(message);
+					break;
 			}
 		}
 		//meta! tag="end"

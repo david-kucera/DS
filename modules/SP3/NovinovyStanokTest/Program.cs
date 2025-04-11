@@ -1,9 +1,12 @@
-﻿namespace NovinovyStanokTest;
+﻿using Simulation;
+
+namespace NovinovyStanokTest;
 
 class Program
 {
     static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        MySimulation sim = new();
+        sim.Simulate(10, 10_000_000);
     }
 }

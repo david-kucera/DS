@@ -1,10 +1,13 @@
 using OSPABA;
+
 namespace Simulation
 {
-	public class MyMessage : OSPABA.MessageForm
+	public class MyMessage : MessageForm
 	{
-		public MyMessage(OSPABA.Simulation mySim) :
-			base(mySim)
+		public double ZaciatokCakania { get; set; }
+		
+		public MyMessage(OSPABA.Simulation sim) :
+			base(sim)
 		{
 		}
 
@@ -12,14 +15,15 @@ namespace Simulation
 			base(original)
 		{
 			// copy() is called in superclass
+			ZaciatokCakania = original.ZaciatokCakania;
 		}
 
-		override public MessageForm CreateCopy()
+		public override MessageForm CreateCopy()
 		{
 			return new MyMessage(this);
 		}
 
-		override protected void Copy(MessageForm message)
+		protected override void Copy(MessageForm message)
 		{
 			base.Copy(message);
 			MyMessage original = (MyMessage)message;

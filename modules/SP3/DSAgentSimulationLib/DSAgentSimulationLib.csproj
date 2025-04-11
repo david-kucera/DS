@@ -9,4 +9,8 @@
         <IntermediateOutputPath>$(ProjectDir)..\..\..\tmp\$(Configuration)\$(Platform)\$(MSBuildProjectName)\obj</IntermediateOutputPath>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Generators\" />
+    </ItemGroup>
+
 </Project>

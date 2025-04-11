@@ -1,12 +1,13 @@
 using OSPABA;
 using Simulation;
 using Agents.AgentObsluhy.ContinualAssistants;
+
 namespace Agents.AgentObsluhy
 {
-	//meta! id="3"
-	public class AgentObsluhy : OSPABA.Agent
+	//meta! id="4"
+	public class AgentStanku : Agent
 	{
-		public AgentObsluhy(int id, OSPABA.Simulation mySim, Agent parent) :
+		public AgentStanku(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
 			Init();
@@ -21,10 +22,10 @@ namespace Agents.AgentObsluhy
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
 		{
-			new ManagerObsluhy(SimId.ManagerObsluhy, MySim, this);
+			new ManagerStanku(SimId.ManagerStanku, MySim, this);
 			new ProcesObsluhy(SimId.ProcesObsluhy, MySim, this);
+			AddOwnMessage(Mc.NoticeKoniecObsluhy);
 			AddOwnMessage(Mc.Obsluha);
-			AddOwnMessage(Mc.KoniecObsluhy);
 		}
 		//meta! tag="end"
 	}

@@ -1,9 +1,10 @@
 using OSPABA;
 using Simulation;
+
 namespace Agents.AgentOkolia
 {
-	//meta! id="2"
-	public class ManagerOkolia : OSPABA.Manager
+	//meta! id="3"
+	public class ManagerOkolia : Manager
 	{
 		public ManagerOkolia(int id, OSPABA.Simulation mySim, Agent myAgent) :
 			base(id, mySim, myAgent)
@@ -22,23 +23,8 @@ namespace Agents.AgentOkolia
 			}
 		}
 
-		//meta! sender="AgentModelu", id="9", type="Notice"
-		public void ProcessOdchodZakaznika(MessageForm message)
-		{
-		}
-
-		//meta! sender="PlanovacPrichodov", id="16", type="Finish"
+		//meta! sender="PlanovacPrichodov", id="12", type="Finish"
 		public void ProcessFinish(MessageForm message)
-		{
-		}
-
-		//meta! sender="AgentModelu", id="10", type="Notice"
-		public void ProcessInicializacia(MessageForm message)
-		{
-		}
-
-		//meta! sender="AgentModelu", id="8", type="Notice"
-		public void ProcessNovyZakaznik(MessageForm message)
 		{
 		}
 
@@ -48,6 +34,30 @@ namespace Agents.AgentOkolia
 			switch (message.Code)
 			{
 			}
+		}
+
+		//meta! sender="AgentModelu", id="20", type="Notice"
+		public void ProcessOdchodZakaznika(MessageForm message)
+		{
+		}
+
+		//meta! sender="AgentModelu", id="23", type="Notice"
+		public void ProcessInicializacia(MessageForm message)
+		{
+			message.Addressee = MyAgent.FindAssistant(SimId.PlanovacPrichodov);
+			StartContinualAssistant(message);
+		}
+
+		//meta! sender="AgentModelu", id="30", type="Notice"
+		public void ProcessNoticeNovyZakaznik(MessageForm message)
+		{
+			var msg = (MyMessage)message.CreateCopy();
+			msg.Addressee = MySim.FindAgent(SimId.AgentModelu);
+			msg.Code = Mc.PrichodZakaznika;
+			Notice(new MyMessage(msg));
+			
+			msg.Addressee = MyAgent.FindAssistant(SimId.PlanovacPrichodov);
+			StartContinualAssistant(new MyMessage(msg));
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -63,12 +73,12 @@ namespace Agents.AgentOkolia
 				ProcessOdchodZakaznika(message);
 			break;
 
-			case Mc.NovyZakaznik:
-				ProcessNovyZakaznik(message);
-			break;
-
 			case Mc.Finish:
 				ProcessFinish(message);
+			break;
+
+			case Mc.NoticeNovyZakaznik:
+				ProcessNoticeNovyZakaznik(message);
 			break;
 
 			case Mc.Inicializacia:
