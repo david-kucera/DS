@@ -1,10 +1,9 @@
 using OSPABA;
 using Simulation;
-
 namespace Agents.AgentModelu
 {
 	//meta! id="1"
-	public class ManagerModelu : Manager
+	public class ManagerModelu : OSPABA.Manager
 	{
 		public ManagerModelu(int id, OSPABA.Simulation mySim, Agent myAgent) :
 			base(id, mySim, myAgent)
@@ -26,13 +25,13 @@ namespace Agents.AgentModelu
 		//meta! sender="AgentOkolia", id="8", type="Notice"
 		public void ProcessPrichodZakaznika(MessageForm message)
 		{
-			var mess = (MyMessage)message.CreateCopy();
-			mess.Addressee = MySim.FindAgent(SimId.AgentStanku);
-			mess.Code = Mc.Obsluha;
-			Request(mess);
+			//pokial nam pride oznamenie o prichode zakaznika do systemu tak poziadame agenta cerpacej stanice o obsluhu
+			message.Code = Mc.Obsluha;
+			message.Addressee = MySim.FindAgent(SimId.AgentObsluhy);
+			Request(message);
 		}
 
-		//meta! sender="AgentStanku", id="9", type="Response"
+		//meta! sender="AgentObsluhy", id="9", type="Response"
 		public void ProcessObsluha(MessageForm message)
 		{
 		}
@@ -42,16 +41,19 @@ namespace Agents.AgentModelu
 		{
 			switch (message.Code)
 			{
-			}
-		}
+				case Mc.Inicializacia:
+					//ak nam pride inicializacna sprava, posleme ju dalej agentovi okolia
+					message.Addressee = MySim.FindAgent(SimId.AgentOkolia);
+					Notice(message);
+					break;
 
-		//meta! sender="AgentStanku", id="35", type="Notice"
-		public void ProcessNoticeKoniecObsluhy(MessageForm message)
-		{
-			var mess = (MyMessage)message.CreateCopy();
-			mess.Addressee = MySim.FindAgent(SimId.AgentOkolia);
-			mess.Code = Mc.OdchodZakaznika;
-			Notice(mess);
+				case Mc.KoniecObsluhyZakaznika:
+					//ked skonci agent cerpacej stanice obsluhu zakaznika, oznamime to agentovi okolia
+					message.Code = Mc.OdchodZakaznika;
+					message.Addressee = MySim.FindAgent(SimId.AgentOkolia);
+					Notice(message);
+					break;
+			}
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -63,21 +65,17 @@ namespace Agents.AgentModelu
 		{
 			switch (message.Code)
 			{
-				case Mc.PrichodZakaznika:
-					ProcessPrichodZakaznika(message);
-					break;
+			case Mc.PrichodZakaznika:
+				ProcessPrichodZakaznika(message);
+			break;
 
-				case Mc.NoticeKoniecObsluhy:
-					ProcessNoticeKoniecObsluhy(message);
-					break;
+			case Mc.Obsluha:
+				ProcessObsluha(message);
+			break;
 
-				case Mc.Obsluha:
-					ProcessObsluha(message);
-					break;
-
-				default:
-					ProcessDefault(message);
-					break;
+			default:
+				ProcessDefault(message);
+			break;
 			}
 		}
 		//meta! tag="end"

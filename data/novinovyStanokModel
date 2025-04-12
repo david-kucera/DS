@@ -2,19 +2,10 @@
 <ABAsim>
   <Agents>
     <Agent>
-      <SimId>1</SimId>
-      <InternalId>1</InternalId>
-      <Name>AgentModelu</Name>
-      <Bounds>626,174,180,180</Bounds>
-      <Reasoner>ManagerModelu</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
       <SimId>3</SimId>
       <InternalId>3</InternalId>
       <Name>AgentOkolia</Name>
-      <Bounds>186,611,180,180</Bounds>
+      <Bounds>185,608,180,180</Bounds>
       <Reasoner>ManagerOkolia</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -23,7 +14,7 @@
           <SimId>1001</SimId>
           <InternalId>11</InternalId>
           <Name>PlanovacPrichodov</Name>
-          <Bounds>70,101,35,13</Bounds>
+          <Bounds>72,100,35,13</Bounds>
         </Scheduler>
       </Components>
     </Agent>
@@ -31,7 +22,7 @@
       <SimId>4</SimId>
       <InternalId>4</InternalId>
       <Name>AgentObsluhy</Name>
-      <Bounds>948,778,180,180</Bounds>
+      <Bounds>948,777,180,180</Bounds>
       <Reasoner>ManagerObsluhy</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
@@ -40,20 +31,21 @@
           <SimId>1002</SimId>
           <InternalId>14</InternalId>
           <Name>ProcesObsluhy</Name>
-          <Bounds>72,104,35,18</Bounds>
+          <Bounds>74,104,35,18</Bounds>
         </Process>
       </Components>
     </Agent>
+    <Agent>
+      <SimId>1</SimId>
+      <InternalId>1</InternalId>
+      <Name>AgentModelu</Name>
+      <Bounds>626,174,180,180</Bounds>
+      <Reasoner>ManagerModelu</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
   </Agents>
   <Messages>
-    <Message>
-      <SimId>1008</SimId>
-      <InternalId>35</InternalId>
-      <Name>KoniecObsluhy</Name>
-      <Type>Notice</Type>
-      <Source>4</Source>
-      <Destination>1</Destination>
-    </Message>
     <Message>
       <SimId>1003</SimId>
       <InternalId>20</InternalId>
@@ -99,26 +91,10 @@
       <Destination>4</Destination>
     </Message>
     <Message>
-      <SimId>1006</SimId>
-      <InternalId>27</InternalId>
-      <Name>KoniecObsluhy</Name>
-      <Type>Notice</Type>
-      <Source>1</Source>
-      <Destination>4</Destination>
-    </Message>
-    <Message>
       <InternalId>12</InternalId>
       <Type>StartFinish</Type>
       <Source>3</Source>
       <Destination>11</Destination>
-    </Message>
-    <Message>
-      <SimId>1007</SimId>
-      <InternalId>30</InternalId>
-      <Name>NovyZakaznik</Name>
-      <Type>Notice</Type>
-      <Source>1</Source>
-      <Destination>3</Destination>
     </Message>
     <Message>
       <InternalId>15</InternalId>
@@ -127,5 +103,5 @@
       <Destination>14</Destination>
     </Message>
   </Messages>
-  <IID>36</IID>
+  <IID>41</IID>
 </ABAsim>

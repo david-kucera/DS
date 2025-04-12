@@ -1,12 +1,14 @@
 using OSPABA;
 using Agents.AgentObsluhy;
+using OSPRNG;
 using Simulation;
-
 namespace Agents.AgentObsluhy.ContinualAssistants
 {
 	//meta! id="14"
-	public class ProcesObsluhy : Process
+	public class ProcesObsluhy : OSPABA.Process
 	{
+		private ExponentialRNG _obsluhaGenerator = new ExponentialRNG(45);
+		
 		public ProcesObsluhy(int id, OSPABA.Simulation mySim, CommonAgent myAgent) :
 			base(id, mySim, myAgent)
 		{
@@ -18,12 +20,12 @@ namespace Agents.AgentObsluhy.ContinualAssistants
 			// Setup component for the next replication
 		}
 
-		//meta! sender="AgentStanku", id="15", type="Start"
+		//meta! sender="AgentObsluhy", id="15", type="Start"
 		public void ProcessStart(MessageForm message)
 		{
-			var msg = (MyMessage)message.CreateCopy();
-			msg.Code = Mc.NoticeKoniecObsluhy;
-			Hold(((MySimulation)MySim).ObsluhaGenerator.Sample(), msg);
+			//ked nas spusti manazer cerpacej stanice, tak posielame spravu sebe a medzitym cakame kym ubehne vygenerovany cas
+			message.Code = Mc.KoniecObsluhyZakaznika;
+			Hold(_obsluhaGenerator.Sample(), message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -31,14 +33,12 @@ namespace Agents.AgentObsluhy.ContinualAssistants
 		{
 			switch (message.Code)
 			{
+				case Mc.KoniecObsluhyZakaznika:
+					//po skonceni obsluhy oznamime agentovi cerpacej stanice koniec obsluhy
+					message.Addressee = MyAgent;
+					AssistantFinished(message);
+					break;
 			}
-		}
-
-		//meta! sender="AgentStanku", id="34", type="Notice"
-		public void ProcessNoticeKoniecObsluhy(MessageForm message)
-		{
-			message.Addressee = MyAgent;
-			AssistantFinished(message);
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -46,25 +46,21 @@ namespace Agents.AgentObsluhy.ContinualAssistants
 		{
 			switch (message.Code)
 			{
-				case Mc.Start:
-					ProcessStart(message);
-					break;
+			case Mc.Start:
+				ProcessStart(message);
+			break;
 
-				case Mc.NoticeKoniecObsluhy:
-					ProcessNoticeKoniecObsluhy(message);
-					break;
-
-				default:
-					ProcessDefault(message);
-					break;
+			default:
+				ProcessDefault(message);
+			break;
 			}
 		}
 		//meta! tag="end"
-		public new AgentStanku MyAgent
+		public new AgentObsluhy MyAgent
 		{
 			get
 			{
-				return (AgentStanku)base.MyAgent;
+				return (AgentObsluhy)base.MyAgent;
 			}
 		}
 	}

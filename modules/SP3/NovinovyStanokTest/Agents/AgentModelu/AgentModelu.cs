@@ -1,6 +1,5 @@
 using OSPABA;
 using Simulation;
-
 namespace Agents.AgentModelu
 {
 	//meta! id="1"
@@ -16,13 +15,15 @@ namespace Agents.AgentModelu
 		{
 			base.PrepareReplication();
 			// Setup component for the next replication
+			AddOwnMessage(Mc.KoniecObsluhyZakaznika);
 			
-			var message = new MyMessage(MySim)
+			//vytvorime pociatocnu spravu a posleme ju nasmu manazerovi aby sme odstartovali simulaciu
+			var sprava = new MyMessage(MySim)
 			{
 				Addressee = this,
 				Code = Mc.Inicializacia
 			};
-			MyManager.Notice(message);
+			MyManager.Notice(sprava);
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -30,7 +31,6 @@ namespace Agents.AgentModelu
 		{
 			new ManagerModelu(SimId.ManagerModelu, MySim, this);
 			AddOwnMessage(Mc.PrichodZakaznika);
-			AddOwnMessage(Mc.NoticeKoniecObsluhy);
 			AddOwnMessage(Mc.Obsluha);
 		}
 		//meta! tag="end"
