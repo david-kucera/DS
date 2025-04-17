@@ -9,4 +9,10 @@
         <IntermediateOutputPath>$(ProjectDir)..\..\..\tmp\$(Configuration)\$(Platform)\$(MSBuildProjectName)\obj</IntermediateOutputPath>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Reference Include="ABACore">
+        <HintPath>..\..\..\externals\ABACore.dll</HintPath>
+      </Reference>
+    </ItemGroup>
+
 </Project>
