@@ -2,8 +2,148 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        xmlns:plot="clr-namespace:ScottPlot.Avalonia;assembly=ScottPlot.Avalonia"
+        mc:Ignorable="d" d:DesignWidth="1920" d:DesignHeight="1080"
         x:Class="DSAgentSimulationVisualization.MainWindow"
-        Title="DSAgentSimulationVisualization">
-    Welcome to Avalonia!
+        Width="1920" Height="1080"
+        Title="Udalostná simulácia stolárskej dielne - Najlepší nábytok s.r.o">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- Simulation options inputs -->
+        <Border Grid.Row="0" BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5" Margin="5">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
+                    <TextBlock Text="Počet replikácií:" VerticalAlignment="Center"/>
+                    <TextBox Name="ReplicationCountInput" Text="1" Width="100" Margin="10 0"/>
+                    <TextBlock Text="Násada:" VerticalAlignment="Center"/>
+                    <TextBox Name="SeedInput" Text="0" Width="50" Margin="10 0"/>
+                    <TextBlock Text="Preskoč prvých:" VerticalAlignment="Center"/>
+                    <TextBox Name="SkipInput" Text="5" Width="25"/>
+                    <TextBlock Text="% hodnôt" Margin="7"/>
+                    <TextBlock Text="Vykresli každú n-tú hodnotu:" VerticalAlignment="Center"/>
+                    <TextBox Name="IntervalInput" Text="1000" Width="50"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+                    <Label Content="Počet A:" VerticalAlignment="Center"/>
+                    <TextBox Name="ACountInput" Text="1" Width="50" Margin="10 0"/>
+                    <Label Content="Počet B:" VerticalAlignment="Center"/>
+                    <TextBox Name="BCountInput" Text="1" Width="50" Margin="10 0"/>
+                    <Label Content="Počet C:" VerticalAlignment="Center"/>
+                    <TextBox Name="CCountInput" Text="1" Width="50"/>
+                </StackPanel>
+
+                <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5">
+                    <Button Name="SpustiButton" Content="Spusti" Margin="5" Click="SpustiButton_OnClick"/>
+                    <Button Name="PozastavButton" Content="Pozastav" Margin="5" Click="PozastavButton_OnClick"/>
+                    <Button Name="PokracujButton" Content="Pokračuj" Margin="5" Click="PokracujButton_OnClick"/>
+                    <Button Name="UkonciButton" Content="Ukonči" Margin="5" Click="UkonciButton_OnClick"/>
+                </StackPanel>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
+                    <Button Name="SpomalButton" HorizontalContentAlignment="Center" Click="SpomalButton_OnClick" Width="100" IsEnabled="False">Spomal</Button>
+                    <Label Name="SpeedLabel" VerticalAlignment="Center" VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Width="100" Margin="5,10,5,5">1x</Label>
+                    <Button Name="ZrychliButton" HorizontalContentAlignment="Center" Click="ZrychliButton_OnClick" Width="100">Zrýchli</Button>
+                    <CheckBox Name="VirtualSpeedCheckBox" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
+                </StackPanel>
+            </Grid>
+        </Border>
+        
+        <!-- Simulation stats and status -->
+        <Border Grid.Row="1" BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5" Margin="5">
+            <Grid Margin="0 10 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                
+                <StackPanel Orientation="Horizontal" Grid.Row="0" Grid.Column="0" Margin="5">
+                    <Label Content="Aktuálny simulačný čas: " FontSize="14"/>
+                    <Label Name="CurrentSimulationTime" Content="06:00:00" Width="80" FontSize="14" FontWeight="Bold"/>
+                    <Label Content="Deň:" FontSize="14"/>
+                    <Label Name="CurrentSimulationDay" Content="1" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+                    
+                <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5">
+                    <Label Content="Rad rezanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueRezanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad morenie:" FontSize="14"/>
+                    <Label Name="WaitingQueueMorenie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad skladanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueSkladanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Rad kovanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueKovanie" Content="0" FontSize="14" FontWeight="Bold"/>
+                    
+                    <Label Content="Počet objednávok:" FontSize="14"/>
+                    <Label Name="NumberOfOrders" Content="0" FontSize="14"/>
+                    
+                    <Label Content="Počet hotových:" FontSize="14"/>
+                    <Label Name="NumberOfFinishedOrders" Content="0" FontSize="14"/>
+                </StackPanel>
+                
+                <Border Grid.Row="2" Grid.Column="0" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">
+                    <ScrollViewer>
+                        <ItemsControl x:Name="ItemsControlMontazneMiesta"/>
+                    </ScrollViewer>
+                </Border>
+                
+                <Border Grid.Row="0" Grid.RowSpan="3" Grid.Column="1" BorderThickness="1" BorderBrush="LightGray" Padding="5" Margin="5">
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <Label Content="Priemerný čas objednávky v systéme:" FontSize="14"/>
+                        <Label Name="AverageObjednavkaTimeInSystem" Content="0" FontSize="14" FontWeight="Bold"/>
+                        
+                        <Label Content="Priemerný počet nezačatých objednávok:" FontSize="14"/>
+                        <Label Name="AverageObjednavkasNotStarted" Content="0" FontSize="14" FontWeight="Bold"/>
+                        
+                        <Label Content="Priemerná vyťaženosť stolárov typu A:" FontSize="14"/>
+                        <Label Name="AverageWorkloadAStolar" Content="0" FontSize="14" FontWeight="Bold"/>
+                        
+                        <Label Content="Priemerná vyťaženosť stolárov typu B:" FontSize="14"/>
+                        <Label Name="AverageWorkloadBStolar" Content="0" FontSize="14" FontWeight="Bold"/>
+                        
+                        <Label Content="Priemerná vyťaženosť stolárov typu C:" FontSize="14"/>
+                        <Label Name="AverageWorkloadCStolar" Content="0" FontSize="14" FontWeight="Bold"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+        </Border>
+        
+        <!-- Replications graph and statistics -->
+        <Border Grid.Row="2" BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5" Margin="5">
+            <Grid Margin="0 10 0 0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal">
+                    <Label Content="Replikácia: " FontSize="14"></Label>
+                    <Label Content="1" Name="CurrentReplicationLabel" FontWeight="Bold" Width="100"></Label>
+                    
+                    <TextBlock Text="Priemerný čas objednávky v systéme: " FontSize="14"/>
+                    <Label Name="CurrentValueLabel" Content="0.0" FontSize="14" FontWeight="Bold"/>
+                </StackPanel>
+                <plot:AvaPlot Name="StabilizationPlot" Grid.Row="1" Margin="5"/>
+            </Grid>
+        </Border>
+    </Grid>
 </Window>
