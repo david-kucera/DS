@@ -10,13 +10,13 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Reference Include="ABACore">
-        <HintPath>..\..\..\externals\ABACore.dll</HintPath>
-      </Reference>
+      <ProjectReference Include="..\DSAgentSimulationLib\DSAgentSimulationLib.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Entities\" />
+      <Reference Include="ABACore">
+        <HintPath>..\..\..\externals\ABACore.dll</HintPath>
+      </Reference>
     </ItemGroup>
 
 </Project>
