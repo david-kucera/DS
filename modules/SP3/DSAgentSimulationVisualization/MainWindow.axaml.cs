@@ -1,11 +1,13 @@
 using System;
 using System.Threading.Tasks;
 using Avalonia.Controls;
+using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ScottPlot;
 using ScottPlot.Plottables;
+using Simulation;
 
 namespace DSAgentSimulationVisualization;
 
@@ -19,10 +21,8 @@ public partial class MainWindow : Window
     private DataLogger _replicationValuesMean = new();
     private DataLogger _replicationValuesTop = new();
     private DataLogger _replicationValuesBottom = new();
-    private Multipliers _multiplierType = Multipliers.One;
-    private double _multiplier = 1.0;
     private bool _ignoreData = false;
-    // private Stolaren _stolaren;
+    private MySimulation _stolaren;
     #endregion // Class members
     
     #region Constructor
@@ -44,34 +44,58 @@ public partial class MainWindow : Window
     #region Private functions
     private void StartSimulation(int numReps, int seed, int a, int b, int c)
     {
-        Random rnd = new Random(seed);
+        Random seeder = new Random(seed);
         _dataCounter = 0;
         _totalValuesProcessed = 0;
-        _multiplier = 1.0;
-        _multiplierType = Multipliers.One;
-        VykresliRychlost();
-        
-        if (VirtualSpeedCheckBox.IsChecked == false)
-        {
-            // _stolaren = new Stolaren(rnd, a, b, c, false);
-            // _stolaren.NewSimulationData += SimulationData;
-            // _stolaren.NewSimulationTime += SimulationTime;
-        }
-        else
-        {
-            // _stolaren = new Stolaren(rnd, a, b, c, true);
-            // _stolaren.NewReplicationData += ReplicationData;
-        }
-        // _stolaren.StopSimulation += SimulationEnd;
-        // Task.Run(() => _stolaren.Run(numReps)) ;
+
+        _stolaren = new MySimulation();
+        _stolaren.OnRefreshUI(RefreshUI);
+        _stolaren.OnReplicationDidFinish(ReplicationDidFinish);
+        _stolaren.OnSimulationDidFinish(SimulationDidFinish);
+        // TODO pouzit seeder v simulacii
+        Task.Run(() => _stolaren.Start(numReps, 8 * 60 * 60));
     }
 
-    private void SimulationEnd(EventArgs obj)
+    private void SimulationDidFinish(OSPABA.Simulation obj)
     {
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            UkonciButton_OnClick(null, null!);
-        });
+	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+	    {
+		    UkonciButton_OnClick(null, null!);
+	    });
+	}
+
+    private void ReplicationDidFinish(OSPABA.Simulation obj)
+    {
+	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+	    {
+		    ItemsControlMontazneMiesta.Items.Clear();
+		    // WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
+		    // WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
+		    // WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
+		    // WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
+
+		    CurrentReplicationLabel.Content = "1";
+
+		    // NumberOfOrders.Content = _stolaren.PoradieObjednavky;
+		    // NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
+
+		    // AverageObjednavkaTimeInSystem.Content = Math.Round(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue(), 4) 
+		    // + "<" + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
+		    // + ", " + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4) 
+		    // + ">";
+		    // AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
+
+		    // AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " %";
+		    // AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " %";
+		    // AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " %";
+
+		    // foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
+	    });
+	}
+
+    private void RefreshUI(OSPABA.Simulation sim)
+    {
+	    SimulationTime(sim.CurrentTime);
     }
     
     private void Start()
@@ -148,15 +172,9 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = false;
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = false;
-        
-        if (VirtualSpeedCheckBox.IsChecked == false) ReplicationEnd();
 
         VirtualSpeedCheckBox.IsEnabled = true;
-        // _stolaren.Stop();
-        // _stolaren.NewSimulationData -= SimulationData;
-        // _stolaren.NewSimulationTime -= SimulationTime;
-        // _stolaren.NewReplicationData -= ReplicationData;
-        // _stolaren.StopSimulation -= SimulationEnd;
+        _stolaren.Stop();
     }
     
     private void PozastavButton_OnClick(object? sender, RoutedEventArgs e)
@@ -165,7 +183,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = false;
         PokracujButton.IsEnabled = true;
-        // _stolaren.Pause();
+        _stolaren.Pause();
     }
 
     private void PokracujButton_OnClick(object? sender, RoutedEventArgs e)
@@ -174,126 +192,7 @@ public partial class MainWindow : Window
         UkonciButton.IsEnabled = true;
         PozastavButton.IsEnabled = true;
         PokracujButton.IsEnabled = false;
-        // _stolaren.Continue();
-    }
-    
-    private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
-    {
-        if (VirtualSpeedCheckBox.IsChecked == true)
-        {
-            SpomalButton.IsEnabled = false;
-            ZrychliButton.IsEnabled = false;
-        }
-        else VykresliRychlost();
-    }
-
-    private void ZrychliButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (_multiplierType == Multipliers.TenMillion)
-        {
-            VykresliRychlost();
-            return;
-        }
-        
-        _multiplierType++;
-        VykresliRychlost();
-        // _stolaren.Multiplier = _multiplier;
-    }
-
-    private void SpomalButton_OnClick(object? sender, RoutedEventArgs e)
-    {
-        if (_multiplierType == Multipliers.One)
-        {
-            VykresliRychlost();
-            return;
-        }
-        
-        _multiplierType--;
-        VykresliRychlost();
-        // _stolaren.Multiplier = _multiplier;
-    }
-
-    private void VykresliRychlost()
-    {
-        switch (_multiplierType)
-        {
-            case Multipliers.One:
-                _multiplier = 1.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "1x";
-                break;
-            case Multipliers.Two:
-                _multiplier = 2.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "2x";
-                break;
-            case Multipliers.Five:
-                _multiplier = 5.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "5x";
-                break;
-            case Multipliers.Ten:
-                _multiplier = 10.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "10x";
-                break;
-            case Multipliers.TwentyFive:
-                _multiplier = 25.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "25x";
-                break;
-            case Multipliers.Fifty:
-                _multiplier = 50.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "50x";
-                break;
-            case Multipliers.Hundred:
-                _multiplier = 100.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "100x";
-                break;
-            case Multipliers.TwoHundredFifty:
-                _multiplier = 250.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "250x";
-                break;
-            case Multipliers.FiveHundred:
-                _multiplier = 500.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "500x";
-                break;
-            case Multipliers.Thousand:
-                _multiplier = 1_000.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "1 000x";
-                break;
-            case Multipliers.TenThousand:
-                _multiplier = 10_000.0;
-                _ignoreData = false;
-                SpeedLabel.Content = "10 000x";
-                break;
-            case Multipliers.HundredThousand:
-                _multiplier = 100_000.0;
-                _ignoreData = true;
-                SpeedLabel.Content = "100 000x";
-                break;
-            case Multipliers.Million:
-                _multiplier = 1_000_000.0;
-                _ignoreData = true;
-                SpeedLabel.Content = "1 000 000x";
-                break;
-            case Multipliers.TenMillion:
-                _multiplier = 10_000_000.0;
-                _ignoreData = true;
-                SpeedLabel.Content = "10 000 000x";
-                break;
-        }
-        
-        if (_multiplierType == Multipliers.TenMillion) ZrychliButton.IsEnabled = false;
-        else ZrychliButton.IsEnabled = true;
-        
-        if (_multiplierType == Multipliers.One) SpomalButton.IsEnabled = false;
-        else SpomalButton.IsEnabled = true;
+        _stolaren.Resume();
     }
 
     private void SimulationTime(double time)
@@ -410,35 +309,6 @@ public partial class MainWindow : Window
         //     StabilizationPlot.Refresh();
         // });
     }
-    
-    private void ReplicationEnd()
-    {
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            ItemsControlMontazneMiesta.Items.Clear();
-            // WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
-            // WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
-            // WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
-            // WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
-
-            CurrentReplicationLabel.Content = "1";
-            
-            // NumberOfOrders.Content = _stolaren.PoradieObjednavky;
-            // NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
-
-            // AverageObjednavkaTimeInSystem.Content = Math.Round(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue(), 4) 
-                                                    // + "<" + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
-                                                    // + ", " + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4) 
-                                                    // + ">";
-            // AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.GlobalnyPriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
-        
-            // AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " %";
-            // AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " %";
-            // AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " %";
-        
-            // foreach (var mm in _stolaren.MontazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
-        });
-    }
 
     private string FormatTimeAndDay(double time)
     {
@@ -464,5 +334,37 @@ public partial class MainWindow : Window
     {
         return (int)(time / (8 * 60 * 60)) + 1;
     }
+
+    private void DurationSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+	    SetSimulationSpeed();
+    }
+
+    private void IntervalSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
+    {
+	    SetSimulationSpeed();
+    }
+
+    private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+	    SetSimulationSpeed();
+    }
+
+	private void SetSimulationSpeed()
+    {
+        if (DurationSlider == null || IntervalSlider == null || _stolaren == null) return;
+
+		double durationValue = DurationSlider.Value;
+		double intervalValue = IntervalSlider.Value;
+
+		if (VirtualSpeedCheckBox.IsChecked == true)
+		{
+            _stolaren.SetMaxSimSpeed();
+		}
+		else
+		{
+            _stolaren.SetSimSpeed(intervalValue, durationValue);
+		}
+	}
     #endregion // Private functions
 }

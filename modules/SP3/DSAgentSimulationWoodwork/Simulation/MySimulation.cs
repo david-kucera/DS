@@ -42,6 +42,26 @@ namespace Simulation
 			base.SimulationFinished();
 		}
 
+		public void Start(int repCount, double endTime)
+		{
+			Simulate(repCount, endTime);
+		}
+
+		public void Pause()
+		{
+			PauseSimulation();
+		}
+
+		public void Resume()
+		{
+			ResumeSimulation();
+		}
+
+		public void Stop()
+		{
+			StopSimulation();
+		}
+
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
 		{
