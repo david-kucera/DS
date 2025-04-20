@@ -2,6 +2,14 @@
 <ABAsim>
   <Agents>
     <Agent>
+      <SimId>11</SimId>
+      <InternalId>19</InternalId>
+      <Name>AgentObjednavok</Name>
+      <Bounds>2079,863,180,180</Bounds>
+      <Reasoner>ManagerObjednavok</Reasoner>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
       <SimId>2</SimId>
       <InternalId>2</InternalId>
       <Name>AgentOkolia</Name>
@@ -26,18 +34,60 @@
       <Reasoner>ManagerBStolar</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>4</SimId>
+      <InternalId>4</InternalId>
+      <Name>AgentAStolar</Name>
+      <Bounds>1145,1605,180,180</Bounds>
+      <Reasoner>ManagerAStolar</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>7</SimId>
+      <InternalId>7</InternalId>
+      <Name>AgentStolarov</Name>
+      <Bounds>1498,1126,180,180</Bounds>
+      <Reasoner>ManagerStolarov</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
       <Components>
         <Process>
-          <SimId>1005</SimId>
-          <InternalId>36</InternalId>
-          <Name>ProcessSkladanie</Name>
-          <Bounds>112,94,35,18</Bounds>
+          <SimId>1016</SimId>
+          <InternalId>109</InternalId>
+          <Name>ProcessMontazKovani</Name>
+          <Bounds>138,70,35,18</Bounds>
         </Process>
         <Process>
-          <SimId>1006</SimId>
-          <InternalId>38</InternalId>
+          <SimId>1011</SimId>
+          <InternalId>99</InternalId>
           <Name>ProcessPresun</Name>
-          <Bounds>20,95,35,18</Bounds>
+          <Bounds>6,74,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1014</SimId>
+          <InternalId>105</InternalId>
+          <Name>ProcessLakovanie</Name>
+          <Bounds>104,123,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1015</SimId>
+          <InternalId>107</InternalId>
+          <Name>ProcessSkladanie</Name>
+          <Bounds>130,97,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1012</SimId>
+          <InternalId>101</InternalId>
+          <Name>ProcessRezanie</Name>
+          <Bounds>21,103,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1013</SimId>
+          <InternalId>103</InternalId>
+          <Name>ProcessMorenie</Name>
+          <Bounds>56,124,35,18</Bounds>
         </Process>
       </Components>
     </Agent>
@@ -49,61 +99,6 @@
       <Reasoner>ManagerCStolar</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Process>
-          <SimId>1009</SimId>
-          <InternalId>45</InternalId>
-          <Name>ProcessMontovanieKovani</Name>
-          <Bounds>127,91,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1007</SimId>
-          <InternalId>41</InternalId>
-          <Name>ProcessPresun</Name>
-          <Bounds>15,72,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1010</SimId>
-          <InternalId>47</InternalId>
-          <Name>ProcessLakovanie</Name>
-          <Bounds>87,71,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1008</SimId>
-          <InternalId>43</InternalId>
-          <Name>ProcessMorenie</Name>
-          <Bounds>55,91,35,18</Bounds>
-        </Process>
-      </Components>
-    </Agent>
-    <Agent>
-      <SimId>4</SimId>
-      <InternalId>4</InternalId>
-      <Name>AgentAStolar</Name>
-      <Bounds>1151,1605,180,180</Bounds>
-      <Reasoner>ManagerAStolar</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Process>
-          <SimId>1003</SimId>
-          <InternalId>31</InternalId>
-          <Name>ProcessRezanie</Name>
-          <Bounds>67,98,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1002</SimId>
-          <InternalId>29</InternalId>
-          <Name>ProcessPresun</Name>
-          <Bounds>25,97,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1004</SimId>
-          <InternalId>33</InternalId>
-          <Name>ProcessMontovanieKovani</Name>
-          <Bounds>108,98,35,18</Bounds>
-        </Process>
-      </Components>
     </Agent>
     <Agent>
       <SimId>1</SimId>
@@ -115,35 +110,19 @@
       <UsePetriNet>false</UsePetriNet>
     </Agent>
     <Agent>
-      <SimId>10</SimId>
-      <InternalId>18</InternalId>
-      <Name>AgentStolarskejDielne</Name>
-      <Bounds>1487,530,180,180</Bounds>
-      <Reasoner>ManagerStolarskejDielne</Reasoner>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>7</SimId>
-      <InternalId>7</InternalId>
-      <Name>AgentStolarov</Name>
-      <Bounds>1498,1126,180,180</Bounds>
-      <Reasoner>ManagerStolarov</Reasoner>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>11</SimId>
-      <InternalId>19</InternalId>
-      <Name>AgentObjednavok</Name>
-      <Bounds>2079,863,180,180</Bounds>
-      <Reasoner>ManagerObjednavok</Reasoner>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
       <SimId>8</SimId>
       <InternalId>8</InternalId>
       <Name>AgentMontaznychMiest</Name>
       <Bounds>930,895,180,180</Bounds>
       <Reasoner>ManagerMontaznychMiest</Reasoner>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>10</SimId>
+      <InternalId>18</InternalId>
+      <Name>AgentStolarskejDielne</Name>
+      <Bounds>1487,530,180,180</Bounds>
+      <Reasoner>ManagerStolarskejDielne</Reasoner>
       <UsePetriNet>false</UsePetriNet>
     </Agent>
   </Agents>
@@ -307,58 +286,40 @@
       <Destination>19</Destination>
     </Message>
     <Message>
-      <InternalId>30</InternalId>
+      <InternalId>100</InternalId>
       <Type>StartFinish</Type>
-      <Source>4</Source>
-      <Destination>29</Destination>
+      <Source>7</Source>
+      <Destination>99</Destination>
     </Message>
     <Message>
-      <InternalId>32</InternalId>
+      <InternalId>102</InternalId>
       <Type>StartFinish</Type>
-      <Source>4</Source>
-      <Destination>31</Destination>
+      <Source>7</Source>
+      <Destination>101</Destination>
     </Message>
     <Message>
-      <InternalId>34</InternalId>
+      <InternalId>104</InternalId>
       <Type>StartFinish</Type>
-      <Source>4</Source>
-      <Destination>33</Destination>
+      <Source>7</Source>
+      <Destination>103</Destination>
     </Message>
     <Message>
-      <InternalId>37</InternalId>
+      <InternalId>106</InternalId>
       <Type>StartFinish</Type>
-      <Source>5</Source>
-      <Destination>36</Destination>
+      <Source>7</Source>
+      <Destination>105</Destination>
     </Message>
     <Message>
-      <InternalId>39</InternalId>
+      <InternalId>108</InternalId>
       <Type>StartFinish</Type>
-      <Source>5</Source>
-      <Destination>38</Destination>
+      <Source>7</Source>
+      <Destination>107</Destination>
     </Message>
     <Message>
-      <InternalId>42</InternalId>
+      <InternalId>110</InternalId>
       <Type>StartFinish</Type>
-      <Source>6</Source>
-      <Destination>41</Destination>
-    </Message>
-    <Message>
-      <InternalId>44</InternalId>
-      <Type>StartFinish</Type>
-      <Source>6</Source>
-      <Destination>43</Destination>
-    </Message>
-    <Message>
-      <InternalId>46</InternalId>
-      <Type>StartFinish</Type>
-      <Source>6</Source>
-      <Destination>45</Destination>
-    </Message>
-    <Message>
-      <InternalId>48</InternalId>
-      <Type>StartFinish</Type>
-      <Source>6</Source>
-      <Destination>47</Destination>
+      <Source>7</Source>
+      <Destination>109</Destination>
     </Message>
     <Message>
       <SimId>1002</SimId>
@@ -395,7 +356,7 @@
     <Message>
       <SimId>1007</SimId>
       <InternalId>57</InternalId>
-      <Name>VykonajA</Name>
+      <Name>DajStolaraA</Name>
       <Type>RequestResponse</Type>
       <Source>7</Source>
       <Destination>4</Destination>
@@ -411,7 +372,7 @@
     <Message>
       <SimId>1010</SimId>
       <InternalId>60</InternalId>
-      <Name>VykonajB</Name>
+      <Name>DajStolaraB</Name>
       <Type>RequestResponse</Type>
       <Source>7</Source>
       <Destination>5</Destination>
@@ -419,11 +380,11 @@
     <Message>
       <SimId>1011</SimId>
       <InternalId>61</InternalId>
-      <Name>VykonajC</Name>
+      <Name>DajStolaraC</Name>
       <Type>RequestResponse</Type>
       <Source>7</Source>
       <Destination>6</Destination>
     </Message>
   </Messages>
-  <IID>94</IID>
+  <IID>114</IID>
 </ABAsim>

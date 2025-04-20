@@ -1,5 +1,6 @@
 using OSPABA;
 using Simulation;
+
 namespace Agents.AgentMontaznychMiest
 {
 	//meta! id="8"

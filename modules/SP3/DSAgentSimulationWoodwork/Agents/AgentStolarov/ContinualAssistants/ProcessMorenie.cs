@@ -1,12 +1,12 @@
-using Agents.AgentOkolia;
+using Agents.AgentStolarov;
 using OSPABA;
 using Simulation;
-namespace Agents.AgentOkolia.ContinualAssistants
+namespace Agents.AgentStolarov.ContinualAssistants
 {
-	//meta! id="15"
-	public class SchedulerPrichodovObjednavok : OSPABA.Scheduler
+	//meta! id="103"
+	public class ProcessMorenie : OSPABA.Process
 	{
-		public SchedulerPrichodovObjednavok(int id, OSPABA.Simulation mySim, CommonAgent myAgent) :
+		public ProcessMorenie(int id, OSPABA.Simulation mySim, CommonAgent myAgent) :
 			base(id, mySim, myAgent)
 		{
 		}
@@ -17,7 +17,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			// Setup component for the next replication
 		}
 
-		//meta! sender="AgentOkolia", id="16", type="Start"
+		//meta! sender="AgentStolarov", id="104", type="Start"
 		public void ProcessStart(MessageForm message)
 		{
 		}
@@ -45,11 +45,11 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			}
 		}
 		//meta! tag="end"
-		public new AgentOkolia MyAgent
+		public new AgentStolarov MyAgent
 		{
 			get
 			{
-				return (AgentOkolia)base.MyAgent;
+				return (AgentStolarov)base.MyAgent;
 			}
 		}
 	}

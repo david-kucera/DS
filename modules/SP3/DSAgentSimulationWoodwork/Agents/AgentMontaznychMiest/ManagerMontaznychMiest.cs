@@ -54,16 +54,16 @@ namespace Agents.AgentMontaznychMiest
 		{
 			switch (message.Code)
 			{
-			case Mc.UvolniMiesto:
-				ProcessUvolniMiesto(message);
-			break;
-
 			case Mc.Init:
 				ProcessInit(message);
 			break;
 
 			case Mc.PriradMiesto:
 				ProcessPriradMiesto(message);
+			break;
+
+			case Mc.UvolniMiesto:
+				ProcessUvolniMiesto(message);
 			break;
 
 			default:

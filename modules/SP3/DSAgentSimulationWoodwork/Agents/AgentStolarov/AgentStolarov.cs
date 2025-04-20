@@ -1,5 +1,7 @@
 using OSPABA;
 using Simulation;
+using Agents.AgentStolarov.ContinualAssistants;
+
 namespace Agents.AgentStolarov
 {
 	//meta! id="7"
@@ -21,11 +23,17 @@ namespace Agents.AgentStolarov
 		private void Init()
 		{
 			new ManagerStolarov(SimId.ManagerStolarov, MySim, this);
+			new ProcessMontazKovani(SimId.ProcessMontazKovani, MySim, this);
+			new ProcessPresun(SimId.ProcessPresun, MySim, this);
+			new ProcessLakovanie(SimId.ProcessLakovanie, MySim, this);
+			new ProcessSkladanie(SimId.ProcessSkladanie, MySim, this);
+			new ProcessRezanie(SimId.ProcessRezanie, MySim, this);
+			new ProcessMorenie(SimId.ProcessMorenie, MySim, this);
 			AddOwnMessage(Mc.ZacniPracu);
 			AddOwnMessage(Mc.Init);
-			AddOwnMessage(Mc.VykonajA);
-			AddOwnMessage(Mc.VykonajC);
-			AddOwnMessage(Mc.VykonajB);
+			AddOwnMessage(Mc.DajStolaraC);
+			AddOwnMessage(Mc.DajStolaraB);
+			AddOwnMessage(Mc.DajStolaraA);
 		}
 		//meta! tag="end"
 	}

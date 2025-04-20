@@ -1,6 +1,6 @@
 using OSPABA;
 using Simulation;
-using Agents.AgentAStolar.ContinualAssistants;
+
 namespace Agents.AgentAStolar
 {
 	//meta! id="4"
@@ -22,11 +22,8 @@ namespace Agents.AgentAStolar
 		private void Init()
 		{
 			new ManagerAStolar(SimId.ManagerAStolar, MySim, this);
-			new ProcessRezanie(SimId.ProcessRezanie, MySim, this);
-			new ProcessPresun(SimId.ProcessPresun, MySim, this);
-			new ProcessMontovanieKovani(SimId.ProcessMontovanieKovani, MySim, this);
 			AddOwnMessage(Mc.Init);
-			AddOwnMessage(Mc.VykonajA);
+			AddOwnMessage(Mc.DajStolaraA);
 		}
 		//meta! tag="end"
 	}

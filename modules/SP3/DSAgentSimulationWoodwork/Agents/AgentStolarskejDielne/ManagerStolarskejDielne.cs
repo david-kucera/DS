@@ -64,20 +64,20 @@ namespace Agents.AgentStolarskejDielne
 		{
 			switch (message.Code)
 			{
-			case Mc.PracaHotova:
-				ProcessPracaHotova(message);
-			break;
-
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
 			case Mc.ZacniPracu:
 				ProcessZacniPracu(message);
 			break;
 
 			case Mc.DalsiaPolozka:
 				ProcessDalsiaPolozka(message);
+			break;
+
+			case Mc.Init:
+				ProcessInit(message);
+			break;
+
+			case Mc.PracaHotova:
+				ProcessPracaHotova(message);
 			break;
 
 			case Mc.NovaObjednavka:

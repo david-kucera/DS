@@ -27,28 +27,28 @@ namespace Agents.AgentCStolar
 		{
 		}
 
-		//meta! sender="ProcessPresun", id="42", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessPresun(MessageForm message)
 		{
 		}
 
-		//meta! sender="ProcessMorenie", id="44", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessMorenie(MessageForm message)
 		{
 		}
 
-		//meta! sender="ProcessMontovanieKovani", id="46", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessMontovanieKovani(MessageForm message)
 		{
 		}
 
-		//meta! sender="ProcessLakovanie", id="48", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessLakovanie(MessageForm message)
 		{
 		}
 
 		//meta! sender="AgentStolarov", id="61", type="Request"
-		public void ProcessVykonajC(MessageForm message)
+		public void ProcessDajStolaraC(MessageForm message)
 		{
 		}
 
@@ -73,29 +73,8 @@ namespace Agents.AgentCStolar
 				ProcessInit(message);
 			break;
 
-			case Mc.Finish:
-				switch (message.Sender.Id)
-				{
-				case SimId.ProcessPresun:
-					ProcessFinishProcessPresun(message);
-				break;
-
-				case SimId.ProcessMorenie:
-					ProcessFinishProcessMorenie(message);
-				break;
-
-				case SimId.ProcessMontovanieKovani:
-					ProcessFinishProcessMontovanieKovani(message);
-				break;
-
-				case SimId.ProcessLakovanie:
-					ProcessFinishProcessLakovanie(message);
-				break;
-				}
-			break;
-
-			case Mc.VykonajC:
-				ProcessVykonajC(message);
+			case Mc.DajStolaraC:
+				ProcessDajStolaraC(message);
 			break;
 
 			default:

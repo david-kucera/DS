@@ -59,10 +59,6 @@ namespace Agents.AgentObjednavok
 		{
 			switch (message.Code)
 			{
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
 			case Mc.DalsiaPolozka:
 				ProcessDalsiaPolozka(message);
 			break;
@@ -73,6 +69,10 @@ namespace Agents.AgentObjednavok
 
 			case Mc.NovaObjednavka:
 				ProcessNovaObjednavka(message);
+			break;
+
+			case Mc.Init:
+				ProcessInit(message);
 			break;
 
 			default:

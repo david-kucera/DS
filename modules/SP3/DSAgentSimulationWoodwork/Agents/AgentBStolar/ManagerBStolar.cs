@@ -27,18 +27,18 @@ namespace Agents.AgentBStolar
 		{
 		}
 
-		//meta! sender="ProcessSkladanie", id="37", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessSkladanie(MessageForm message)
 		{
 		}
 
-		//meta! sender="ProcessPresun", id="39", type="Finish"
+		//meta! userInfo="Removed from model"
 		public void ProcessFinishProcessPresun(MessageForm message)
 		{
 		}
 
 		//meta! sender="AgentStolarov", id="60", type="Request"
-		public void ProcessVykonajB(MessageForm message)
+		public void ProcessDajStolaraB(MessageForm message)
 		{
 		}
 
@@ -59,25 +59,12 @@ namespace Agents.AgentBStolar
 		{
 			switch (message.Code)
 			{
-			case Mc.VykonajB:
-				ProcessVykonajB(message);
-			break;
-
-			case Mc.Finish:
-				switch (message.Sender.Id)
-				{
-				case SimId.ProcessSkladanie:
-					ProcessFinishProcessSkladanie(message);
-				break;
-
-				case SimId.ProcessPresun:
-					ProcessFinishProcessPresun(message);
-				break;
-				}
-			break;
-
 			case Mc.Init:
 				ProcessInit(message);
+			break;
+
+			case Mc.DajStolaraB:
+				ProcessDajStolaraB(message);
 			break;
 
 			default:

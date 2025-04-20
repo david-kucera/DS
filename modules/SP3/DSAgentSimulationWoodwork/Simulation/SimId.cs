@@ -22,16 +22,13 @@ namespace Simulation
 		public const int ManagerMontaznychMiest = 108;
 		public const int ManagerStolarskejDielne = 110;
 		public const int ManagerObjednavok = 111;
-		public const int ProcessMontovanieKovani = 1004;
-		public const int ProcessSkladanie = 1005;
-		public const int ProcessPresun = 1006;
-		public const int ProcessPresun = 1007;
-		public const int ProcessMorenie = 1008;
-		public const int ProcessMontovanieKovani = 1009;
-		public const int ProcessLakovanie = 1010;
 		public const int SchedulerPrichodovObjednavok = 1001;
-		public const int ProcessPresun = 1002;
-		public const int ProcessRezanie = 1003;
+		public const int ProcessPresun = 1011;
+		public const int ProcessRezanie = 1012;
+		public const int ProcessMorenie = 1013;
+		public const int ProcessLakovanie = 1014;
+		public const int ProcessSkladanie = 1015;
+		public const int ProcessMontazKovani = 1016;
 		//meta! tag="end"
 	}
 }
