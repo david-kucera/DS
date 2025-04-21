@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentMontaznychMiest
@@ -30,11 +31,48 @@ namespace Agents.AgentMontaznychMiest
 		//meta! sender="AgentStolarskejDielne", id="58", type="Notice"
 		public void ProcessPriradMiesto(MessageForm message)
 		{
+			// Priradenie montazneho miesta k tovaru z novej objednavky
+			var tovary = ((MyMessage)message).Objednavka.Tovary;
+			foreach (var tovar in tovary)
+			{
+				if (JeVolneMiesto())
+				{
+					var mm = DajMontazneMiesto();
+					tovar.MontazneMiesto = mm;
+					mm.Tovar = tovar;
+
+					var msg = message.CreateCopy();
+					msg.Code = Mc.ZacniPracu;
+					msg.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
+					((MyMessage)msg).Tovar = tovar;
+					Notice(msg);
+				}
+				else MyAgent.NepriradeneTovary.Enqueue(tovar);
+			}
 		}
 
 		//meta! sender="AgentStolarskejDielne", id="68", type="Notice"
 		public void ProcessUvolniMiesto(MessageForm message)
 		{
+			// Uvolnenie montazneho miesta
+			var miesto = ((MyMessage)message).Tovar.MontazneMiesto;
+			miesto.Tovar = null;
+			((MyMessage)message).Tovar.MontazneMiesto = null;
+
+			// Priradenie montazneho miesta k starsiemu tovaru
+			if (MyAgent.NepriradeneTovary.Count > 0)
+			{
+				var tovar = MyAgent.NepriradeneTovary.Dequeue();
+				tovar.MontazneMiesto = miesto;
+				miesto.Tovar = tovar;
+				var msg = new MyMessage(MySim)
+				{
+					Code = Mc.ZacniPracu,
+					Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne)
+				};
+				msg.Tovar = tovar;
+				Notice(msg);
+			}
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -74,6 +112,26 @@ namespace Agents.AgentMontaznychMiest
 			{
 				return (AgentMontaznychMiest)base.MyAgent;
 			}
+		}
+
+		private bool JeVolneMiesto()
+		{
+			foreach (var miesto in MyAgent.MontazneMiesta)
+			{
+				if (miesto.Tovar is null) return true;
+			}
+
+			return false;
+		}
+
+		private MontazneMiesto DajMontazneMiesto()
+		{
+			foreach (var miesto in MyAgent.MontazneMiesta)
+			{
+				if (miesto.Tovar is null) return miesto;
+			}
+
+			return null!;
 		}
 	}
 }

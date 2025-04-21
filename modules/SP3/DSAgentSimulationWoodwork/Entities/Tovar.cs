@@ -24,7 +24,8 @@ public class Tovar
     #region Public functions
     public override string ToString()
     {
-        return $"{ObjednavkaId}. {Type} : {Status}";
+        if (MontazneMiesto is null) return $"{ObjednavkaId}. {Type} : {Status} nie je na montážnom mieste";
+	    return $"{ObjednavkaId}. {Type} : {Status} na MM è.{MontazneMiesto.ID}";
     }
     #endregion // Public functions
 }

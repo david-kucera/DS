@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 
@@ -6,6 +7,10 @@ namespace Agents.AgentBStolar
 	//meta! id="5"
 	public class AgentBStolar : OSPABA.Agent
 	{
+		#region Properties
+		public List<Stolar> StolariB { get; set; }
+		#endregion // Properties
+
 		public AgentBStolar(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
@@ -16,6 +21,12 @@ namespace Agents.AgentBStolar
 		{
 			base.PrepareReplication();
 			// Setup component for the next replication
+
+			StolariB = new List<Stolar>();
+			for (int i = 0; i < ((MySimulation)MySim).PocetStolarovB; i++)
+			{
+				StolariB.Add(new Stolar(StolarType.B, i));
+			}
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

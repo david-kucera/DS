@@ -27,6 +27,9 @@ namespace Agents.AgentModelu
 		{
 			var obj = ((MyMessage)message).Objednavka;
 			MyAgent.Objednavky.Add(obj);
+
+			message.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
+			Notice(message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
