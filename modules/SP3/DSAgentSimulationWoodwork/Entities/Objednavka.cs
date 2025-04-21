@@ -2,7 +2,7 @@
 {
 	public class Objednavka
 	{
-		private static int _poradie = 0;
+		private static int _poradie = 1;
 
 		#region Properties
 		public int Poradie { get; set; }
@@ -31,7 +31,7 @@
 			{
 				tovarString += tovar.ToString() + "\n";
 			}
-			return Poradie + "\n" + tovarString;
+			return Poradie + ".\n" + tovarString;
 		}
 		#endregion // Public functions
 	}

@@ -92,8 +92,15 @@ public partial class MainWindow : Window
 	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
 	    {
 		    SimulationTime(sim.CurrentTime);
-		    NumberOfOrders.Content = ((MySimulation)sim).AgentModelu.pocetObjednavok;
-		});
+		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
+			NumberOfOrders.Content = objednavky.Count;
+
+			ItemsControlMontazneMiesta.Items.Clear();
+			foreach (var objednavka in objednavky)
+            {
+                ItemsControlMontazneMiesta.Items.Add(objednavka.ToString());
+            }
+        });
     }
     
     private void Start()

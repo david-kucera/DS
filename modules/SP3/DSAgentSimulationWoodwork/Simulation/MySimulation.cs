@@ -4,7 +4,6 @@ using Agents.AgentStolarov;
 using OSPABA;
 using Agents.AgentModelu;
 using Agents.AgentMontaznychMiest;
-using Agents.AgentObjednavok;
 using Agents.AgentAStolar;
 using Agents.AgentCStolar;
 using Agents.AgentStolarskejDielne;
@@ -81,7 +80,6 @@ namespace Simulation
 			AgentModelu = new AgentModelu(SimId.AgentModelu, this, null);
 			AgentOkolia = new AgentOkolia(SimId.AgentOkolia, this, AgentModelu);
 			AgentStolarskejDielne = new AgentStolarskejDielne(SimId.AgentStolarskejDielne, this, AgentModelu);
-			AgentObjednavok = new AgentObjednavok(SimId.AgentObjednavok, this, AgentStolarskejDielne);
 			AgentStolarov = new AgentStolarov(SimId.AgentStolarov, this, AgentStolarskejDielne);
 			AgentMontaznychMiest = new AgentMontaznychMiest(SimId.AgentMontaznychMiest, this, AgentStolarskejDielne);
 			AgentAStolar = new AgentAStolar(SimId.AgentAStolar, this, AgentStolarov);
@@ -93,8 +91,6 @@ namespace Simulation
 		public AgentOkolia AgentOkolia
 		{ get; set; }
 		public AgentStolarskejDielne AgentStolarskejDielne
-		{ get; set; }
-		public AgentObjednavok AgentObjednavok
 		{ get; set; }
 		public AgentStolarov AgentStolarov
 		{ get; set; }

@@ -1,5 +1,4 @@
 using Agents.AgentOkolia;
-using DSAgentSimulationLib.Generators.Exponential;
 using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using OSPRNG;
@@ -10,7 +9,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 	public class SchedulerPrichodovObjednavok : OSPABA.Scheduler
 	{
 		#region Class members
-		private ExponentialGenerator _prichodyGenerator;
+		private ExponentialRNG _prichodyGenerator;
 		private UniformContinuousRNG _typNabytkuGenerator;
 		private UniformDiscreteRNG _pocetKusovGenerator;
 		#endregion // Class members
@@ -19,8 +18,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			//_prichodyGenerator = new ExponentialRNG((1.0 / 2.0 / 60 / 60), seeder);
-			_prichodyGenerator = new ExponentialGenerator(seeder, 2.0 / 60 / 60);
+			_prichodyGenerator = new ExponentialRNG(1.0/(2.0 / 60 / 60), seeder);
 			_pocetKusovGenerator = new UniformDiscreteRNG(1, 6, seeder);
 			_typNabytkuGenerator = new UniformContinuousRNG(0.0, 1.0, seeder);
 		}
@@ -35,7 +33,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 		public void ProcessStart(MessageForm message)
 		{
 			message.Code = Mc.Finish;
-			double duration = _prichodyGenerator.NextDouble();
+			double duration = _prichodyGenerator.Sample();
 			Hold(duration, message);
 		}
 

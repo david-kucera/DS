@@ -27,7 +27,7 @@ namespace Agents.AgentStolarov
 		{
 		}
 
-		//meta! sender="AgentStolarskejDielne", id="82", type="Notice"
+		//meta! userInfo="Removed from model"
 		public void ProcessInit(MessageForm message)
 		{
 		}
@@ -94,17 +94,17 @@ namespace Agents.AgentStolarov
 		{
 			switch (message.Code)
 			{
+			case Mc.ZacniPracu:
+				ProcessZacniPracu(message);
+			break;
+
+			case Mc.DajStolaraA:
+				ProcessDajStolaraA(message);
+			break;
+
 			case Mc.Finish:
 				switch (message.Sender.Id)
 				{
-				case SimId.ProcessRezanie:
-					ProcessFinishProcessRezanie(message);
-				break;
-
-				case SimId.ProcessMontazKovani:
-					ProcessFinishProcessMontazKovani(message);
-				break;
-
 				case SimId.ProcessMorenie:
 					ProcessFinishProcessMorenie(message);
 				break;
@@ -113,30 +113,26 @@ namespace Agents.AgentStolarov
 					ProcessFinishProcessPresun(message);
 				break;
 
-				case SimId.ProcessLakovanie:
-					ProcessFinishProcessLakovanie(message);
-				break;
-
 				case SimId.ProcessSkladanie:
 					ProcessFinishProcessSkladanie(message);
+				break;
+
+				case SimId.ProcessMontazKovani:
+					ProcessFinishProcessMontazKovani(message);
+				break;
+
+				case SimId.ProcessRezanie:
+					ProcessFinishProcessRezanie(message);
+				break;
+
+				case SimId.ProcessLakovanie:
+					ProcessFinishProcessLakovanie(message);
 				break;
 				}
 			break;
 
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
-			case Mc.DajStolaraA:
-				ProcessDajStolaraA(message);
-			break;
-
 			case Mc.DajStolaraB:
 				ProcessDajStolaraB(message);
-			break;
-
-			case Mc.ZacniPracu:
-				ProcessZacniPracu(message);
 			break;
 
 			case Mc.DajStolaraC:

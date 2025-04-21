@@ -22,7 +22,7 @@ namespace Agents.AgentMontaznychMiest
 			}
 		}
 
-		//meta! sender="AgentStolarskejDielne", id="80", type="Notice"
+		//meta! userInfo="Removed from model"
 		public void ProcessInit(MessageForm message)
 		{
 		}
@@ -54,10 +54,6 @@ namespace Agents.AgentMontaznychMiest
 		{
 			switch (message.Code)
 			{
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
 			case Mc.PriradMiesto:
 				ProcessPriradMiesto(message);
 			break;

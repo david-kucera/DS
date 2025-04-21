@@ -22,7 +22,7 @@ namespace Agents.AgentCStolar
 			}
 		}
 
-		//meta! sender="AgentStolarov", id="85", type="Notice"
+		//meta! userInfo="Removed from model"
 		public void ProcessInit(MessageForm message)
 		{
 		}
@@ -69,10 +69,6 @@ namespace Agents.AgentCStolar
 		{
 			switch (message.Code)
 			{
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
 			case Mc.DajStolaraC:
 				ProcessDajStolaraC(message);
 			break;

@@ -25,7 +25,8 @@ namespace Agents.AgentModelu
 		//meta! sender="AgentOkolia", id="52", type="Notice"
 		public void ProcessNovaObjednavka(MessageForm message)
 		{
-			MyAgent.pocetObjednavok++;
+			var obj = ((MyMessage)message).Objednavka;
+			MyAgent.Objednavky.Add(obj);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -34,6 +35,11 @@ namespace Agents.AgentModelu
 			switch (message.Code)
 			{
 			}
+		}
+
+		//meta! sender="AgentStolarskejDielne", id="115", type="Notice"
+		public void ProcessObjednavkaHotova(MessageForm message)
+		{
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
@@ -45,6 +51,10 @@ namespace Agents.AgentModelu
 		{
 			switch (message.Code)
 			{
+			case Mc.ObjednavkaHotova:
+				ProcessObjednavkaHotova(message);
+			break;
+
 			case Mc.NovaObjednavka:
 				ProcessNovaObjednavka(message);
 			break;

@@ -23,14 +23,13 @@ namespace Agents.AgentStolarov
 		private void Init()
 		{
 			new ManagerStolarov(SimId.ManagerStolarov, MySim, this);
-			new ProcessMontazKovani(SimId.ProcessMontazKovani, MySim, this);
-			new ProcessPresun(SimId.ProcessPresun, MySim, this);
-			new ProcessLakovanie(SimId.ProcessLakovanie, MySim, this);
-			new ProcessSkladanie(SimId.ProcessSkladanie, MySim, this);
-			new ProcessRezanie(SimId.ProcessRezanie, MySim, this);
 			new ProcessMorenie(SimId.ProcessMorenie, MySim, this);
+			new ProcessLakovanie(SimId.ProcessLakovanie, MySim, this);
+			new ProcessPresun(SimId.ProcessPresun, MySim, this);
+			new ProcessMontazKovani(SimId.ProcessMontazKovani, MySim, this);
+			new ProcessRezanie(SimId.ProcessRezanie, MySim, this);
+			new ProcessSkladanie(SimId.ProcessSkladanie, MySim, this);
 			AddOwnMessage(Mc.ZacniPracu);
-			AddOwnMessage(Mc.Init);
 			AddOwnMessage(Mc.DajStolaraC);
 			AddOwnMessage(Mc.DajStolaraB);
 			AddOwnMessage(Mc.DajStolaraA);

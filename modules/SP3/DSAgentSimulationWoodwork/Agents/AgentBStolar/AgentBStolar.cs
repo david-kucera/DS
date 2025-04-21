@@ -22,7 +22,6 @@ namespace Agents.AgentBStolar
 		private void Init()
 		{
 			new ManagerBStolar(SimId.ManagerBStolar, MySim, this);
-			AddOwnMessage(Mc.Init);
 			AddOwnMessage(Mc.DajStolaraB);
 		}
 		//meta! tag="end"

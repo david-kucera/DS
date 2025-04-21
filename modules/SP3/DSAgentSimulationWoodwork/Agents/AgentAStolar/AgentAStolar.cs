@@ -22,7 +22,6 @@ namespace Agents.AgentAStolar
 		private void Init()
 		{
 			new ManagerAStolar(SimId.ManagerAStolar, MySim, this);
-			AddOwnMessage(Mc.Init);
 			AddOwnMessage(Mc.DajStolaraA);
 		}
 		//meta! tag="end"

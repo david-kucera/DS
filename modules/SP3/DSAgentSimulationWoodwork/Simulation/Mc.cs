@@ -8,7 +8,7 @@ namespace Simulation
 		public const int PracaHotova = 1013;
 		public const int UvolniMiesto = 1014;
 		public const int Init = 1016;
-		public const int DalsiaPolozka = 1024;
+		public const int ObjednavkaHotova = 1025;
 		public const int NovaObjednavka = 1002;
 		public const int DajStolaraA = 1007;
 		public const int PriradMiesto = 1008;

@@ -22,7 +22,6 @@ namespace Agents.AgentMontaznychMiest
 		private void Init()
 		{
 			new ManagerMontaznychMiest(SimId.ManagerMontaznychMiest, MySim, this);
-			AddOwnMessage(Mc.Init);
 			AddOwnMessage(Mc.PriradMiesto);
 			AddOwnMessage(Mc.UvolniMiesto);
 		}

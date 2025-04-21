@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 
@@ -6,7 +7,7 @@ namespace Agents.AgentModelu
 	//meta! id="1"
 	public class AgentModelu : OSPABA.Agent
 	{
-		public int pocetObjednavok { get; set; } = 0;
+		public List<Objednavka> Objednavky { get; set; }
 		public AgentModelu(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
@@ -18,7 +19,7 @@ namespace Agents.AgentModelu
 			base.PrepareReplication();
 			// Setup component for the next replication
 
-			pocetObjednavok = 0;
+			Objednavky = new List<Objednavka>();
 
 			var initMessage = new MyMessage(MySim);
 			initMessage.Code = Mc.Init;
@@ -31,6 +32,7 @@ namespace Agents.AgentModelu
 		{
 			new ManagerModelu(SimId.ManagerModelu, MySim, this);
 			AddOwnMessage(Mc.NovaObjednavka);
+			AddOwnMessage(Mc.ObjednavkaHotova);
 		}
 		//meta! tag="end"
 	}

@@ -32,7 +32,7 @@ namespace Agents.AgentStolarskejDielne
 		{
 		}
 
-		//meta! sender="AgentModelu", id="79", type="Notice"
+		//meta! userInfo="Removed from model"
 		public void ProcessInit(MessageForm message)
 		{
 		}
@@ -42,7 +42,7 @@ namespace Agents.AgentStolarskejDielne
 		{
 		}
 
-		//meta! sender="AgentObjednavok", id="92", type="Response"
+		//meta! userInfo="Removed from model"
 		public void ProcessDalsiaPolozka(MessageForm message)
 		{
 		}
@@ -64,24 +64,16 @@ namespace Agents.AgentStolarskejDielne
 		{
 			switch (message.Code)
 			{
-			case Mc.ZacniPracu:
-				ProcessZacniPracu(message);
-			break;
-
-			case Mc.DalsiaPolozka:
-				ProcessDalsiaPolozka(message);
-			break;
-
-			case Mc.Init:
-				ProcessInit(message);
-			break;
-
 			case Mc.PracaHotova:
 				ProcessPracaHotova(message);
 			break;
 
 			case Mc.NovaObjednavka:
 				ProcessNovaObjednavka(message);
+			break;
+
+			case Mc.ZacniPracu:
+				ProcessZacniPracu(message);
 			break;
 
 			default:

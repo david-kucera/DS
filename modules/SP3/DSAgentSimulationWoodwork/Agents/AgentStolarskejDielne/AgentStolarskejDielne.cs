@@ -24,9 +24,7 @@ namespace Agents.AgentStolarskejDielne
 			new ManagerStolarskejDielne(SimId.ManagerStolarskejDielne, MySim, this);
 			AddOwnMessage(Mc.PracaHotova);
 			AddOwnMessage(Mc.ZacniPracu);
-			AddOwnMessage(Mc.Init);
 			AddOwnMessage(Mc.NovaObjednavka);
-			AddOwnMessage(Mc.DalsiaPolozka);
 		}
 		//meta! tag="end"
 	}
