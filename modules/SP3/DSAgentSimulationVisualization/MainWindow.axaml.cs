@@ -46,7 +46,8 @@ public partial class MainWindow : Window
         _stolaren.OnRefreshUI(RefreshUI);
         _stolaren.OnReplicationDidFinish(ReplicationDidFinish);
         _stolaren.OnSimulationDidFinish(SimulationDidFinish);
-        Task.Run(() => _stolaren.Start(numReps, 8 * 60 * 60));
+        _stolaren.SetSimSpeed(1,1);
+        Task.Run(() => _stolaren.Start(numReps, 249 * 8 * 60 * 60));
     }
 
     private void SimulationDidFinish(OSPABA.Simulation obj)
@@ -88,7 +89,11 @@ public partial class MainWindow : Window
 
     private void RefreshUI(OSPABA.Simulation sim)
     {
-	    SimulationTime(sim.CurrentTime);
+	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
+	    {
+		    SimulationTime(sim.CurrentTime);
+		    NumberOfOrders.Content = ((MySimulation)sim).AgentModelu.pocetObjednavok;
+		});
     }
     
     private void Start()
@@ -155,9 +160,11 @@ public partial class MainWindow : Window
         AverageWorkloadAStolar.Content = "0 %";
         AverageWorkloadBStolar.Content = "0 %";
         AverageWorkloadCStolar.Content = "0 %";
-        
-        VirtualSpeedCheckBox.IsEnabled = false;
-        Start();
+
+        DurationSlider.Value = 1;
+		IntervalSlider.Value = 1;
+
+		Start();
     }
 
     private void UkonciButton_OnClick(object? sender, RoutedEventArgs e)

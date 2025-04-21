@@ -25,6 +25,7 @@ namespace Agents.AgentModelu
 		//meta! sender="AgentOkolia", id="52", type="Notice"
 		public void ProcessNovaObjednavka(MessageForm message)
 		{
+			MyAgent.pocetObjednavok++;
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"

@@ -23,12 +23,12 @@ namespace Simulation
 
 		public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
 		{
-			Init();
 			Seeder = seeder;
 			PocetMontaznychMiest = pocetMiest;
 			PocetStolarovA = pocetA;
 			PocetStolarovB = pocetB;
 			PocetStolarovC = pocetC;
+			Init();
 		}
 
 		override public void PrepareSimulation()

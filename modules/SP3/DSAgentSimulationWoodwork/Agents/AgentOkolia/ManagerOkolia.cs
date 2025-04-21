@@ -25,11 +25,20 @@ namespace Agents.AgentOkolia
 		//meta! sender="AgentModelu", id="78", type="Notice"
 		public void ProcessInit(MessageForm message)
 		{
+			message.Addressee = MyAgent.FindAssistant(SimId.SchedulerPrichodovObjednavok);
+			StartContinualAssistant(message.CreateCopy());
 		}
 
 		//meta! sender="SchedulerPrichodovObjednavok", id="16", type="Finish"
 		public void ProcessFinish(MessageForm message)
 		{
+			message.Code = Mc.NovaObjednavka;
+			message.Addressee = MySim.FindAgent(SimId.AgentModelu);
+			Notice(message.CreateCopy());
+
+			message.Code = Mc.Start;
+			message.Addressee = MyAgent.FindAssistant(SimId.SchedulerPrichodovObjednavok);
+			StartContinualAssistant(message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"

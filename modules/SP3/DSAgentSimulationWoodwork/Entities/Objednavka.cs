@@ -2,6 +2,8 @@
 {
 	public class Objednavka
 	{
+		private static int _poradie = 0;
+
 		#region Properties
 		public int Poradie { get; set; }
 		public List<Tovar> Tovary { get; private set; } = [];
@@ -10,7 +12,7 @@
 		#region Constructor
 		public Objednavka()
 		{
-			
+			Poradie = _poradie++;
 		}
 		#endregion // Constructor
 
