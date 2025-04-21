@@ -1,4 +1,4 @@
-namespace DSAgentSimulationLib.Generators.Exponential;
+namespace DSSimulationLib.Generators.Exponential;
 
 public class ExponentialGenerator : Random
 {

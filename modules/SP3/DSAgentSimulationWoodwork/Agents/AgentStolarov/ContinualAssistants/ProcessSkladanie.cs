@@ -1,4 +1,5 @@
 using Agents.AgentStolarov;
+using DSLib.Generators.Uniform;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentStolarov.ContinualAssistants
@@ -6,9 +7,19 @@ namespace Agents.AgentStolarov.ContinualAssistants
 	//meta! id="107"
 	public class ProcessSkladanie : OSPABA.Process
 	{
+		#region Class members
+		private ContinousUniform _stolSkladanieGenerator;
+		private ContinousUniform _stolickaSkladanieGenerator;
+		private ContinousUniform _skrinaSkladanieGenerator;
+		#endregion // Class members
+
 		public ProcessSkladanie(int id, OSPABA.Simulation mySim, CommonAgent myAgent) :
 			base(id, mySim, myAgent)
 		{
+			var seeder = ((MySimulation)MySim).Seeder;
+			_stolSkladanieGenerator = new ContinousUniform(seeder, 30.0 * 60, 60.0 * 60);
+			_stolickaSkladanieGenerator = new ContinousUniform(seeder, 14.0 * 60, 24.0 * 60);
+			_skrinaSkladanieGenerator = new ContinousUniform(seeder, 35.0 * 60, 75.0 * 60);
 		}
 
 		override public void PrepareReplication()

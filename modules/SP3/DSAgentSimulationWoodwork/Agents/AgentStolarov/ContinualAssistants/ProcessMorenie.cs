@@ -1,4 +1,5 @@
 using Agents.AgentStolarov;
+using DSLib.Generators.Uniform;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentStolarov.ContinualAssistants
@@ -6,9 +7,19 @@ namespace Agents.AgentStolarov.ContinualAssistants
 	//meta! id="103"
 	public class ProcessMorenie : OSPABA.Process
 	{
+		#region Class members
+		private ContinousUniform _stolMorenieGenerator;
+		private ContinousUniform _stolickaMorenieGenerator;
+		private ContinousUniform _skrinaMorenieGenerator;
+		#endregion // Class members
+
 		public ProcessMorenie(int id, OSPABA.Simulation mySim, CommonAgent myAgent) :
 			base(id, mySim, myAgent)
 		{
+			var seeder = ((MySimulation)MySim).Seeder;
+			_stolMorenieGenerator = new ContinousUniform(seeder, 100.0 * 60, 480.0 * 60);
+			_stolickaMorenieGenerator = new ContinousUniform(seeder, 90.0 * 60, 400.0 * 60);
+			_skrinaMorenieGenerator = new ContinousUniform(seeder, 300.0 * 60, 600.0 * 60);
 		}
 
 		override public void PrepareReplication()
