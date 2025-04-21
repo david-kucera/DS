@@ -1,4 +1,5 @@
 using Agents.AgentStolarov;
+using DSAgentSimulationWoodwork.Entities;
 using DSSimulationLib.Generators.Triangular;
 using OSPABA;
 using Simulation;
@@ -9,6 +10,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 	{
 		#region Class members
 		private TriangularGenerator _montazneMiestoSkladGenerator;
+		private TriangularGenerator _pripravaDrevaGenerator;
 		private TriangularGenerator _presunMedziMontaznymiMiestamiGenerator;
 		#endregion // Class members
 
@@ -17,6 +19,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
 			_montazneMiestoSkladGenerator = new TriangularGenerator(seeder, 60.0, 480.0, 120.0);
+			_pripravaDrevaGenerator = new TriangularGenerator(seeder, 300.0, 900.0, 500.0);
 			_presunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(seeder, 120.0, 500.0, 150.0);
 		}
 
@@ -29,6 +32,38 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		//meta! sender="AgentStolarov", id="100", type="Start"
 		public void ProcessStart(MessageForm message)
 		{
+			message.Code = Mc.Finish;
+			var sprava = ((MyMessage)message);
+			var stolar = sprava.Stolar;
+			var tovar = sprava.Tovar;
+
+			if (stolar.Type == StolarType.A && tovar.Status == TovarStatus.CakajucaNaRezanie)
+			{
+				double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
+				if (stolar.MontazneMiesto != null)
+					casPrechoduZMontaznehoMiestaDoSkladu = _montazneMiestoSkladGenerator.NextDouble();
+				double casPripravyDrevaVSklade = _pripravaDrevaGenerator.NextDouble();
+				double casPrechoduZoSkladuNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
+				if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
+					stolar.MontazneMiesto.Stolar = null;
+
+				double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto;
+				Hold(trvanieUdalosti, message);
+			}
+			else
+			{
+				double casPrechoduNaMontazneMiesto;
+				if (stolar.MontazneMiesto == null)
+					casPrechoduNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
+				else if (stolar.MontazneMiesto != tovar.MontazneMiesto)
+					casPrechoduNaMontazneMiesto = _presunMedziMontaznymiMiestamiGenerator.NextDouble();
+				else casPrechoduNaMontazneMiesto = 0.0;
+				if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
+					stolar.MontazneMiesto.Stolar = null;
+
+				double trvanieUdalosti = casPrechoduNaMontazneMiesto;
+				Hold(trvanieUdalosti, message);
+			}
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -36,6 +71,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		{
 			switch (message.Code)
 			{
+				case Mc.Finish:
+					AssistantFinished(message);
+					break;
 			}
 		}
 
@@ -44,13 +82,12 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		{
 			switch (message.Code)
 			{
-			case Mc.Start:
-				ProcessStart(message);
-			break;
-
-			default:
-				ProcessDefault(message);
-			break;
+				case Mc.Start:
+					ProcessStart(message);
+					break;
+				default:
+					ProcessDefault(message);
+					break;
 			}
 		}
 		//meta! tag="end"

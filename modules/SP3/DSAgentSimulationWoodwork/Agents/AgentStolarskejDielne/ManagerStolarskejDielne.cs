@@ -25,11 +25,17 @@ namespace Agents.AgentStolarskejDielne
 		//meta! sender="AgentStolarov", id="66", type="Notice"
 		public void ProcessPracaHotova(MessageForm message)
 		{
+			message.Addressee = MySim.FindAgent(SimId.AgentModelu);
+			message.Code = Mc.ObjednavkaHotova;
+			Notice(message);
 		}
 
 		//meta! sender="AgentMontaznychMiest", id="64", type="Notice"
 		public void ProcessZacniPracu(MessageForm message)
 		{
+			message.Addressee = MySim.FindAgent(SimId.AgentStolarov);
+			message.Code = Mc.ZacniPracu;
+			Notice(message);
 		}
 
 		//meta! userInfo="Removed from model"

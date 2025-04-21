@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentStolarov
@@ -25,6 +26,9 @@ namespace Agents.AgentStolarov
 		//meta! sender="AgentStolarskejDielne", id="55", type="Notice"
 		public void ProcessZacniPracu(MessageForm message)
 		{
+			message.Addressee = MySim.FindAgent(SimId.AgentAStolar);
+			message.Code = Mc.DajStolaraA;
+			Request(message);
 		}
 
 		//meta! userInfo="Removed from model"
@@ -35,6 +39,19 @@ namespace Agents.AgentStolarov
 		//meta! sender="AgentAStolar", id="57", type="Response"
 		public void ProcessDajStolaraA(MessageForm message)
 		{
+			var msg = ((MyMessage)message);
+			if (msg.Stolar != null)
+			{
+				if (msg.Stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
+
+				msg.Tovar.Status = TovarStatus.CakajucaNaRezanie;
+				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
+				StartContinualAssistant(message);
+			}
+			else
+			{
+				MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
+			}
 		}
 
 		//meta! sender="AgentCStolar", id="61", type="Response"
@@ -58,6 +75,29 @@ namespace Agents.AgentStolarov
 		//meta! sender="ProcessRezanie", id="102", type="Finish"
 		public void ProcessFinishProcessRezanie(MessageForm message)
 		{
+			var sprava = ((MyMessage)message);
+			sprava.Stolar.Obsadeny = false;
+			sprava.Tovar.Status = TovarStatus.CakajucaNaMorenie;
+
+			message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+			message.Code = Mc.DajStolaraC;
+			Request(message);
+
+			// Naplanovanie dalsieho rezania
+			if (MyAgent.CakajuceNaRezanie.Count > 0)
+			{
+				var tovar = MyAgent.CakajuceNaRezanie.Dequeue();
+				var msg = new MyMessage(MySim)
+				{
+					Tovar = tovar,
+					MontazneMiesto = tovar.MontazneMiesto,
+				};
+				if (msg.Tovar.Status != TovarStatus.CakajucaNaRezanie) throw new Exception("Nesprávny status tovaru!");
+
+				msg.Addressee = MySim.FindAgent(SimId.AgentAStolar);
+				msg.Code = Mc.DajStolaraA;
+				Request(msg);
+			}
 		}
 
 		//meta! sender="ProcessMontazKovani", id="110", type="Finish"
@@ -68,11 +108,44 @@ namespace Agents.AgentStolarov
 		//meta! sender="ProcessMorenie", id="104", type="Finish"
 		public void ProcessFinishProcessMorenie(MessageForm message)
 		{
+			// todo 15 percent tovarov musi byt aj nalakovanych!!!
 		}
 
 		//meta! sender="ProcessPresun", id="100", type="Finish"
 		public void ProcessFinishProcessPresun(MessageForm message)
 		{
+			var msg = ((MyMessage)message);
+			msg.Stolar.MontazneMiesto = msg.Tovar.MontazneMiesto;
+			msg.Stolar.MontazneMiesto.Stolar = msg.Stolar;
+
+			switch (msg.Tovar.Status)
+			{
+				case TovarStatus.CakajucaNaRezanie:
+					msg.Tovar.Status = TovarStatus.PriebehRezania;
+					message.Addressee = MyAgent.FindAssistant(SimId.ProcessRezanie);
+					StartContinualAssistant(message);
+					break;
+				case TovarStatus.CakajucaNaMorenie:
+					msg.Tovar.Status = TovarStatus.PriebehMorenia;
+					message.Addressee = MyAgent.FindAssistant(SimId.ProcessMorenie);
+					StartContinualAssistant(message);
+					break;
+				case TovarStatus.CakajucaNaLakovanie:
+					msg.Tovar.Status = TovarStatus.PriebehLakovania;
+					message.Addressee = MyAgent.FindAssistant(SimId.ProcessLakovanie);
+					StartContinualAssistant(message);
+					break;
+				case TovarStatus.CakajucaNaSkladanie:
+					msg.Tovar.Status = TovarStatus.PriebehSkladania;
+					message.Addressee = MyAgent.FindAssistant(SimId.ProcessSkladanie);
+					StartContinualAssistant(message);
+					break;
+				case TovarStatus.CakajucaNaMontazKovani:
+					msg.Tovar.Status = TovarStatus.PriebehMontazeKovani;
+					message.Addressee = MyAgent.FindAssistant(SimId.ProcessMontazKovani);
+					StartContinualAssistant(message);
+					break;
+			}
 		}
 
 		//meta! sender="ProcessLakovanie", id="106", type="Finish"

@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentModelu
@@ -43,6 +44,12 @@ namespace Agents.AgentModelu
 		//meta! sender="AgentStolarskejDielne", id="115", type="Notice"
 		public void ProcessObjednavkaHotova(MessageForm message)
 		{
+			var obj = ((MyMessage)message).Objednavka;
+			foreach (var tovar in obj.Tovary)
+			{
+				if (tovar.Status != TovarStatus.Hotova) return;
+				// TODO zber statistik hotovych objednavok
+			}
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

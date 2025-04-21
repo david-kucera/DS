@@ -1,3 +1,4 @@
+using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using Simulation;
 namespace Agents.AgentAStolar
@@ -45,6 +46,23 @@ namespace Agents.AgentAStolar
 		//meta! sender="AgentStolarov", id="57", type="Request"
 		public void ProcessDajStolaraA(MessageForm message)
 		{
+			var msg = ((MyMessage)message);
+
+			Stolar volny = null;
+			var stolari = MyAgent.StolariA;
+			foreach (var stolar in stolari)
+			{
+				if (!stolar.Obsadeny)
+				{
+					stolar.Workload.AddValue(stolar.Obsadeny, MySim.CurrentTime);
+					stolar.Obsadeny = true;
+					volny = stolar;
+					break;
+				}
+			}
+
+			msg.Stolar = volny;
+			Response(message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"

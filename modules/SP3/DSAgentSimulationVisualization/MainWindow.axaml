@@ -90,6 +90,9 @@
                     
                     <Label Content="Rad morenie:" FontSize="14"/>
                     <Label Name="WaitingQueueMorenie" Content="0" FontSize="14" FontWeight="Bold"/>
+
+                    <Label Content="Rad lakovanie:" FontSize="14"/>
+                    <Label Name="WaitingQueueLakovanie" Content="0" FontSize="14" FontWeight="Bold"/>
                     
                     <Label Content="Rad skladanie:" FontSize="14"/>
                     <Label Name="WaitingQueueSkladanie" Content="0" FontSize="14" FontWeight="Bold"/>

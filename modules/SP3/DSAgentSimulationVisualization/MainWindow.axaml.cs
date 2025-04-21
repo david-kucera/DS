@@ -95,7 +95,13 @@ public partial class MainWindow : Window
 		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
 			NumberOfOrders.Content = objednavky.Count;
 
-			ItemsControlMontazneMiesta.Items.Clear();
+            WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
+            WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
+            WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
+			WaitingQueueSkladanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaSkladanie.Count;
+            WaitingQueueKovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMontazKovani.Count;
+
+            ItemsControlMontazneMiesta.Items.Clear();
 			foreach (var objednavka in objednavky)
             {
                 ItemsControlMontazneMiesta.Items.Add(objednavka.ToString());
