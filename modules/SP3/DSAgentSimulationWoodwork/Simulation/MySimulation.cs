@@ -7,6 +7,7 @@ using Agents.AgentMontaznychMiest;
 using Agents.AgentAStolar;
 using Agents.AgentCStolar;
 using Agents.AgentStolarskejDielne;
+using DSAgentSimulationWoodwork.Entities;
 
 namespace Simulation
 {
@@ -27,6 +28,7 @@ namespace Simulation
 			PocetStolarovA = pocetA;
 			PocetStolarovB = pocetB;
 			PocetStolarovC = pocetC;
+			Objednavka.ResetPoradie();
 			Init();
 		}
 

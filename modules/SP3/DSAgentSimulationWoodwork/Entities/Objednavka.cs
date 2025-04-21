@@ -33,6 +33,11 @@
 			}
 			return Poradie + ".\n" + tovarString;
 		}
+
+		public static void ResetPoradie()
+		{
+			_poradie = 1;
+		}
 		#endregion // Public functions
 	}
 }
