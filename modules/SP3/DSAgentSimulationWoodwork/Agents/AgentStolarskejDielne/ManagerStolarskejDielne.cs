@@ -28,6 +28,11 @@ namespace Agents.AgentStolarskejDielne
 			message.Addressee = MySim.FindAgent(SimId.AgentModelu);
 			message.Code = Mc.ObjednavkaHotova;
 			Notice(message);
+
+			var msg = message.CreateCopy();
+			msg.Addressee = MySim.FindAgent(SimId.AgentMontaznychMiest);
+			msg.Code = Mc.UvolniMiesto;
+			Notice(msg);
 		}
 
 		//meta! sender="AgentMontaznychMiest", id="64", type="Notice"

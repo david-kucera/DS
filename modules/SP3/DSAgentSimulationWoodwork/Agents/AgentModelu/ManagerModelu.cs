@@ -51,7 +51,7 @@ namespace Agents.AgentModelu
 			{
 				if (t.Status != TovarStatus.Hotova) return;
 			}
-
+			MyAgent.Objednavky.Remove(obj);
 			MyAgent.PocetHotovychObjednavok++;
 		}
 

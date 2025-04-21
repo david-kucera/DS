@@ -116,6 +116,7 @@ namespace Agents.AgentStolarov
 		public void ProcessFinishProcessRezanie(MessageForm message)
 		{
 			var sprava = ((MyMessage)message);
+			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 			sprava.Tovar.Status = TovarStatus.CakajucaNaMorenie;
@@ -159,6 +160,7 @@ namespace Agents.AgentStolarov
 		public void ProcessFinishProcessMontazKovani(MessageForm message)
 		{
 			var sprava = ((MyMessage)message);
+			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			var typStolara = sprava.Stolar.Type;
 			sprava.Stolar = null;
@@ -262,6 +264,7 @@ namespace Agents.AgentStolarov
 				return;
 			}
 
+			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
@@ -358,6 +361,7 @@ namespace Agents.AgentStolarov
 		public void ProcessFinishProcessLakovanie(MessageForm message)
 		{
 			var sprava = ((MyMessage)message);
+			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
@@ -417,6 +421,7 @@ namespace Agents.AgentStolarov
 		public void ProcessFinishProcessSkladanie(MessageForm message)
 		{
 			var sprava = ((MyMessage)message);
+			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 

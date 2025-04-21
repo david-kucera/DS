@@ -3,6 +3,8 @@ using System.Threading.Tasks;
 using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
+using DSAgentSimulationLib.Statistics;
+using DSAgentSimulationWoodwork.Entities;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ScottPlot;
@@ -97,8 +99,19 @@ public partial class MainWindow : Window
 			NumberOfOrders.Content = objednavky.Count;
 			NumberOfFinishedOrders.Content = hotove;
 
+			Average priemernaVytazenostA = new();
+            Average priemernaVytazenostB = new();
+            Average priemernaVytazenostC = new();
+            foreach (var stolar in ((MySimulation)sim).AgentAStolar.StolariA) priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+            foreach (var stolar in ((MySimulation)sim).AgentBStolar.StolariB) priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+            foreach (var stolar in ((MySimulation)sim).AgentCStolar.StolariC) priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
 
-			WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
+			AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
+            AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
+            AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
+
+
+            WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
             WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
             WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
 			WaitingQueueSkladanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaSkladanie.Count;
