@@ -1,4 +1,5 @@
 using Agents.AgentStolarov;
+using DSAgentSimulationWoodwork.Entities;
 using DSLib.Generators.Uniform;
 using OSPABA;
 using Simulation;
@@ -27,6 +28,15 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		//meta! sender="AgentStolarov", id="110", type="Start"
 		public void ProcessStart(MessageForm message)
 		{
+			message.Code = Mc.Finish;
+			var sprava = ((MyMessage)message);
+			var tovar = sprava.Tovar;
+
+			if (tovar.Status != TovarStatus.PriebehMontazeKovani) throw new Exception("Neoèakávaná chyba: Tovar nie je v správnom procese!");
+
+			double casSkladania = _skrinaMontazKovaniGenerator.NextDouble();
+
+			Hold(casSkladania, message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -34,6 +44,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 		{
 			switch (message.Code)
 			{
+				case Mc.Finish:
+					AssistantFinished(message);
+					break;
 			}
 		}
 

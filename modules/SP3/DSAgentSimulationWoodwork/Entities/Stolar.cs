@@ -4,8 +4,10 @@ namespace DSAgentSimulationWoodwork.Entities;
 
 public class Stolar
 {
-    #region Properties
-    public int ID { get; set; }
+    private static int _poradie = 0;
+
+	#region Properties
+	public int ID { get; set; }
     public StolarType Type { get; set; }
     public MontazneMiesto MontazneMiesto { get; set; }
     public bool Obsadeny { get; set; }
@@ -15,13 +17,20 @@ public class Stolar
     #region Constructor
     public Stolar(StolarType stolarType, int id)
     {
-        ID = id;
-        Type = stolarType;
+        ID = _poradie++;
+		Type = stolarType;
         MontazneMiesto = null!;
         Obsadeny = false;
         Workload = new Workload();
     }
-    #endregion // Constructor
+	#endregion // Constructor
+
+	#region Public functions
+	public static void ResetPoradie()
+	{
+		_poradie = 1;
+	}
+	#endregion // Public functions
 }
 
 public enum StolarType

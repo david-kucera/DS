@@ -44,12 +44,15 @@ namespace Agents.AgentModelu
 		//meta! sender="AgentStolarskejDielne", id="115", type="Notice"
 		public void ProcessObjednavkaHotova(MessageForm message)
 		{
-			var obj = ((MyMessage)message).Objednavka;
-			foreach (var tovar in obj.Tovary)
+			var tovar = ((MyMessage)message).Tovar;
+			var obj = MyAgent.Objednavky.Find(o => o.Poradie == tovar.ObjednavkaId);
+
+			foreach (var t in obj.Tovary)
 			{
-				if (tovar.Status != TovarStatus.Hotova) return;
-				// TODO zber statistik hotovych objednavok
+				if (t.Status != TovarStatus.Hotova) return;
 			}
+
+			MyAgent.PocetHotovychObjednavok++;
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

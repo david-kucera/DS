@@ -8,6 +8,7 @@ namespace Agents.AgentModelu
 	public class AgentModelu : OSPABA.Agent
 	{
 		public List<Objednavka> Objednavky { get; set; }
+		public int PocetHotovychObjednavok { get; set; }
 		public AgentModelu(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
@@ -20,6 +21,7 @@ namespace Agents.AgentModelu
 			// Setup component for the next replication
 
 			Objednavky = new List<Objednavka>();
+			PocetHotovychObjednavok = 0;
 
 			var initMessage = new MyMessage(MySim);
 			initMessage.Code = Mc.Init;

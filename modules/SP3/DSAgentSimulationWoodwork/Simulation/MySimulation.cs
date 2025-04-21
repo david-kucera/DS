@@ -29,6 +29,7 @@ namespace Simulation
 			PocetStolarovB = pocetB;
 			PocetStolarovC = pocetC;
 			Objednavka.ResetPoradie();
+			Stolar.ResetPoradie();
 			Init();
 		}
 

@@ -93,9 +93,12 @@ public partial class MainWindow : Window
 	    {
 		    SimulationTime(sim.CurrentTime);
 		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
+		    var hotove = ((MySimulation)sim).AgentModelu.PocetHotovychObjednavok;
 			NumberOfOrders.Content = objednavky.Count;
+			NumberOfFinishedOrders.Content = hotove;
 
-            WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
+
+			WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
             WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
             WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
 			WaitingQueueSkladanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaSkladanie.Count;
