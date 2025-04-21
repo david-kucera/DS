@@ -13,9 +13,22 @@ namespace Simulation
 {
 	public class MySimulation : OSPABA.Simulation
 	{
-		public MySimulation()
+		#region Properties
+		public Random? Seeder { get; set; } = null;
+		public int PocetMontaznychMiest { get; set; } = 30;
+		public int PocetStolarovA { get; set; } = 2;
+		public int PocetStolarovB { get; set; } = 2;
+		public int PocetStolarovC { get; set; } = 18;
+		#endregion // Properties
+
+		public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
 		{
 			Init();
+			Seeder = seeder;
+			PocetMontaznychMiest = pocetMiest;
+			PocetStolarovA = pocetA;
+			PocetStolarovB = pocetB;
+			PocetStolarovC = pocetC;
 		}
 
 		override public void PrepareSimulation()

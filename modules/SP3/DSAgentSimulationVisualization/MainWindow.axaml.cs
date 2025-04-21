@@ -30,29 +30,22 @@ public partial class MainWindow : Window
     {
         InitializeComponent();
         SeedInput.Text = new Random().Next(0, 1000).ToString();
-        IntervalInput.Text = "1";
-        ACountInput.Text = "2";
-        BCountInput.Text = "2";
-        CCountInput.Text = "18";
-        ReplicationCountInput.Text = "1000";
-        SkipInput.Text = "5";
         StabilizationPlot.Plot.XLabel("Replication");
         StabilizationPlot.Plot.YLabel("Hodnota");
     }
     #endregion // Constructor
     
     #region Private functions
-    private void StartSimulation(int numReps, int seed, int a, int b, int c)
+    private void StartSimulation(int numReps, int seed, int m, int a, int b, int c)
     {
         Random seeder = new Random(seed);
         _dataCounter = 0;
         _totalValuesProcessed = 0;
 
-        _stolaren = new MySimulation();
+        _stolaren = new MySimulation(seeder, m, a, b, c);
         _stolaren.OnRefreshUI(RefreshUI);
         _stolaren.OnReplicationDidFinish(ReplicationDidFinish);
         _stolaren.OnSimulationDidFinish(SimulationDidFinish);
-        // TODO pouzit seeder v simulacii
         Task.Run(() => _stolaren.Start(numReps, 8 * 60 * 60));
     }
 
@@ -74,7 +67,7 @@ public partial class MainWindow : Window
 		    // WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
 		    // WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
 
-		    CurrentReplicationLabel.Content = "1";
+		    CurrentReplicationLabel.Content = _stolaren.CurrentReplication;
 
 		    // NumberOfOrders.Content = _stolaren.PoradieObjednavky;
 		    // NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
@@ -103,7 +96,8 @@ public partial class MainWindow : Window
         if (int.TryParse((string?)ReplicationCountInput.Text, out int numReps) &&
             int.TryParse((string?)SeedInput.Text, out int seed) &&
             int.TryParse((string?)SkipInput.Text, out int skip) &&
-            int.TryParse((string?)ACountInput.Text, out int a) &&
+            int.TryParse((string?)MCountInput.Text, out int m) &&
+			int.TryParse((string?)ACountInput.Text, out int a) &&
             int.TryParse((string?)BCountInput.Text, out int b) &&
             int.TryParse((string?)CCountInput.Text, out int c) &&
             int.TryParse((string?)IntervalInput.Text, out int interval)
@@ -111,7 +105,7 @@ public partial class MainWindow : Window
         {
             _interval = interval;
             _skipFirst = (int)((numReps) * ((double)skip / 100.0));
-            StartSimulation(numReps, seed, a, b, c);
+            StartSimulation(numReps, seed, m, a, b, c);
         }
         else
         {

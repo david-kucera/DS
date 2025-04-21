@@ -26,30 +26,32 @@
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="0" Margin="5">
                     <TextBlock Text="Počet replikácií:" VerticalAlignment="Center"/>
-                    <TextBox Name="ReplicationCountInput" Text="1" Width="100" Margin="10 0"/>
+                    <TextBox Name="ReplicationCountInput" Text="1000" Width="100" Margin="10 0"/>
                     <TextBlock Text="Násada:" VerticalAlignment="Center"/>
                     <TextBox Name="SeedInput" Text="0" Width="50" Margin="10 0"/>
                     <TextBlock Text="Preskoč prvých:" VerticalAlignment="Center"/>
                     <TextBox Name="SkipInput" Text="5" Width="25"/>
                     <TextBlock Text="% hodnôt" Margin="7"/>
                     <TextBlock Text="Vykresli každú n-tú hodnotu:" VerticalAlignment="Center"/>
-                    <TextBox Name="IntervalInput" Text="1000" Width="50"/>
+                    <TextBox Name="IntervalInput" Text="1" Width="50"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Margin="5">
+                    <Label Content="Počet montážnych miest:" VerticalAlignment="Center"/>
+                    <TextBox Name="MCountInput" Text="30" Width="50" Margin="10 0"/>
                     <Label Content="Počet A:" VerticalAlignment="Center"/>
-                    <TextBox Name="ACountInput" Text="1" Width="50" Margin="10 0"/>
+                    <TextBox Name="ACountInput" Text="2" Width="50" Margin="10 0"/>
                     <Label Content="Počet B:" VerticalAlignment="Center"/>
-                    <TextBox Name="BCountInput" Text="1" Width="50" Margin="10 0"/>
+                    <TextBox Name="BCountInput" Text="2" Width="50" Margin="10 0"/>
                     <Label Content="Počet C:" VerticalAlignment="Center"/>
-                    <TextBox Name="CCountInput" Text="1" Width="50"/>
+                    <TextBox Name="CCountInput" Text="18" Width="50"/>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal" Grid.Row="2" Margin="5">
-                    <Button Name="SpustiButton" Content="Spusti" Margin="5" Click="SpustiButton_OnClick"/>
-                    <Button Name="PozastavButton" Content="Pozastav" Margin="5" Click="PozastavButton_OnClick"/>
-                    <Button Name="PokracujButton" Content="Pokračuj" Margin="5" Click="PokracujButton_OnClick"/>
-                    <Button Name="UkonciButton" Content="Ukonči" Margin="5" Click="UkonciButton_OnClick"/>
+                    <Button Name="SpustiButton" IsEnabled="True" Content="Spusti" Margin="5" Click="SpustiButton_OnClick"/>
+                    <Button Name="PozastavButton" IsEnabled="False" Content="Pozastav" Margin="5" Click="PozastavButton_OnClick"/>
+                    <Button Name="PokracujButton" IsEnabled="False" Content="Pokračuj" Margin="5" Click="PokracujButton_OnClick"/>
+                    <Button Name="UkonciButton" IsEnabled="False" Content="Ukonči" Margin="5" Click="UkonciButton_OnClick"/>
                 </StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
