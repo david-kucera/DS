@@ -60,7 +60,11 @@ namespace Agents.AgentStolarov
 			else
 			{
 				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
-				else MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
+				else
+				{
+					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.CakajuceNaRezanie.Count + ((MySimulation)MySim).AgentMontaznychMiest.NepriradeneTovary.Count);
+					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
+				}
 			}
 		}
 

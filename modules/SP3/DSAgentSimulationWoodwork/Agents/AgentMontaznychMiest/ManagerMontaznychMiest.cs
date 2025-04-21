@@ -47,7 +47,11 @@ namespace Agents.AgentMontaznychMiest
 					((MyMessage)msg).Tovar = tovar;
 					Notice(msg);
 				}
-				else MyAgent.NepriradeneTovary.Enqueue(tovar);
+				else
+				{
+					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.NepriradeneTovary.Count + ((MySimulation)MySim).AgentStolarov.CakajuceNaRezanie.Count);
+					MyAgent.NepriradeneTovary.Enqueue(tovar);
+				}
 			}
 		}
 

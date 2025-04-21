@@ -51,6 +51,9 @@ namespace Agents.AgentModelu
 			{
 				if (t.Status != TovarStatus.Hotova) return;
 			}
+
+			var casVSysteme = MySim.CurrentTime - obj.ArrivalTime;
+			((MySimulation)MySim).PriemernyCasObjednavkyVSysteme.AddValue(casVSysteme);
 			MyAgent.Objednavky.Remove(obj);
 			MyAgent.PocetHotovychObjednavok++;
 		}

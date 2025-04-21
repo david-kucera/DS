@@ -7,6 +7,7 @@ using Agents.AgentMontaznychMiest;
 using Agents.AgentAStolar;
 using Agents.AgentCStolar;
 using Agents.AgentStolarskejDielne;
+using DSAgentSimulationLib.Statistics;
 using DSAgentSimulationWoodwork.Entities;
 
 namespace Simulation
@@ -19,6 +20,10 @@ namespace Simulation
 		public int PocetStolarovA { get; set; } = 2;
 		public int PocetStolarovB { get; set; } = 2;
 		public int PocetStolarovC { get; set; } = 18;
+		public ConfidenceInterval GlobalnyPriemernyCasObjednavkyVSysteme { get; set; }
+		public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; }
+		public ConfidenceInterval GlobalnyPriemernyPocetNezacatychObjednavok { get; set; }
+		public ConfidenceInterval PriemernyPocetNezacatychObjednavok { get; set; }
 		#endregion // Properties
 
 		public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
@@ -37,18 +42,27 @@ namespace Simulation
 		{
 			base.PrepareSimulation();
 			// Create global statistcis
+			
+			GlobalnyPriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
+			GlobalnyPriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
 		}
 
 		override public void PrepareReplication()
 		{
 			base.PrepareReplication();
 			// Reset entities, queues, local statistics, etc...
+
+			PriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
+			PriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
 		}
 
 		override public void ReplicationFinished()
 		{
 			// Collect local statistics into global, update UI, etc...
 			base.ReplicationFinished();
+
+			GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
+			GlobalnyPriemernyPocetNezacatychObjednavok.AddValue(PriemernyPocetNezacatychObjednavok.GetValue());
 		}
 
 		override public void SimulationFinished()

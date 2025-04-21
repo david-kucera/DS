@@ -5,13 +5,15 @@
 		private static int _poradie = 1;
 
 		#region Properties
+		public double ArrivalTime { get; set; }
 		public int Poradie { get; set; }
 		public List<Tovar> Tovary { get; private set; } = [];
 		#endregion // Properties 
 
 		#region Constructor
-		public Objednavka()
+		public Objednavka(double arrivalTime)
 		{
+			ArrivalTime = arrivalTime;
 			Poradie = _poradie++;
 		}
 		#endregion // Constructor

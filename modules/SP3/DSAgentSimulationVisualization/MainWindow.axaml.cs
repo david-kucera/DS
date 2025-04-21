@@ -99,30 +99,36 @@ public partial class MainWindow : Window
 			NumberOfOrders.Content = objednavky.Count;
 			NumberOfFinishedOrders.Content = hotove;
 
-			Average priemernaVytazenostA = new();
-            Average priemernaVytazenostB = new();
-            Average priemernaVytazenostC = new();
-            foreach (var stolar in ((MySimulation)sim).AgentAStolar.StolariA) priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
-            foreach (var stolar in ((MySimulation)sim).AgentBStolar.StolariB) priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
-            foreach (var stolar in ((MySimulation)sim).AgentCStolar.StolariC) priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
+			if (IntervalSlider.Value <= 1000)
+			{
+				Average priemernaVytazenostA = new();
+				Average priemernaVytazenostB = new();
+				Average priemernaVytazenostC = new();
+				foreach (var stolar in ((MySimulation)sim).AgentAStolar.StolariA) priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
+				foreach (var stolar in ((MySimulation)sim).AgentBStolar.StolariB) priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
+				foreach (var stolar in ((MySimulation)sim).AgentCStolar.StolariC) priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
 
-			AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
-            AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
-            AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
+				AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
+				AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
+				AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
 
 
-            WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
-            WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
-            WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
-			WaitingQueueSkladanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaSkladanie.Count;
-            WaitingQueueKovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMontazKovani.Count;
+				WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
+				WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
+				WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
+				WaitingQueueSkladanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaSkladanie.Count;
+				WaitingQueueKovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMontazKovani.Count;
 
-            ItemsControlMontazneMiesta.Items.Clear();
-			foreach (var objednavka in objednavky)
-            {
-                ItemsControlMontazneMiesta.Items.Add(objednavka.ToString());
-            }
-        });
+				AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
+				AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.PriemernyPocetNezacatychObjednavok.GetValue(), 4);
+
+				ItemsControlMontazneMiesta.Items.Clear();
+				foreach (var objednavka in objednavky)
+				{
+					ItemsControlMontazneMiesta.Items.Add(objednavka.ToString());
+				}
+			}
+		});
     }
     
     private void Start()
@@ -234,62 +240,6 @@ public partial class MainWindow : Window
         });
     }
     
-    private void SimulationData(EventArgs obj)
-    {
-        Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
-        {
-            if (!_ignoreData)
-            {
-                ItemsControlMontazneMiesta.Items.Clear();
-                // WaitingQueueRezanie.Content = _stolaren.CakajuceNaRezanie.Count;
-                // WaitingQueueMorenie.Content = _stolaren.CakajuceNaMorenie.Count;
-                // WaitingQueueSkladanie.Content = _stolaren.CakajuceNaSkladanie.Count;
-                // WaitingQueueKovanie.Content = _stolaren.CakajuceNaKovanie.Count;
-            }
-
-            // NumberOfOrders.Content = _stolaren.PoradieObjednavky;
-            // NumberOfFinishedOrders.Content = Math.Round(_stolaren.PocetHotovychObjednavok, 4);
-
-            // AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
-            // AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.PriemernyPocetObjednavokNaKtorychSaEsteNezacaloPracovat.GetValue(), 4);
-
-            // if (!_ignoreData)
-            // {
-            //     Average priemernaVytazenostA = new();
-            //     Average priemernaVytazenostB = new();
-            //     Average priemernaVytazenostC = new();
-            //     foreach (var stolar in _stolaren.Stolari)
-            //     {
-            //         switch (stolar.Type)
-            //         {
-            //             case StolarType.A:
-            //                 priemernaVytazenostA.AddValue(stolar.Workload.GetValue());
-            //                 break;
-            //             case StolarType.B:
-            //                 priemernaVytazenostB.AddValue(stolar.Workload.GetValue());
-            //                 break;
-            //             default:
-            //                 priemernaVytazenostC.AddValue(stolar.Workload.GetValue());
-            //                 break;
-            //         }
-            //     }
-            //
-            //     // AverageWorkloadAStolar.Content = Math.Round(priemernaVytazenostA.GetValue(), 4) + " %";
-            //     // AverageWorkloadBStolar.Content = Math.Round(priemernaVytazenostB.GetValue(), 4) + " %";
-            //     // AverageWorkloadCStolar.Content = Math.Round(priemernaVytazenostC.GetValue(), 4) + " %";
-            //     
-            //     AverageWorkloadAStolar.Content = (int)priemernaVytazenostA.GetValue() + " %";
-            //     AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
-            //     AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
-            //
-            //     foreach (var mm in _stolaren.MontazneMiesta)
-            //     {
-            //         ItemsControlMontazneMiesta.Items.Add(mm.ToString());
-            //     }
-            // }
-        });
-    }
-    
     private void ReplicationData(double i)
     {
         _totalValuesProcessed++;
@@ -367,12 +317,14 @@ public partial class MainWindow : Window
 
     private void DurationSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
+	    if (DurationSlider is not null) DurationSliderValue.Content = (int)DurationSlider.Value;
 	    SetSimulationSpeed();
     }
 
     private void IntervalSlider_OnValueChanged(object? sender, RangeBaseValueChangedEventArgs e)
     {
-	    SetSimulationSpeed();
+        if (IntervalSlider is not null) IntervalSliderValue.Content = (int)IntervalSlider.Value;
+		SetSimulationSpeed();
     }
 
     private void VirtualSpeedCheckBox_OnIsCheckedChanged(object? sender, RoutedEventArgs e)
