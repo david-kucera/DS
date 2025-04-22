@@ -24,6 +24,9 @@ namespace Simulation
 		public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; }
 		public ConfidenceInterval GlobalnyPriemernyPocetNezacatychObjednavok { get; set; }
 		public ConfidenceInterval PriemernyPocetNezacatychObjednavok { get; set; }
+		public ConfidenceInterval GlobalneVytazenieA { get; set; }
+		public ConfidenceInterval GlobalneVytazenieB { get; set; }
+		public ConfidenceInterval GlobalneVytazenieC { get; set; }
 		#endregion // Properties
 
 		public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
@@ -45,6 +48,9 @@ namespace Simulation
 			
 			GlobalnyPriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
 			GlobalnyPriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
+			GlobalneVytazenieA = new ConfidenceInterval();
+			GlobalneVytazenieB = new ConfidenceInterval();
+			GlobalneVytazenieC = new ConfidenceInterval();
 		}
 
 		override public void PrepareReplication()
@@ -63,6 +69,27 @@ namespace Simulation
 
 			GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
 			GlobalnyPriemernyPocetNezacatychObjednavok.AddValue(PriemernyPocetNezacatychObjednavok.GetValue());
+
+			Average stolariAVytazenie = new();
+			foreach (var stolar in AgentAStolar.StolariA)
+			{
+				stolariAVytazenie.AddValue(stolar.Workload.GetValue());
+			}
+			GlobalneVytazenieA.AddValue(stolariAVytazenie.GetValue());
+			
+			Average stolariBVytazenie = new();
+			foreach (var stolar in AgentBStolar.StolariB)
+			{
+				stolariBVytazenie.AddValue(stolar.Workload.GetValue());
+			}
+			GlobalneVytazenieB.AddValue(stolariBVytazenie.GetValue());
+			
+			Average stolariCVytazenie = new();
+			foreach (var stolar in AgentCStolar.StolariC)
+			{
+				stolariCVytazenie.AddValue(stolar.Workload.GetValue());
+			}
+			GlobalneVytazenieC.AddValue(stolariCVytazenie.GetValue());
 		}
 
 		override public void SimulationFinished()

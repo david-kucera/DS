@@ -34,6 +34,9 @@ public class MontazneMiesto
         if (Tovar is not null) objednavkaId = Tovar.ObjednavkaId;
         if (Tovar is not null) tovarType = Tovar.Type;
         if (Tovar is not null) tovarStatus = Tovar.Status;
+        if (Tovar is null && Stolar is null) return $"Miesto: {ID}";
+        if (Tovar is null && Stolar is not null) return $"Miesto: {ID},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
+        if (Tovar is not null && Stolar is null) return $"Miesto: {ID},\t Tovar: {objednavkaId}. {tovarType}, {tovarStatus}";
         return $"Miesto: {ID},\t Tovar: {objednavkaId}. {tovarType}, {tovarStatus},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
     }
     #endregion // Public functions

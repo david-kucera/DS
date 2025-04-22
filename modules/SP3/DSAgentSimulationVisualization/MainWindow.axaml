@@ -56,11 +56,11 @@
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
                     <Label VerticalAlignment="Center">Trvanie pauzy:</Label>
-                    <Slider Name="DurationSlider" Width="100" Height="50" TickFrequency="1" Minimum="1" Maximum="10" Margin="5" ValueChanged="DurationSlider_OnValueChanged"></Slider>
+                    <Slider Name="DurationSlider" Width="200" Height="50" Minimum="0" Maximum="1" Margin="5" ValueChanged="DurationSlider_OnValueChanged"></Slider>
                     <Label Name="DurationSliderValue" VerticalAlignment="Center">1</Label>
 
                     <Label VerticalAlignment="Center">Interval medzi pauzami:</Label>
-                    <Slider Name="IntervalSlider" Width="200" Height="50" TickFrequency="1" Minimum="1" Maximum="10000" Margin="5" ValueChanged="IntervalSlider_OnValueChanged"></Slider>
+                    <Slider Name="IntervalSlider" Width="200" Height="50" Minimum="0" Maximum="1000" TickFrequency="100" IsSnapToTickEnabled="True" Margin="5" ValueChanged="IntervalSlider_OnValueChanged"></Slider>
                     <Label Name="IntervalSliderValue" VerticalAlignment="Center">1</Label>
 
                     <CheckBox Name="VirtualSpeedCheckBox" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
