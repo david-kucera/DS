@@ -5,8 +5,26 @@
       <SimId>4</SimId>
       <InternalId>4</InternalId>
       <Name>AgentAStolar</Name>
-      <Bounds>1145,1605,180,180</Bounds>
+      <Bounds>1147,1559,180,180</Bounds>
       <Reasoner>ManagerAStolar</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>6</SimId>
+      <InternalId>6</InternalId>
+      <Name>AgentCStolar</Name>
+      <Bounds>1877,1571,180,180</Bounds>
+      <Reasoner>ManagerCStolar</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>5</SimId>
+      <InternalId>5</InternalId>
+      <Name>AgentBStolar</Name>
+      <Bounds>1500,1573,180,180</Bounds>
+      <Reasoner>ManagerBStolar</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
     </Agent>
@@ -14,16 +32,34 @@
       <SimId>7</SimId>
       <InternalId>7</InternalId>
       <Name>AgentStolarov</Name>
-      <Bounds>1498,1126,180,180</Bounds>
+      <Bounds>1500,1080,180,180</Bounds>
       <Reasoner>ManagerStolarov</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
       <Components>
         <Process>
+          <SimId>1016</SimId>
+          <InternalId>109</InternalId>
+          <Name>ProcessMontazKovani</Name>
+          <Bounds>138,70,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1015</SimId>
+          <InternalId>107</InternalId>
+          <Name>ProcessSkladanie</Name>
+          <Bounds>130,97,35,18</Bounds>
+        </Process>
+        <Process>
           <SimId>1013</SimId>
           <InternalId>103</InternalId>
           <Name>ProcessMorenie</Name>
           <Bounds>56,124,35,18</Bounds>
+        </Process>
+        <Process>
+          <SimId>1012</SimId>
+          <InternalId>101</InternalId>
+          <Name>ProcessRezanie</Name>
+          <Bounds>21,103,35,18</Bounds>
         </Process>
         <Process>
           <SimId>1014</SimId>
@@ -37,34 +73,7 @@
           <Name>ProcessPresun</Name>
           <Bounds>6,74,35,18</Bounds>
         </Process>
-        <Process>
-          <SimId>1016</SimId>
-          <InternalId>109</InternalId>
-          <Name>ProcessMontazKovani</Name>
-          <Bounds>138,70,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1012</SimId>
-          <InternalId>101</InternalId>
-          <Name>ProcessRezanie</Name>
-          <Bounds>21,103,35,18</Bounds>
-        </Process>
-        <Process>
-          <SimId>1015</SimId>
-          <InternalId>107</InternalId>
-          <Name>ProcessSkladanie</Name>
-          <Bounds>130,97,35,18</Bounds>
-        </Process>
       </Components>
-    </Agent>
-    <Agent>
-      <SimId>1</SimId>
-      <InternalId>1</InternalId>
-      <Name>AgentModelu</Name>
-      <Bounds>980,145,180,180</Bounds>
-      <Reasoner>ManagerModelu</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
     </Agent>
     <Agent>
       <SimId>10</SimId>
@@ -72,40 +81,6 @@
       <Name>AgentStolarskejDielne</Name>
       <Bounds>1487,530,180,180</Bounds>
       <Reasoner>ManagerStolarskejDielne</Reasoner>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>2</SimId>
-      <InternalId>2</InternalId>
-      <Name>AgentOkolia</Name>
-      <Bounds>491,538,180,180</Bounds>
-      <Reasoner>ManagerOkolia</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-      <Components>
-        <Scheduler>
-          <SimId>1001</SimId>
-          <InternalId>15</InternalId>
-          <Name>SchedulerPrichodovObjednavok</Name>
-          <Bounds>73,79,35,13</Bounds>
-        </Scheduler>
-      </Components>
-    </Agent>
-    <Agent>
-      <SimId>6</SimId>
-      <InternalId>6</InternalId>
-      <Name>AgentCStolar</Name>
-      <Bounds>1875,1617,180,180</Bounds>
-      <Reasoner>ManagerCStolar</Reasoner>
-      <ReasonerBounds>74,25,32,25</ReasonerBounds>
-      <UsePetriNet>false</UsePetriNet>
-    </Agent>
-    <Agent>
-      <SimId>5</SimId>
-      <InternalId>5</InternalId>
-      <Name>AgentBStolar</Name>
-      <Bounds>1498,1619,180,180</Bounds>
-      <Reasoner>ManagerBStolar</Reasoner>
       <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
     </Agent>
@@ -115,7 +90,36 @@
       <Name>AgentMontaznychMiest</Name>
       <Bounds>930,895,180,180</Bounds>
       <Reasoner>ManagerMontaznychMiest</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
       <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>1</SimId>
+      <InternalId>1</InternalId>
+      <Name>AgentModelu</Name>
+      <Comment>Agent Modelu Simulacie</Comment>
+      <Bounds>980,145,180,180</Bounds>
+      <Reasoner>ManagerModelu</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+    </Agent>
+    <Agent>
+      <SimId>2</SimId>
+      <InternalId>2</InternalId>
+      <Name>AgentOkolia</Name>
+      <Comment>Agent Okolia Simulacie</Comment>
+      <Bounds>491,538,180,180</Bounds>
+      <Reasoner>ManagerOkolia</Reasoner>
+      <ReasonerBounds>74,25,32,25</ReasonerBounds>
+      <UsePetriNet>false</UsePetriNet>
+      <Components>
+        <Scheduler>
+          <SimId>1001</SimId>
+          <InternalId>15</InternalId>
+          <Name>SchedulerPrichodovObjednavok</Name>
+          <Bounds>73,107,35,13</Bounds>
+        </Scheduler>
+      </Components>
     </Agent>
   </Agents>
   <Messages>
@@ -300,5 +304,5 @@
       <Destination>6</Destination>
     </Message>
   </Messages>
-  <IID>118</IID>
+  <IID>127</IID>
 </ABAsim>

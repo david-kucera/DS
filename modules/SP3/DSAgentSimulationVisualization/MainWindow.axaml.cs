@@ -100,7 +100,8 @@ public partial class MainWindow : Window
 	    if (_dataCounter % _interval != 0 && _dataCounter != 1) return;
 	    
 	    var confidenceInterval = _stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
-        
+
+	    if (timeOfObjednavka == 0) return;
 	    _replicationValuesMean.Add(timeOfObjednavka);
 	    _replicationValuesTop.Add(confidenceInterval.Item2);
 	    _replicationValuesBottom.Add(confidenceInterval.Item1);

@@ -89,25 +89,25 @@
                 </StackPanel>
                     
                 <StackPanel Orientation="Horizontal" Grid.Row="1" Grid.Column="0" Margin="5">
-                    <Label Content="Rad rezanie:" FontSize="14"/>
+                    <Label Content="R-rezanie:" FontSize="14"/>
                     <Label Name="WaitingQueueRezanie" Content="0" FontSize="14" FontWeight="Bold"/>
                     
-                    <Label Content="Rad morenie:" FontSize="14"/>
+                    <Label Content="R-morenie:" FontSize="14"/>
                     <Label Name="WaitingQueueMorenie" Content="0" FontSize="14" FontWeight="Bold"/>
 
-                    <Label Content="Rad lakovanie:" FontSize="14"/>
+                    <Label Content="R-lakovanie:" FontSize="14"/>
                     <Label Name="WaitingQueueLakovanie" Content="0" FontSize="14" FontWeight="Bold"/>
                     
-                    <Label Content="Rad skladanie:" FontSize="14"/>
+                    <Label Content="R-skladanie:" FontSize="14"/>
                     <Label Name="WaitingQueueSkladanie" Content="0" FontSize="14" FontWeight="Bold"/>
                     
-                    <Label Content="Rad kovanie:" FontSize="14"/>
+                    <Label Content="R-kovanie:" FontSize="14"/>
                     <Label Name="WaitingQueueKovanie" Content="0" FontSize="14" FontWeight="Bold"/>
                     
-                    <Label Content="Počet objednávok:" FontSize="14"/>
+                    <Label Content="P-objednávok:" FontSize="14"/>
                     <Label Name="NumberOfOrders" Content="0" FontSize="14"/>
                     
-                    <Label Content="Počet hotových:" FontSize="14"/>
+                    <Label Content="P-hotových:" FontSize="14"/>
                     <Label Name="NumberOfFinishedOrders" Content="0" FontSize="14"/>
                 </StackPanel>
                 
