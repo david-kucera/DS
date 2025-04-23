@@ -36,8 +36,6 @@ namespace Simulation
 			PocetStolarovA = pocetA;
 			PocetStolarovB = pocetB;
 			PocetStolarovC = pocetC;
-			Objednavka.ResetPoradie();
-			Stolar.ResetPoradie();
 			Init();
 		}
 
@@ -60,6 +58,9 @@ namespace Simulation
 
 			PriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
 			PriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
+			
+			Objednavka.ResetPoradie();
+			Stolar.ResetPoradie();
 		}
 
 		override public void ReplicationFinished()
