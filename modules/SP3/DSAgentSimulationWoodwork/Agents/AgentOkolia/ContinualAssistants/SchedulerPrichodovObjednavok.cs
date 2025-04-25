@@ -19,7 +19,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
 			_prichodyGenerator = new ExponentialRNG(1.0/(2.0 / 60 / 60), seeder);
-			_pocetKusovGenerator = new UniformDiscreteRNG(1, 6, seeder);
+			_pocetKusovGenerator = new UniformDiscreteRNG(1, 5, seeder);
 			_typNabytkuGenerator = new UniformContinuousRNG(0.0, 1.0, seeder);
 		}
 
@@ -79,6 +79,8 @@ namespace Agents.AgentOkolia.ContinualAssistants
 		{
 			Objednavka obj = new Objednavka(MySim.CurrentTime);
 			int pocetTovaru = _pocetKusovGenerator.Sample();
+
+			//if (pocetTovaru > 5) throw new Exception();
 
 			for (int i = 1; i <= pocetTovaru; i++)
 			{
