@@ -11,7 +11,6 @@ namespace Agents.AgentStolarov.ContinualAssistants
 	public class ProcessRezanie : OSPABA.Process
 	{
 		#region Class members
-		private TriangularGenerator _pripravaDrevaVSkladeGenerator;
 		private ContinousEmpirical _stolRezanieGenerator;
 		private ContinousUniform _stolickaRezanieGenerator;
 		private ContinousUniform _skrinaRezanieGenerator;
@@ -21,7 +20,6 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			_pripravaDrevaVSkladeGenerator = new TriangularGenerator(seeder, 300.0, 900.0, 500.0);
 			List<(double, double)> intervals =
 			[
 				(10.0 * 60, 25.0 * 60),
@@ -50,7 +48,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			var sprava = ((MyMessage)message);
 			var tovar = sprava.Tovar;
 
-			if (tovar.Status != TovarStatus.PriebehRezania) throw new Exception("Neoèakávaná chyba: Tovar nie je v správnom procese!");
+			if (tovar.Status != TovarStatus.PriebehRezania) throw new Exception("Neoï¿½akï¿½vanï¿½ chyba: Tovar nie je v sprï¿½vnom procese!");
 
 			double casRezania = 0.0;
 			switch (tovar.Type)
@@ -65,7 +63,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 					casRezania = _stolickaRezanieGenerator.NextDouble();
 					break;
 				default:
-					throw new Exception("Nie je uvedený typ objednávky!");
+					throw new Exception("Nie je uvedenï¿½ typ objednï¿½vky!");
 			}
 
 			Hold(casRezania, message);
