@@ -27,6 +27,7 @@ public class MontazneMiesto
         TovarType tovarType = TovarType.Unknown;
         TovarStatus tovarStatus = TovarStatus.Unknown;
         int vytazenost = -1;
+        int tovarPoradie = -1;
         if (Stolar is not null) obsadeny = Stolar.Obsadeny;
         if (Stolar is not null) stolarType = Stolar.Type;
         if (Stolar is not null) stolarId = Stolar.ID;
@@ -34,10 +35,11 @@ public class MontazneMiesto
         if (Tovar is not null) objednavkaId = Tovar.ObjednavkaId;
         if (Tovar is not null) tovarType = Tovar.Type;
         if (Tovar is not null) tovarStatus = Tovar.Status;
+        if (Tovar is not null) tovarPoradie = Tovar.Poradie;
         if (Tovar is null && Stolar is null) return $"Miesto: {ID}";
         if (Tovar is null && Stolar is not null) return $"Miesto: {ID},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
-        if (Tovar is not null && Stolar is null) return $"Miesto: {ID},\t Tovar: {objednavkaId}. {tovarType}, {tovarStatus}";
-        return $"Miesto: {ID},\t Tovar: {objednavkaId}. {tovarType}, {tovarStatus},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
+        if (Tovar is not null && Stolar is null) return $"Miesto: {ID},\t Tovar: {objednavkaId}.{tovarPoradie} {tovarType}, {tovarStatus}";
+        return $"Miesto: {ID},\t Tovar: {objednavkaId}.{tovarPoradie} {tovarType}, {tovarStatus},\t Stolar: {stolarType}{stolarId} {obsadeny} {vytazenost}%";
     }
     #endregion // Public functions
 }

@@ -23,26 +23,6 @@ namespace Agents.AgentAStolar
 			}
 		}
 
-		//meta! userInfo="Removed from model"
-		public void ProcessInit(MessageForm message)
-		{
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessFinishProcessPresun(MessageForm message)
-		{
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessFinishProcessMontovanieKovani(MessageForm message)
-		{
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessFinishProcessRezanie(MessageForm message)
-		{
-		}
-
 		//meta! sender="AgentStolarov", id="57", type="Request"
 		public void ProcessDajStolaraA(MessageForm message)
 		{

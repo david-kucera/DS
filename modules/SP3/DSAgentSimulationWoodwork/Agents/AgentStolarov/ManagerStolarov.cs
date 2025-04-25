@@ -38,11 +38,6 @@ namespace Agents.AgentStolarov
 			Request(message);
 		}
 
-		//meta! userInfo="Removed from model"
-		public void ProcessInit(MessageForm message)
-		{
-		}
-
 		//meta! sender="AgentAStolar", id="57", type="Response"
 		public void ProcessDajStolaraA(MessageForm message)
 		{
@@ -50,10 +45,6 @@ namespace Agents.AgentStolarov
 			if (msg.Stolar != null)
 			{
 				if (msg.Stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
-
-				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) msg.Tovar.Status = TovarStatus.CakajucaNaMontazKovani;
-				else msg.Tovar.Status = TovarStatus.CakajucaNaRezanie;
-
 				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
 				StartContinualAssistant(message);
 			}
@@ -75,9 +66,6 @@ namespace Agents.AgentStolarov
 			if (msg.Stolar != null)
 			{
 				if (msg.Stolar.Type != StolarType.C) throw new Exception("Nesprávny typ stolára!");
-
-				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) msg.Tovar.Status = TovarStatus.CakajucaNaMontazKovani;
-				else msg.Tovar.Status = TovarStatus.CakajucaNaMorenie;
 				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
 				StartContinualAssistant(message);
 			}
@@ -100,8 +88,6 @@ namespace Agents.AgentStolarov
 			if (msg.Stolar != null)
 			{
 				if (msg.Stolar.Type != StolarType.B) throw new Exception("Nesprávny typ stolára!");
-
-				msg.Tovar.Status = TovarStatus.CakajucaNaSkladanie;
 				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
 				StartContinualAssistant(message);
 			}
@@ -123,8 +109,9 @@ namespace Agents.AgentStolarov
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
+			
+			// Pokracovanie objednavky na morenie
 			sprava.Tovar.Status = TovarStatus.CakajucaNaMorenie;
-
 			message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
 			message.Code = Mc.DajStolaraC;
 			Request(message);
@@ -278,7 +265,6 @@ namespace Agents.AgentStolarov
 			message.Code = Mc.DajStolaraB;
 			Request(message);
 
-
 			// Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
 			if (MyAgent.CakajuceNaMontazKovani.Count > 0)
 			{
@@ -374,7 +360,6 @@ namespace Agents.AgentStolarov
 			message.Addressee = MySim.FindAgent(SimId.AgentBStolar);
 			message.Code = Mc.DajStolaraB;
 			Request(message);
-
 
 			// Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
 			if (MyAgent.CakajuceNaMontazKovani.Count > 0)

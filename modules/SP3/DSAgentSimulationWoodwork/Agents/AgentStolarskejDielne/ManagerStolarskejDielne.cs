@@ -43,22 +43,12 @@ namespace Agents.AgentStolarskejDielne
 			Notice(message);
 		}
 
-		//meta! userInfo="Removed from model"
-		public void ProcessInit(MessageForm message)
-		{
-		}
-
 		//meta! sender="AgentModelu", id="53", type="Notice"
 		public void ProcessNovaObjednavka(MessageForm message)
 		{
 			message.Code = Mc.PriradMiesto;
 			message.Addressee = MySim.FindAgent(SimId.AgentMontaznychMiest);
 			Notice(message);
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessDalsiaPolozka(MessageForm message)
-		{
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"

@@ -23,21 +23,6 @@ namespace Agents.AgentBStolar
 			}
 		}
 
-		//meta! userInfo="Removed from model"
-		public void ProcessInit(MessageForm message)
-		{
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessFinishProcessSkladanie(MessageForm message)
-		{
-		}
-
-		//meta! userInfo="Removed from model"
-		public void ProcessFinishProcessPresun(MessageForm message)
-		{
-		}
-
 		//meta! sender="AgentStolarov", id="60", type="Request"
 		public void ProcessDajStolaraB(MessageForm message)
 		{

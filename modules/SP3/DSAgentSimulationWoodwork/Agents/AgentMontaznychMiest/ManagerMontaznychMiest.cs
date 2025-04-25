@@ -23,11 +23,6 @@ namespace Agents.AgentMontaznychMiest
 			}
 		}
 
-		//meta! userInfo="Removed from model"
-		public void ProcessInit(MessageForm message)
-		{
-		}
-
 		//meta! sender="AgentStolarskejDielne", id="58", type="Notice"
 		public void ProcessPriradMiesto(MessageForm message)
 		{

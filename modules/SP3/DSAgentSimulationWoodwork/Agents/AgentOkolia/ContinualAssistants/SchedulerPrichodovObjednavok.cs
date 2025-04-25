@@ -80,12 +80,12 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			Objednavka obj = new Objednavka(MySim.CurrentTime);
 			int pocetTovaru = _pocetKusovGenerator.Sample();
 
-			for (int i = 0; i < pocetTovaru; i++)
+			for (int i = 1; i <= pocetTovaru; i++)
 			{
 				double typNabytku = _typNabytkuGenerator.Sample();
-				if (typNabytku < 0.5) obj.AddTovar(new Tovar(TovarType.Stol, obj.Poradie));
-				else if (typNabytku <= 0.65) obj.AddTovar(new Tovar(TovarType.Stolicka, obj.Poradie));
-				else obj.AddTovar(new Tovar(TovarType.Skrina, obj.Poradie));
+				if (typNabytku < 0.5) obj.AddTovar(new Tovar(TovarType.Stol, obj.Poradie, i));
+				else if (typNabytku <= 0.65) obj.AddTovar(new Tovar(TovarType.Stolicka, obj.Poradie, i));
+				else obj.AddTovar(new Tovar(TovarType.Skrina, obj.Poradie, i));
 			}
 
 			return obj;

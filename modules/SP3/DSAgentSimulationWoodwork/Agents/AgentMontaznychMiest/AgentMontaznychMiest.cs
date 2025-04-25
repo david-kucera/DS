@@ -24,7 +24,7 @@ namespace Agents.AgentMontaznychMiest
 			// Setup component for the next replication
 
 			MontazneMiesta = new List<MontazneMiesto>(((MySimulation)MySim).PocetMontaznychMiest);
-			for (int i = 0; i < ((MySimulation)MySim).PocetMontaznychMiest; i++)
+			for (int i = 1; i <= ((MySimulation)MySim).PocetMontaznychMiest; i++)
 			{
 				MontazneMiesta.Add(new MontazneMiesto(i));
 			}

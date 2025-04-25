@@ -4,7 +4,7 @@ namespace DSAgentSimulationWoodwork.Entities;
 
 public class Stolar
 {
-    private static int _poradie = 0;
+    private static int _poradie = 1;
 
 	#region Properties
 	public int ID { get; set; }
