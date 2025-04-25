@@ -80,8 +80,6 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			Objednavka obj = new Objednavka(MySim.CurrentTime);
 			int pocetTovaru = _pocetKusovGenerator.Sample();
 
-			//if (pocetTovaru > 5) throw new Exception();
-
 			for (int i = 1; i <= pocetTovaru; i++)
 			{
 				double typNabytku = _typNabytkuGenerator.Sample();
