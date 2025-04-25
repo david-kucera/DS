@@ -37,33 +37,31 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			var stolar = sprava.Stolar;
 			var tovar = sprava.Tovar;
 
+			double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
+			double casPripravyDrevaVSklade = 0.0;
+			double casPrechoduZoSkladuNaMontazneMiesto = 0.0;
+			double casPrechoduNaMontazneMiesto = 0.0;
+			
 			if (stolar.Type == StolarType.A && tovar.Status == TovarStatus.CakajucaNaRezanie)
 			{
-				double casPrechoduZMontaznehoMiestaDoSkladu = 0.0;
 				if (stolar.MontazneMiesto != null)
 					casPrechoduZMontaznehoMiestaDoSkladu = _montazneMiestoSkladGenerator.NextDouble();
-				double casPripravyDrevaVSklade = _pripravaDrevaGenerator.NextDouble();
-				double casPrechoduZoSkladuNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
-				if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
-					stolar.MontazneMiesto.Stolar = null;
-
-				double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto;
-				Hold(trvanieUdalosti, message);
+				casPripravyDrevaVSklade = _pripravaDrevaGenerator.NextDouble();
+				casPrechoduZoSkladuNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
 			}
 			else
 			{
-				double casPrechoduNaMontazneMiesto;
 				if (stolar.MontazneMiesto == null)
 					casPrechoduNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
 				else if (stolar.MontazneMiesto != tovar.MontazneMiesto)
 					casPrechoduNaMontazneMiesto = _presunMedziMontaznymiMiestamiGenerator.NextDouble();
-				else casPrechoduNaMontazneMiesto = 0.0;
-				if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
-					stolar.MontazneMiesto.Stolar = null;
-
-				double trvanieUdalosti = casPrechoduNaMontazneMiesto;
-				Hold(trvanieUdalosti, message);
 			}
+			
+			if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
+				stolar.MontazneMiesto.Stolar = null;
+			
+			double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto +casPrechoduNaMontazneMiesto;
+			Hold(trvanieUdalosti, message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
