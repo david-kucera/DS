@@ -227,6 +227,7 @@ public partial class MainWindow : Window
         DurationSlider.Value = 1;
 		IntervalSlider.Value = 1;
 		VirtualSpeedCheckBox.IsChecked = false;
+        VirtualSpeedCheckBox.IsEnabled = true;
         AnimationCheckBox.IsEnabled = true;
 
         Start();
@@ -241,6 +242,7 @@ public partial class MainWindow : Window
 
         VirtualSpeedCheckBox.IsEnabled = true;
         AnimationCheckBox.IsEnabled = false;
+        VirtualSpeedCheckBox.IsEnabled = false;
         _stolaren.Stop();
     }
     

@@ -63,7 +63,7 @@
                     <Slider Name="IntervalSlider" Width="200" Height="50" Minimum="0" Maximum="1000" TickFrequency="100" IsSnapToTickEnabled="True" Margin="5" ValueChanged="IntervalSlider_OnValueChanged"></Slider>
                     <Label Name="IntervalSliderValue" VerticalAlignment="Center">1</Label>
 
-                    <CheckBox Name="VirtualSpeedCheckBox" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
+                    <CheckBox Name="VirtualSpeedCheckBox" IsEnabled="False" IsChecked="False" Content="Maximálna rýchlosť" Margin="5" IsCheckedChanged="VirtualSpeedCheckBox_OnIsCheckedChanged"></CheckBox>
                 </StackPanel>
             </Grid>
         </Border>
