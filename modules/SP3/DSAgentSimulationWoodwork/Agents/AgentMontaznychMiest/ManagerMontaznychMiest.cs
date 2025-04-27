@@ -6,7 +6,7 @@ namespace Agents.AgentMontaznychMiest
 	//meta! id="8"
 	public class ManagerMontaznychMiest : OSPABA.Manager
 	{
-		public ManagerMontaznychMiest(int id, OSPABA.Simulation mySim, Agent myAgent) :
+        public ManagerMontaznychMiest(int id, OSPABA.Simulation mySim, Agent myAgent) :
 			base(id, mySim, myAgent)
 		{
 			Init();
@@ -21,7 +21,7 @@ namespace Agents.AgentMontaznychMiest
 			{
 				PetriNet.Clear();
 			}
-		}
+        }
 
 		//meta! sender="AgentStolarskejDielne", id="58", type="Notice"
 		public void ProcessPriradMiesto(MessageForm message)
@@ -46,6 +46,7 @@ namespace Agents.AgentMontaznychMiest
 				{
 					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.NepriradeneTovary.Count + ((MySimulation)MySim).AgentStolarov.CakajuceNaRezanie.Count);
 					MyAgent.NepriradeneTovary.Enqueue(tovar);
+					MyAgent.AnimQueue.Insert(tovar.AnimImageItem);
 				}
 			}
 		}
@@ -62,7 +63,8 @@ namespace Agents.AgentMontaznychMiest
 			if (MyAgent.NepriradeneTovary.Count > 0)
 			{
 				var tovar = MyAgent.NepriradeneTovary.Dequeue();
-				tovar.MontazneMiesto = miesto;
+				MyAgent.AnimQueue.RemoveFirst();
+                tovar.MontazneMiesto = miesto;
 				miesto.Tovar = tovar;
 				var msg = new MyMessage(MySim)
 				{

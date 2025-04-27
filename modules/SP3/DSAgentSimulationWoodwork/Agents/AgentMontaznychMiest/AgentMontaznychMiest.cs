@@ -1,5 +1,6 @@
 using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
+using OSPAnimator;
 using Simulation;
 
 namespace Agents.AgentMontaznychMiest
@@ -10,9 +11,10 @@ namespace Agents.AgentMontaznychMiest
 		#region Properties
 		public List<MontazneMiesto> MontazneMiesta { get; set; }
 		public Queue<Tovar> NepriradeneTovary { get; set; }
-		#endregion // Properties
+        public AnimQueue AnimQueue { get; set; }
+        #endregion // Properties
 
-		public AgentMontaznychMiest(int id, OSPABA.Simulation mySim, Agent parent) :
+        public AgentMontaznychMiest(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
 			Init();
@@ -29,7 +31,10 @@ namespace Agents.AgentMontaznychMiest
 				MontazneMiesta.Add(new MontazneMiesto(i));
 			}
 			NepriradeneTovary = new Queue<Tovar>();
-		}
+
+            AnimQueue = new AnimQueue(MySim.Animator, 50, 10, 500, 10, 10);
+            AnimQueue.SetVisible(true);
+        }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
