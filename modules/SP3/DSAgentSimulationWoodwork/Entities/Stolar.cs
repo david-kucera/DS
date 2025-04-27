@@ -37,18 +37,19 @@ public class Stolar
         switch (stolarType)
         {
             case StolarType.A:
-                AnimImageItem = new AnimImageItem(IMG_PATH_A, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_A, 50, 50);
                 break;
             case StolarType.B:
-                AnimImageItem = new AnimImageItem(IMG_PATH_B, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_B, 50, 50);
                 break;
             case StolarType.C:
-                AnimImageItem = new AnimImageItem(IMG_PATH_C, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_C, 50, 50);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stolarType), stolarType, null);
         }
         AnimImageItem.SetLabel($"{ID}");
+        AnimImageItem.SetPosition(Config.GetRandomSkladPosX(), Config.GetRandomSkladPosY());
     }
 	#endregion // Constructor
 

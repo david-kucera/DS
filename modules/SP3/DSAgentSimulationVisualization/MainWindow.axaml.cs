@@ -342,7 +342,7 @@ public partial class MainWindow : Window
             _stolaren.CreateAnimator();
             var frameworkElementCanvas = _stolaren.Animator.Canvas;
             _stolaren.Animator.SetSynchronizedTime(false); 
-            _stolaren.Animator.SetBackgroundImage(Config.Background);
+            _stolaren.InitAnimator();
             var embedSample = new EmbedFrameworkElement(frameworkElementCanvas);
             MyContentControl.Content = embedSample;
         }

@@ -1,7 +1,6 @@
 using Agents.AgentOkolia;
 using Agents.AgentBStolar;
 using Agents.AgentStolarov;
-using OSPABA;
 using Agents.AgentModelu;
 using Agents.AgentMontaznychMiest;
 using Agents.AgentAStolar;
@@ -9,6 +8,7 @@ using Agents.AgentCStolar;
 using Agents.AgentStolarskejDielne;
 using DSAgentSimulationLib.Statistics;
 using DSAgentSimulationWoodwork.Entities;
+using OSPAnimator;
 
 namespace Simulation
 {
@@ -118,6 +118,18 @@ namespace Simulation
 		{
 			StopSimulation();
 		}
+
+		public void InitAnimator()
+		{
+            AnimImageItem sklad = new AnimImageItem(Config.Sklad);
+            sklad.SetPosition(Config.SKLAD_POS_X, Config.SKLAD_POS_Y);
+            sklad.SetImageSize(Config.SKLAD_WIDTH, Config.SKLAD_HEIGHT);
+            Animator.Register(sklad);
+
+			AgentAStolar.InitAnimator();
+			AgentBStolar.InitAnimator();
+            AgentCStolar.InitAnimator();
+        }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()

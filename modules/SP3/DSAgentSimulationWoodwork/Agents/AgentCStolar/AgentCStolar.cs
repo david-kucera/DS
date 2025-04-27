@@ -25,9 +25,18 @@ namespace Agents.AgentCStolar
 			StolariC = new List<Stolar>();
 			for (int i = 0; i < ((MySimulation)MySim).PocetStolarovC; i++)
 			{
-				StolariC.Add(new Stolar(StolarType.C, i));
+                StolariC.Add(new Stolar(StolarType.C, i));
+                
 			}
 		}
+
+		public void InitAnimator()
+		{
+            foreach (var stolar in StolariC)
+            {
+                MySim.Animator.Register(stolar.AnimImageItem);
+            }
+        }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
