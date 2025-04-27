@@ -328,5 +328,22 @@ public partial class MainWindow : Window
             _stolaren.SetSimSpeed(intervalValue, durationValue);
 		}
 	}
+
+    private void AnimationCheckBox_IsCheckedChanged(object? sender, RoutedEventArgs e)
+    {
+        Animate(AnimationCheckBox.IsChecked);
+    }
+
+    private void Animate(bool? isChecked)
+    {
+        if (isChecked == true)
+        {
+            // Setup animation
+        }
+        else
+        {
+            // Remove animation
+        }
+    }
     #endregion // Private functions
 }
