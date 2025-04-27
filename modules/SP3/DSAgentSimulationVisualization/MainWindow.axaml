@@ -51,7 +51,7 @@
                     <Button Name="PozastavButton" IsEnabled="False" Content="Pozastav" Margin="5" Click="PozastavButton_OnClick"/>
                     <Button Name="PokracujButton" IsEnabled="False" Content="Pokračuj" Margin="5" Click="PokracujButton_OnClick"/>
                     <Button Name="UkonciButton" IsEnabled="False" Content="Ukonči" Margin="5" Click="UkonciButton_OnClick"/>
-					<CheckBox Name="AnimationCheckBox" IsChecked="False" Content="Animácia" Margin="5" IsCheckedChanged="AnimationCheckBox_IsCheckedChanged"/>
+					<CheckBox Name="AnimationCheckBox" IsEnabled="False" IsChecked="False" Content="Animácia" Margin="5" IsCheckedChanged="AnimationCheckBox_IsCheckedChanged"/>
 				</StackPanel>
                 
                 <StackPanel Orientation="Horizontal" Grid.Row="3" Margin="5">
@@ -157,7 +157,9 @@
 					</Grid>
 				</TabItem>
 				<TabItem Header="Animácia">
-					
+					<Border BorderThickness="1" BorderBrush="Gray" Padding="10" CornerRadius="5">
+						<ContentControl x:Name="MyContentControl"/>
+					</Border>
 				</TabItem>
 			</TabControl>
             

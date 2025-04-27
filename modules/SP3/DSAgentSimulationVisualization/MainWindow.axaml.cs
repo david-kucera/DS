@@ -4,7 +4,6 @@ using Avalonia.Controls;
 using Avalonia.Controls.Primitives;
 using Avalonia.Interactivity;
 using DSAgentSimulationLib.Statistics;
-using DSAgentSimulationWoodwork.Entities;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
 using ScottPlot;
@@ -228,8 +227,9 @@ public partial class MainWindow : Window
         DurationSlider.Value = 1;
 		IntervalSlider.Value = 1;
 		VirtualSpeedCheckBox.IsChecked = false;
+        AnimationCheckBox.IsEnabled = true;
 
-		Start();
+        Start();
     }
 
     private void UkonciButton_OnClick(object? sender, RoutedEventArgs e)
@@ -240,6 +240,7 @@ public partial class MainWindow : Window
         PokracujButton.IsEnabled = false;
 
         VirtualSpeedCheckBox.IsEnabled = true;
+        AnimationCheckBox.IsEnabled = false;
         _stolaren.Stop();
     }
     
@@ -338,11 +339,17 @@ public partial class MainWindow : Window
     {
         if (isChecked == true)
         {
-            // Setup animation
+            _stolaren.CreateAnimator();
+            var frameworkElementCanvas = _stolaren.Animator.Canvas;
+            _stolaren.Animator.SetSynchronizedTime(false); 
+            _stolaren.Animator.SetBackgroundImage(Config.Background);
+            var embedSample = new EmbedFrameworkElement(frameworkElementCanvas);
+            MyContentControl.Content = embedSample;
         }
         else
         {
-            // Remove animation
+            _stolaren.RemoveAnimator();
+            MyContentControl.Content = null;
         }
     }
     #endregion // Private functions

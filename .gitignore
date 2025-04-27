@@ -8,3 +8,5 @@ riderModule.iml
 /run64_D
 /solutions/.vs
 /run_D/net8.0
+/run_D/net8.0-windows
+*.DS_Store
