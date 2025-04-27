@@ -12,6 +12,8 @@ public class Stolar
     private const string IMG_PATH_A = "../../resources/stolarA.png";
     private const string IMG_PATH_B = "../../resources/stolarB.png";
     private const string IMG_PATH_C = "../../resources/stolarC.png";
+    private const int IMG_WIDTH = 50;
+    private const int IMG_HEIGHT = 50;
     #endregion // Constants
 
     #region Properties
@@ -37,19 +39,19 @@ public class Stolar
         switch (stolarType)
         {
             case StolarType.A:
-                AnimImageItem = new AnimImageItem(IMG_PATH_A, 50, 50);
+                AnimImageItem = new AnimImageItem(IMG_PATH_A, IMG_WIDTH, IMG_HEIGHT);
                 break;
             case StolarType.B:
-                AnimImageItem = new AnimImageItem(IMG_PATH_B, 50, 50);
+                AnimImageItem = new AnimImageItem(IMG_PATH_B, IMG_WIDTH, IMG_HEIGHT);
                 break;
             case StolarType.C:
-                AnimImageItem = new AnimImageItem(IMG_PATH_C, 50, 50);
+                AnimImageItem = new AnimImageItem(IMG_PATH_C, IMG_WIDTH, IMG_HEIGHT);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stolarType), stolarType, null);
         }
         AnimImageItem.SetLabel($"{ID}");
-        AnimImageItem.SetPosition(Config.GetRandomSkladPosX(), Config.GetRandomSkladPosY());
+        AnimImageItem.SetPosition(Sklad.GetRandomSkladPosX(), Sklad.GetRandomSkladPosY());
     }
 	#endregion // Constructor
 

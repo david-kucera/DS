@@ -8,8 +8,16 @@ namespace Agents.AgentMontaznychMiest
 	//meta! id="8"
 	public class AgentMontaznychMiest : OSPABA.Agent
 	{
-		#region Properties
-		public List<MontazneMiesto> MontazneMiesta { get; set; }
+        #region Constants
+		private const int ANIM_QUEUE_X = 0;
+        private const int ANIM_QUEUE_Y = 500;
+        private const int ANIM_QUEUE_WIDTH = 500;
+        private const int ANIM_QUEUE_HEIGHT = 500;
+        private const int ANIM_QUEUE_SPEED = 50;
+        #endregion // Constants
+
+        #region Properties
+        public List<MontazneMiesto> MontazneMiesta { get; set; }
 		public Queue<Tovar> NepriradeneTovary { get; set; }
         public AnimQueue AnimQueue { get; set; }
         #endregion // Properties
@@ -31,9 +39,17 @@ namespace Agents.AgentMontaznychMiest
 				MontazneMiesta.Add(new MontazneMiesto(i));
 			}
 			NepriradeneTovary = new Queue<Tovar>();
+        }
 
-            AnimQueue = new AnimQueue(MySim.Animator, 50, 10, 500, 10, 10);
+		public void InitAnimator()
+		{
+            AnimQueue = new AnimQueue(MySim.Animator, ANIM_QUEUE_X, ANIM_QUEUE_Y, ANIM_QUEUE_WIDTH, ANIM_QUEUE_HEIGHT, ANIM_QUEUE_SPEED);
             AnimQueue.SetVisible(true);
+
+            foreach (MontazneMiesto miesto in MontazneMiesta)
+			{
+				MySim.Animator.Register(miesto.AnimShapeItem);
+            }
         }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

@@ -121,14 +121,15 @@ namespace Simulation
 
 		public void InitAnimator()
 		{
-            AnimImageItem sklad = new AnimImageItem(Config.Sklad);
-            sklad.SetPosition(Config.SKLAD_POS_X, Config.SKLAD_POS_Y);
-            sklad.SetImageSize(Config.SKLAD_WIDTH, Config.SKLAD_HEIGHT);
+            AnimImageItem sklad = new AnimImageItem(Sklad.Image);
+            sklad.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y);
+            sklad.SetImageSize(Sklad.SKLAD_WIDTH, Sklad.SKLAD_HEIGHT);
             Animator.Register(sklad);
 
 			AgentAStolar.InitAnimator();
 			AgentBStolar.InitAnimator();
             AgentCStolar.InitAnimator();
+			AgentMontaznychMiest.InitAnimator();
         }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

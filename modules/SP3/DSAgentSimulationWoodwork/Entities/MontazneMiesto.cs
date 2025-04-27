@@ -1,19 +1,44 @@
+using System.Windows.Media;
+using OSPAnimator;
+
 namespace DSAgentSimulationWoodwork.Entities;
 
 public class MontazneMiesto
 {
+    #region Constants
+    public const int HEIGHT = 100;
+    public const int WIDTH = 200;
+    public const int MARGIN = 50;
+    #endregion // Constants
+
     #region Properties
     public int ID { get; set; }
     public Tovar Tovar { get; set; }
     public Stolar Stolar { get; set; }
+    public int PosX { get; set; }
+    public int PosY { get; set; }
+    public AnimShapeItem AnimShapeItem { get; set; }
     #endregion // Properties
-    
+
     #region Constructor
     public MontazneMiesto(int id)
     {
         ID = id;
         Tovar = null;
         Stolar = null;
+
+        int posX = (id-1) / 3;
+        int posY = (id-1) % 3;
+
+        AnimShapeItem = new();
+        PosX = Sklad.SKLAD_POS_X + Sklad.SKLAD_WIDTH + (WIDTH + MARGIN) * posX;
+        PosY = 10 + (HEIGHT + MARGIN) * posY;
+        AnimShapeItem.SetPosition(PosX, PosY);
+        AnimShapeItem.Width = WIDTH;
+        AnimShapeItem.Height = HEIGHT;
+        AnimShapeItem.AnimShape = AnimShape.RECTANGLE;
+        AnimShapeItem.Color = Colors.Gray;
+        AnimShapeItem.Fill = true;
     }
     #endregion // Constructor
     
