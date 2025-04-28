@@ -16,9 +16,9 @@ class Program
     public static int M;
     public static Configuration CURRENT_CONFIG;
     public static string OUTPUT_DIR = "../../output/";
-    public static string OUTPUT_FILE = OUTPUT_DIR + "output.txt";
-    public static string PATH_VYHOVUJUCE = OUTPUT_DIR + "vyhovuje.txt";
-    public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.txt";
+    public static string OUTPUT_FILE = OUTPUT_DIR + "output.csv";
+    public static string PATH_VYHOVUJUCE = OUTPUT_DIR + "vyhovuje.csv";
+    public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.csv";
 	public static object LOCK = new();
 	#endregion // Constants
 
