@@ -1,3 +1,4 @@
+using System.Windows.Interop;
 using DSAgentSimulationWoodwork.Entities;
 using DSLib.Generators.Uniform;
 using OSPABA;
@@ -111,8 +112,9 @@ namespace Agents.AgentStolarov
 			sprava.Stolar = null;
 			
 			// Pokracovanie objednavky na morenie
-			sprava.Tovar.Status = TovarStatus.CakajucaNaMorenie;
-			message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+			sprava.Tovar.ChangeStatus(TovarStatus.CakajucaNaMorenie);
+
+            message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
 			message.Code = Mc.DajStolaraC;
 			Request(message);
 
@@ -156,8 +158,8 @@ namespace Agents.AgentStolarov
 			var typStolara = sprava.Stolar.Type;
 			sprava.Stolar = null;
 
-			sprava.Tovar.Status = TovarStatus.Hotova;
-			message.Code = Mc.PracaHotova;
+			sprava.Tovar.ChangeStatus(TovarStatus.Hotova);
+            message.Code = Mc.PracaHotova;
 			message.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
 			Notice(message);
 
@@ -249,8 +251,8 @@ namespace Agents.AgentStolarov
 			var lakovaniePerc = _ajNaLakovanieGenerator.NextDouble();
 			if (lakovaniePerc < 0.15)
 			{
-				sprava.Tovar.Status = TovarStatus.PriebehLakovania;
-				message.Addressee = MyAgent.FindAssistant(SimId.ProcessLakovanie);
+				sprava.Tovar.ChangeStatus(TovarStatus.PriebehLakovania);
+                message.Addressee = MyAgent.FindAssistant(SimId.ProcessLakovanie);
 				StartContinualAssistant(message);
 				return;
 			}
@@ -260,8 +262,8 @@ namespace Agents.AgentStolarov
 			sprava.Stolar = null;
 
 			// Ak sa nelakuje, tovar pokracuje dalej na skladanie
-			sprava.Tovar.Status = TovarStatus.CakajucaNaSkladanie;
-			message.Addressee = MySim.FindAgent(SimId.AgentBStolar);
+			sprava.Tovar.ChangeStatus(TovarStatus.CakajucaNaSkladanie);
+            message.Addressee = MySim.FindAgent(SimId.AgentBStolar);
 			message.Code = Mc.DajStolaraB;
 			Request(message);
 
@@ -320,28 +322,28 @@ namespace Agents.AgentStolarov
 			switch (msg.Tovar.Status)
 			{
 				case TovarStatus.CakajucaNaRezanie:
-					msg.Tovar.Status = TovarStatus.PriebehRezania;
-					message.Addressee = MyAgent.FindAssistant(SimId.ProcessRezanie);
+					msg.Tovar.ChangeStatus(TovarStatus.PriebehRezania);
+                    message.Addressee = MyAgent.FindAssistant(SimId.ProcessRezanie);
 					StartContinualAssistant(message);
 					break;
 				case TovarStatus.CakajucaNaMorenie:
-					msg.Tovar.Status = TovarStatus.PriebehMorenia;
-					message.Addressee = MyAgent.FindAssistant(SimId.ProcessMorenie);
+					msg.Tovar.ChangeStatus(TovarStatus.PriebehMorenia);
+                    message.Addressee = MyAgent.FindAssistant(SimId.ProcessMorenie);
 					StartContinualAssistant(message);
 					break;
 				case TovarStatus.CakajucaNaLakovanie:
-					msg.Tovar.Status = TovarStatus.PriebehLakovania;
-					message.Addressee = MyAgent.FindAssistant(SimId.ProcessLakovanie);
+					msg.Tovar.ChangeStatus(TovarStatus.PriebehLakovania);
+                    message.Addressee = MyAgent.FindAssistant(SimId.ProcessLakovanie);
 					StartContinualAssistant(message);
 					break;
 				case TovarStatus.CakajucaNaSkladanie:
-					msg.Tovar.Status = TovarStatus.PriebehSkladania;
-					message.Addressee = MyAgent.FindAssistant(SimId.ProcessSkladanie);
+					msg.Tovar.ChangeStatus(TovarStatus.PriebehSkladania);
+                    message.Addressee = MyAgent.FindAssistant(SimId.ProcessSkladanie);
 					StartContinualAssistant(message);
 					break;
 				case TovarStatus.CakajucaNaMontazKovani:
-					msg.Tovar.Status = TovarStatus.PriebehMontazeKovani;
-					message.Addressee = MyAgent.FindAssistant(SimId.ProcessMontazKovani);
+                    msg.Tovar.ChangeStatus(TovarStatus.PriebehMontazeKovani);
+                    message.Addressee = MyAgent.FindAssistant(SimId.ProcessMontazKovani);
 					StartContinualAssistant(message);
 					break;
 			}
@@ -356,14 +358,14 @@ namespace Agents.AgentStolarov
 			sprava.Stolar = null;
 
 			// Tovar pokracuje dalej na skladanie
-			sprava.Tovar.Status = TovarStatus.CakajucaNaSkladanie;
-			message.Addressee = MySim.FindAgent(SimId.AgentBStolar);
-			message.Code = Mc.DajStolaraB;
-			Request(message);
+			sprava.Tovar.ChangeStatus(TovarStatus.CakajucaNaSkladanie);
+            message.Addressee = MySim.FindAgent(SimId.AgentBStolar);
+            message.Code = Mc.DajStolaraB;
+            Request(message);
 
-			// Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
-			if (MyAgent.CakajuceNaMontazKovani.Count > 0)
-			{
+            // Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
+            if (MyAgent.CakajuceNaMontazKovani.Count > 0)
+            {
 				var tovar = MyAgent.CakajuceNaMontazKovani.Dequeue();
 				var msg = new MyMessage(MySim)
 				{
@@ -416,16 +418,16 @@ namespace Agents.AgentStolarov
 
 			if (sprava.Tovar.Type == TovarType.Skrina)
 			{
-				sprava.Tovar.Status = TovarStatus.CakajucaNaMontazKovani;
-				message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+				sprava.Tovar.ChangeStatus(TovarStatus.CakajucaNaMontazKovani);
+                message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
 				message.Code = Mc.DajStolaraC;
 				Request(message);
 			}
 			else
 			{
 				// tovar hotovy, notifikuj agenta modelu
-				sprava.Tovar.Status = TovarStatus.Hotova;
-				var msg = message.CreateCopy();
+				sprava.Tovar.ChangeStatus(TovarStatus.Hotova);
+                var msg = message.CreateCopy();
 				msg.Code = Mc.PracaHotova;
 				msg.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
 				Notice(msg);

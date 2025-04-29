@@ -40,17 +40,19 @@ public class Stolar
         {
             case StolarType.A:
                 AnimImageItem = new AnimImageItem(IMG_PATH_A, IMG_WIDTH, IMG_HEIGHT);
+                AnimImageItem.SetLabel($"A{ID}");
                 break;
             case StolarType.B:
                 AnimImageItem = new AnimImageItem(IMG_PATH_B, IMG_WIDTH, IMG_HEIGHT);
+                AnimImageItem.SetLabel($"B{ID}");
                 break;
             case StolarType.C:
                 AnimImageItem = new AnimImageItem(IMG_PATH_C, IMG_WIDTH, IMG_HEIGHT);
+                AnimImageItem.SetLabel($"C{ID}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stolarType), stolarType, null);
         }
-        AnimImageItem.SetLabel($"{ID}");
         AnimImageItem.SetPosition(Sklad.GetRandomSkladPosX(), Sklad.GetRandomSkladPosY());
         AnimImageItem.SetZIndex(2);
     }

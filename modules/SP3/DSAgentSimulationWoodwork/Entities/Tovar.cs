@@ -47,7 +47,6 @@ public class Tovar
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
-        AnimImageItem.SetLabel($"{ObjednavkaId}.{Poradie}");
         AnimImageItem.SetVisible(true);
         AnimImageItem.SetPosition(GetRandomStartPosition());
         AnimImageItem.SetZIndex(2);
@@ -55,6 +54,11 @@ public class Tovar
     #endregion // Constructor
 
     #region Public functions
+    public void ChangeStatus(TovarStatus newStatus)
+    {
+        Status = newStatus;
+        AnimImageItem.SetLabel($"{ObjednavkaId}.{Poradie}.{Status}");
+    }
     public override string ToString()
     {
         if (MontazneMiesto is null) return $"{ObjednavkaId}.{Poradie} {Type} : {Status} nie je na montážnom mieste";
