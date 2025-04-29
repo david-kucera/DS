@@ -49,7 +49,8 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			switch (message.Code)
 			{
 				case Mc.Finish:
-					AssistantFinished(message);
+                    ((MyMessage)message).Objednavka.ArrivalTime = MySim.CurrentTime;
+                    AssistantFinished(message);
 					break;
 			}
 		}

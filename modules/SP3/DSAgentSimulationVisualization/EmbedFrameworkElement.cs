@@ -3,6 +3,7 @@ using Avalonia.Platform;
 using System.Runtime.InteropServices;
 using System.Windows.Forms.Integration;
 using System.Windows;
+using System;
 
 namespace DSAgentSimulationVisualization
 {
@@ -19,15 +20,43 @@ namespace DSAgentSimulationVisualization
         {
             if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
             {
-                // use ElementHost to produce a win32 Handle for embedding
-                ElementHost elementHost = new ElementHost();
+                // Disconnect the FrameworkElement from any previous parent
+                if (_frameworkElement.Parent is System.Windows.Controls.Panel panel)
+                {
+                    panel.Children.Remove(_frameworkElement);
+                }
+                else if (_frameworkElement.Parent is System.Windows.Controls.ContentControl contentControl)
+                {
+                    contentControl.Content = null;
+                }
+                else if (_frameworkElement.Parent is System.Windows.Controls.Decorator decorator)
+                {
+                    decorator.Child = null;
+                }
+                else if (_frameworkElement.Parent is System.Windows.Controls.ItemsControl itemsControl)
+                {
+                    itemsControl.Items.Remove(_frameworkElement);
+                }
+                else if (_frameworkElement.Parent is System.Windows.Controls.Primitives.Popup popup)
+                {
+                    popup.Child = null;
+                }
+                else if (_frameworkElement.Parent != null)
+                {
+                    throw new InvalidOperationException("Unsupported parent type: " + _frameworkElement.Parent.GetType());
+                }
 
-                elementHost.Child = _frameworkElement;
+                // Create a new ElementHost
+                ElementHost elementHost = new ElementHost
+                {
+                    Child = _frameworkElement
+                };
 
                 return new PlatformHandle(elementHost.Handle, "Hndl");
             }
             return base.CreateNativeControlCore(parent);
         }
+
 
         protected override void DestroyNativeControlCore(IPlatformHandle control)
         {
