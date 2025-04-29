@@ -61,7 +61,8 @@ namespace Simulation
 			
 			Objednavka.ResetPoradie();
 			Stolar.ResetPoradie();
-		}
+			InitAnimator();
+        }
 
 		override public void ReplicationFinished()
 		{
@@ -91,7 +92,10 @@ namespace Simulation
 				stolariCVytazenie.AddValue(stolar.Workload.GetValue());
 			}
 			GlobalneVytazenieC.AddValue(stolariCVytazenie.GetValue());
-		}
+
+            if (AnimatorExists)
+                Animator.ClearAll();
+        }
 
 		override public void SimulationFinished()
 		{
@@ -124,7 +128,7 @@ namespace Simulation
             AnimImageItem sklad = new AnimImageItem(Sklad.Image);
             sklad.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y);
             sklad.SetImageSize(Sklad.SKLAD_WIDTH, Sklad.SKLAD_HEIGHT);
-            Animator.Register(sklad);
+            if (AnimatorExists) Animator.Register(sklad);
 
 			AgentAStolar.InitAnimator();
 			AgentBStolar.InitAnimator();

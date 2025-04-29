@@ -34,7 +34,7 @@ namespace Agents.AgentCStolar
 		{
             foreach (var stolar in StolariC)
             {
-                MySim.Animator.Register(stolar.AnimImageItem);
+                if (MySim.AnimatorExists) MySim.Animator.Register(stolar.AnimImageItem);
             }
         }
 

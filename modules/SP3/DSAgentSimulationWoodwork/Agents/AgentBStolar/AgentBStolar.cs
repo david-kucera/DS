@@ -33,7 +33,7 @@ namespace Agents.AgentBStolar
 		{
             foreach (var stolar in StolariB)
             {
-                MySim.Animator.Register(stolar.AnimImageItem);
+                if (MySim.AnimatorExists) MySim.Animator.Register(stolar.AnimImageItem);
             }
         }
 

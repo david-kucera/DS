@@ -33,7 +33,7 @@ namespace Agents.AgentAStolar
 		{
             foreach (var stolar in StolariA)
             {
-                MySim.Animator.Register(stolar.AnimImageItem);
+                if (MySim.AnimatorExists) MySim.Animator.Register(stolar.AnimImageItem);
             }
         }
 

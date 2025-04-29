@@ -36,6 +36,8 @@ namespace Agents.AgentMontaznychMiest
 					tovar.MontazneMiesto = mm;
 					mm.Tovar = tovar;
 
+					tovar.AnimImageItem.MoveTo(MySim.CurrentTime, 0, mm.PosX, mm.PosY);
+
 					var msg = message.CreateCopy();
 					msg.Code = Mc.ZacniPracu;
 					msg.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
@@ -46,7 +48,7 @@ namespace Agents.AgentMontaznychMiest
 				{
 					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.NepriradeneTovary.Count + ((MySimulation)MySim).AgentStolarov.CakajuceNaRezanie.Count);
 					MyAgent.NepriradeneTovary.Enqueue(tovar);
-					if (MySim.AnimatorExists) MyAgent.AnimQueue.Insert(tovar.AnimImageItem);
+					if (MySim.AnimatorExists) MyAgent.AnimQueue.Insert(tovar.AnimImageItem/*, MySim.CurrentTime, MySim.CurrentTime*/);
 				}
 			}
 		}

@@ -6,6 +6,7 @@ using Avalonia.Interactivity;
 using DSAgentSimulationLib.Statistics;
 using MsBox.Avalonia;
 using MsBox.Avalonia.Enums;
+using OSPAnimator;
 using ScottPlot;
 using ScottPlot.Plottables;
 using Simulation;
@@ -52,6 +53,7 @@ public partial class MainWindow : Window
         _stolaren.OnReplicationDidFinish(ReplicationDidFinish);
         _stolaren.OnSimulationDidFinish(SimulationDidFinish);
         _stolaren.SetSimSpeed(1,1);
+        Animate(AnimationCheckBox.IsChecked);
         Task.Run(() => _stolaren.Start(numReps, 249 * 8 * 60 * 60));
     }
 
@@ -339,12 +341,17 @@ public partial class MainWindow : Window
 
     private void Animate(bool? isChecked)
     {
+        if (_stolaren is null) return;
+
+        if (_stolaren.AnimatorExists)
+            return;
+
         if (isChecked == true)
         {
-            _stolaren.CreateAnimator();
+            Animator animator = new(_stolaren);
+            _stolaren.Animator = animator;
             var frameworkElementCanvas = _stolaren.Animator.Canvas;
             _stolaren.Animator.SetSynchronizedTime(false); 
-            _stolaren.InitAnimator();
             var embedSample = new EmbedFrameworkElement(frameworkElementCanvas);
             MyContentControl.Content = embedSample;
         }

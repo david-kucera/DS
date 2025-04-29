@@ -1,3 +1,4 @@
+using System.Drawing;
 using System.IO;
 using OSPAnimator;
 
@@ -9,6 +10,8 @@ public class Tovar
     private const string IMG_PATH_STOL = "../../resources/stol.png";
     private const string IMG_PATH_STOLICKA = "../../resources/stolicka.png";
     private const string IMG_PATH_SKRINA = "../../resources/skrina.png";
+    private const int IMG_WIDTH = 50;
+    private const int IMG_HEIGHT = 50;
     #endregion // Constants
 
     #region Properties
@@ -33,21 +36,23 @@ public class Tovar
         switch (type) 
         {
             case TovarType.Stol:
-                AnimImageItem = new AnimImageItem(IMG_PATH_STOL, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_STOL, IMG_WIDTH, IMG_HEIGHT);
                 break;
             case TovarType.Skrina:
-                AnimImageItem = new AnimImageItem(IMG_PATH_SKRINA, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_SKRINA, IMG_WIDTH, IMG_HEIGHT);
                 break;
             case TovarType.Stolicka:
-                AnimImageItem = new AnimImageItem(IMG_PATH_STOLICKA, 10, 10);
+                AnimImageItem = new AnimImageItem(IMG_PATH_STOLICKA, IMG_WIDTH, IMG_HEIGHT);
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(type), type, null);
         }
         AnimImageItem.SetLabel($"{ObjednavkaId}.{Poradie}");
+        AnimImageItem.SetVisible(true);
+        AnimImageItem.SetPosition(GetRandomStartPosition());
     }
     #endregion // Constructor
-    
+
     #region Public functions
     public override string ToString()
     {
@@ -66,6 +71,14 @@ public class Tovar
             throw new FileNotFoundException($"File {IMG_PATH_STOLICKA} not found");
         if (File.Exists(IMG_PATH_SKRINA) == false)
             throw new FileNotFoundException($"File {IMG_PATH_SKRINA} not found");
+    }
+
+    private PointF GetRandomStartPosition()
+    {
+        Random random = new();
+        int ranX = random.Next(-500, (int)Constants.ANIM_QUEUE_START.X - 100);
+        int ranY = random.Next((int)Constants.ANIM_QUEUE_START.Y - 50, (int)Constants.ANIM_QUEUE_START.Y + 50);
+        return new PointF(ranX, ranY);
     }
     #endregion // Private functions
 }

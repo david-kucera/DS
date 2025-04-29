@@ -1,4 +1,3 @@
-using Agents.AgentOkolia;
 using DSAgentSimulationWoodwork.Entities;
 using OSPABA;
 using OSPRNG;
@@ -32,9 +31,16 @@ namespace Agents.AgentOkolia.ContinualAssistants
 		//meta! sender="AgentOkolia", id="16", type="Start"
 		public void ProcessStart(MessageForm message)
 		{
-			message.Code = Mc.Finish;
+            message.Code = Mc.Finish;
 			double duration = _prichodyGenerator.Sample();
-			Hold(duration, message);
+			var obj = VytvorObjednavku();
+            ((MyMessage)message).Objednavka = obj;
+            foreach (var tovar in obj.Tovary)
+			{
+				tovar.AnimImageItem.MoveTo(MySim.CurrentTime, duration, Constants.ANIM_QUEUE_START);
+                if (MySim.AnimatorExists) MySim.Animator.Register(tovar.AnimImageItem);
+            }
+            Hold(duration, message);
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
@@ -43,11 +49,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			switch (message.Code)
 			{
 				case Mc.Finish:
-					var objednavkaMessage = new MyMessage(MySim)
-					{
-						Objednavka = VytvorObjednavku()
-					};
-					AssistantFinished(objednavkaMessage);
+					AssistantFinished(message);
 					break;
 			}
 		}
@@ -88,7 +90,7 @@ namespace Agents.AgentOkolia.ContinualAssistants
 				else obj.AddTovar(new Tovar(TovarType.Skrina, obj.Poradie, i));
 			}
 
-			return obj;
+            return obj;
 		}
 	}
 }
