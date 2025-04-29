@@ -50,6 +50,7 @@ public class Tovar
         AnimImageItem.SetLabel($"{ObjednavkaId}.{Poradie}");
         AnimImageItem.SetVisible(true);
         AnimImageItem.SetPosition(GetRandomStartPosition());
+        AnimImageItem.SetZIndex(2);
     }
     #endregion // Constructor
 

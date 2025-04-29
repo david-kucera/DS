@@ -6,8 +6,8 @@ namespace DSAgentSimulationWoodwork.Entities;
 public class MontazneMiesto
 {
     #region Constants
-    public const int HEIGHT = 100;
-    public const int WIDTH = 200;
+    public const int HEIGHT = 50;
+    public const int WIDTH = 100;
     public const int MARGIN = 50;
     #endregion // Constants
 

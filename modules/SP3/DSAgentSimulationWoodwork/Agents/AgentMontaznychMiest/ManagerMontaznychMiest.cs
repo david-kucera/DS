@@ -58,7 +58,8 @@ namespace Agents.AgentMontaznychMiest
 		{
 			// Uvolnenie montazneho miesta
 			var miesto = ((MyMessage)message).Tovar.MontazneMiesto;
-			miesto.Tovar = null;
+            miesto.Tovar.AnimImageItem.Remove();
+            miesto.Tovar = null;
 			((MyMessage)message).Tovar.MontazneMiesto = null;
 
 			// Priradenie montazneho miesta k starsiemu tovaru
@@ -68,7 +69,10 @@ namespace Agents.AgentMontaznychMiest
 				if (MySim.AnimatorExists)  MyAgent.AnimQueue.RemoveFirst();
                 tovar.MontazneMiesto = miesto;
 				miesto.Tovar = tovar;
-				var msg = new MyMessage(MySim)
+
+				tovar.AnimImageItem.MoveTo(MySim.CurrentTime, 0, miesto.PosX, miesto.PosY);
+
+                var msg = new MyMessage(MySim)
 				{
 					Code = Mc.ZacniPracu,
 					Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne)

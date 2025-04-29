@@ -52,6 +52,7 @@ public class Stolar
         }
         AnimImageItem.SetLabel($"{ID}");
         AnimImageItem.SetPosition(Sklad.GetRandomSkladPosX(), Sklad.GetRandomSkladPosY());
+        AnimImageItem.SetZIndex(2);
     }
 	#endregion // Constructor
 

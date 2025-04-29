@@ -44,17 +44,27 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			
 			if (stolar.Type == StolarType.A && tovar.Status == TovarStatus.CakajucaNaRezanie)
 			{
-				if (stolar.MontazneMiesto != null)
+				if (stolar.MontazneMiesto != null)	
+				{
 					casPrechoduZMontaznehoMiestaDoSkladu = _montazneMiestoSkladGenerator.NextDouble();
+					stolar.AnimImageItem.MoveTo(MySim.CurrentTime, casPrechoduZMontaznehoMiestaDoSkladu, Sklad.GetRandomSkladPosX(), Sklad.GetRandomSkladPosY());
+				}
 				casPripravyDrevaVSklade = _pripravaDrevaGenerator.NextDouble();
 				casPrechoduZoSkladuNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
-			}
+				stolar.AnimImageItem.MoveTo(MySim.CurrentTime + casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto, casPrechoduZoSkladuNaMontazneMiesto, tovar.MontazneMiesto.PosX + 50, tovar.MontazneMiesto.PosY);
+            }
 			else
 			{
 				if (stolar.MontazneMiesto == null)
+				{ 
 					casPrechoduNaMontazneMiesto = _montazneMiestoSkladGenerator.NextDouble();
+                    stolar.AnimImageItem.MoveTo(MySim.CurrentTime, casPrechoduNaMontazneMiesto, tovar.MontazneMiesto.PosX + 50, tovar.MontazneMiesto.PosY);
+                }
 				else if (stolar.MontazneMiesto != tovar.MontazneMiesto)
+				{ 
 					casPrechoduNaMontazneMiesto = _presunMedziMontaznymiMiestamiGenerator.NextDouble();
+                    stolar.AnimImageItem.MoveTo(MySim.CurrentTime, casPrechoduNaMontazneMiesto, tovar.MontazneMiesto.PosX + 50, tovar.MontazneMiesto.PosY);
+                }
 			}
 			
 			if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
