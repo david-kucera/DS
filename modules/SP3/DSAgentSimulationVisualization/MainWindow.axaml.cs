@@ -343,9 +343,6 @@ public partial class MainWindow : Window
     {
         if (_stolaren is null) return;
 
-        if (_stolaren.AnimatorExists)
-            return;
-
         if (isChecked == true)
         {
             Animator animator = new(_stolaren);
@@ -354,6 +351,7 @@ public partial class MainWindow : Window
             _stolaren.Animator.SetSynchronizedTime(false); 
             var embedSample = new EmbedFrameworkElement(frameworkElementCanvas);
             MyContentControl.Content = embedSample;
+            _stolaren.InitAnimator();
         }
         else
         {
