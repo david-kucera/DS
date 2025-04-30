@@ -1,4 +1,3 @@
-using System.Windows.Interop;
 using DSAgentSimulationWoodwork.Entities;
 using DSLib.Generators.Uniform;
 using OSPABA;
@@ -8,8 +7,15 @@ namespace Agents.AgentStolarov
 	//meta! id="7"
 	public class ManagerStolarov : OSPABA.Manager
 	{
-		#region Class members
-		private ContinousUniform _ajNaLakovanieGenerator;
+        #region Constants
+		private int POSUN_X = 50;
+		private int POSUN_Y_MIN = -10;
+        private int POSUN_Y_MAX = 10;
+        #endregion // Constants
+
+        #region Class members
+        private ContinousUniform _ajNaLakovanieGenerator;
+		private Random _randomPosunGenerator;
 		#endregion // Class members
 
 		public ManagerStolarov(int id, OSPABA.Simulation mySim, Agent myAgent) :
@@ -17,7 +23,8 @@ namespace Agents.AgentStolarov
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
 			_ajNaLakovanieGenerator = new ContinousUniform(seeder, 0, 1);
-			Init();
+            _randomPosunGenerator = new Random(seeder.Next());
+            Init();
 		}
 
 		override public void PrepareReplication()
@@ -108,6 +115,7 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
+			sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 			
@@ -154,7 +162,8 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-			sprava.Stolar.Obsadeny = false;
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.Obsadeny = false;
 			var typStolara = sprava.Stolar.Type;
 			sprava.Stolar = null;
 
@@ -258,7 +267,8 @@ namespace Agents.AgentStolarov
 			}
 
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-			sprava.Stolar.Obsadeny = false;
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
 			// Ak sa nelakuje, tovar pokracuje dalej na skladanie
@@ -354,7 +364,8 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-			sprava.Stolar.Obsadeny = false;
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
 			// Tovar pokracuje dalej na skladanie
@@ -413,7 +424,8 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-			sprava.Stolar.Obsadeny = false;
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
 			if (sprava.Tovar.Type == TovarType.Skrina)
