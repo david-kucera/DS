@@ -34,7 +34,7 @@ namespace Agents.AgentMontaznychMiest
 				{
 					var mm = DajMontazneMiesto();
 					tovar.MontazneMiesto = mm;
-					mm.Tovar = tovar;
+                    mm.Tovar = tovar;
 
 					tovar.AnimImageItem.MoveTo(MySim.CurrentTime, 0, mm.PosX, mm.PosY);
 
@@ -46,9 +46,8 @@ namespace Agents.AgentMontaznychMiest
 				}
 				else
 				{
-					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.NepriradeneTovary.Count + ((MySimulation)MySim).AgentStolarov.CakajuceNaRezanie.Count);
 					MyAgent.NepriradeneTovary.Enqueue(tovar);
-					if (MySim.AnimatorExists) MyAgent.AnimQueue.Insert(tovar.AnimImageItem/*, MySim.CurrentTime, MySim.CurrentTime*/);
+                    if (MySim.AnimatorExists) MyAgent.AnimQueue.Insert(tovar.AnimImageItem/*, MySim.CurrentTime, MySim.CurrentTime*/);
 				}
 			}
 		}

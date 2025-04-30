@@ -86,9 +86,9 @@ namespace Agents.AgentOkolia.ContinualAssistants
 			for (int i = 1; i <= pocetTovaru; i++)
 			{
 				double typNabytku = _typNabytkuGenerator.Sample();
-				if (typNabytku < 0.5) obj.AddTovar(new Tovar(TovarType.Stol, obj.Poradie, i));
-				else if (typNabytku <= 0.65) obj.AddTovar(new Tovar(TovarType.Stolicka, obj.Poradie, i));
-				else obj.AddTovar(new Tovar(TovarType.Skrina, obj.Poradie, i));
+				if (typNabytku < 0.5) obj.AddTovar(new Tovar(TovarType.Stol, obj.Poradie, obj, i));
+				else if (typNabytku <= 0.65) obj.AddTovar(new Tovar(TovarType.Stolicka, obj.Poradie, obj, i));
+				else obj.AddTovar(new Tovar(TovarType.Skrina, obj.Poradie, obj, i));
 			}
 
             return obj;

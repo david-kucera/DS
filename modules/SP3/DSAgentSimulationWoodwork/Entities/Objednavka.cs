@@ -8,14 +8,16 @@
 		public double ArrivalTime { get; set; }
 		public int Poradie { get; set; }
 		public List<Tovar> Tovary { get; private set; } = [];
-		#endregion // Properties 
+		public bool Started { get; set; }
+        #endregion // Properties 
 
-		#region Constructor
-		public Objednavka(double arrivalTime)
+        #region Constructor
+        public Objednavka(double arrivalTime)
 		{
 			ArrivalTime = arrivalTime;
 			Poradie = _poradie++;
-		}
+            Started = false;
+        }
 		#endregion // Constructor
 
 		#region Public functions

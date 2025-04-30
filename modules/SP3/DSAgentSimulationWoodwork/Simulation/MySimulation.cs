@@ -136,8 +136,32 @@ namespace Simulation
 			AgentMontaznychMiest.InitAnimator();
         }
 
-		//meta! userInfo="Generated code: do not modify", tag="begin"
-		private void Init()
+		public void CheckNezacateObjednavky()
+		{
+			var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
+			var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
+
+			var vsetkyNezacateTovary = tovaryCakajucaNaStolaraA
+                .Concat(tovaryCakajuceNaMiesto)
+                .ToList();
+
+			int pocetNezacatychObjednavok = 0;
+			List<Objednavka> objednavky = new();
+            foreach (var tovar in vsetkyNezacateTovary)
+            {
+                if (!objednavky.Contains(tovar.Objednavka)) objednavky.Add(tovar.Objednavka);
+            }
+
+            foreach (var objednavka in objednavky)
+            {
+                if (!objednavka.Started) pocetNezacatychObjednavok++;
+            }
+
+            PriemernyPocetNezacatychObjednavok.AddValue(pocetNezacatychObjednavok);
+        }
+
+        //meta! userInfo="Generated code: do not modify", tag="begin"
+        private void Init()
 		{
 			AgentModelu = new AgentModelu(SimId.AgentModelu, this, null);
 			AgentOkolia = new AgentOkolia(SimId.AgentOkolia, this, AgentModelu);

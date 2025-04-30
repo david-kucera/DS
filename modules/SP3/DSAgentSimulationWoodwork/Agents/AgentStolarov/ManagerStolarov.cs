@@ -53,6 +53,7 @@ namespace Agents.AgentStolarov
 			if (msg.Stolar != null)
 			{
 				if (msg.Stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
+				msg.Tovar.Objednavka.Started = true;
 				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
 				StartContinualAssistant(message);
 			}
@@ -61,8 +62,8 @@ namespace Agents.AgentStolarov
 				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
 				else
 				{
-					((MySimulation)MySim).PriemernyPocetNezacatychObjednavok.AddValue(MyAgent.CakajuceNaRezanie.Count + ((MySimulation)MySim).AgentMontaznychMiest.NepriradeneTovary.Count);
 					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
+					((MySimulation)MySim).CheckNezacateObjednavky();
 				}
 			}
 		}

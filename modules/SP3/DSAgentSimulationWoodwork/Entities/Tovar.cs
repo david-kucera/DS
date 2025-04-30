@@ -16,6 +16,7 @@ public class Tovar
 
     #region Properties
     public int ObjednavkaId { get; set; }
+    public Objednavka Objednavka { get; set; }
     public int Poradie { get; set; }
     public TovarType Type { get; set; }
     public TovarStatus Status { get; set; }
@@ -24,12 +25,13 @@ public class Tovar
     #endregion // Properties
 
     #region Constructor
-    public Tovar(TovarType type, int objednavkaId, int poradie)
+    public Tovar(TovarType type, int objednavkaId, Objednavka objednavka, int poradie)
     {
         CheckImages();
 
         Type = type;
         Poradie = poradie;
+        Objednavka = objednavka;
         ObjednavkaId = objednavkaId;
         Status = TovarStatus.CakajucaNaRezanie;
         MontazneMiesto = null;
