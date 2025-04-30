@@ -1,4 +1,4 @@
-using Agents.AgentOkolia;
+﻿using Agents.AgentOkolia;
 using Agents.AgentBStolar;
 using Agents.AgentStolarov;
 using Agents.AgentModelu;
@@ -27,9 +27,11 @@ namespace Simulation
 		public ConfidenceInterval GlobalneVytazenieA { get; set; }
 		public ConfidenceInterval GlobalneVytazenieB { get; set; }
 		public ConfidenceInterval GlobalneVytazenieC { get; set; }
-		#endregion // Properties
+		public AnimTextItem AktualnyDenACasAnimItem { get; set; }
+		public AnimTextItem AktualnaReplikaciaAnimItem { get; set; }
+        #endregion // Properties
 
-		public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
+        public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
 		{
 			Seeder = seeder;
 			PocetMontaznychMiest = pocetMiest;
@@ -128,12 +130,23 @@ namespace Simulation
             AnimImageItem sklad = new AnimImageItem(Sklad.Image);
             sklad.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y);
             sklad.SetImageSize(Sklad.SKLAD_WIDTH, Sklad.SKLAD_HEIGHT);
-            if (AnimatorExists) Animator.Register(sklad);
+			AktualnyDenACasAnimItem = new AnimTextItem("Deň: 0 Čas: 06:00:00");
+            AktualnyDenACasAnimItem.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y + sklad.Height);
+			AktualnyDenACasAnimItem.ZIndex = 1;
+            AktualnaReplikaciaAnimItem = new AnimTextItem("Replikácia: 0");
+            AktualnaReplikaciaAnimItem.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y + sklad.Height + 20);
+            AktualnaReplikaciaAnimItem.ZIndex = 1;
+            if (AnimatorExists) 
+			{ 
+				Animator.Register(sklad);
+                Animator.Register(AktualnyDenACasAnimItem);
+                Animator.Register(AktualnaReplikaciaAnimItem);
+            }
 
-			AgentAStolar.InitAnimator();
-			AgentBStolar.InitAnimator();
+            AgentAStolar.InitAnimator();
+            AgentBStolar.InitAnimator();
             AgentCStolar.InitAnimator();
-			AgentMontaznychMiest.InitAnimator();
+            AgentMontaznychMiest.InitAnimator();
         }
 
 		public void CheckNezacateObjednavky()

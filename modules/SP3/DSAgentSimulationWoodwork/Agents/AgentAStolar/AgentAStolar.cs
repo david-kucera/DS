@@ -31,6 +31,8 @@ namespace Agents.AgentAStolar
 
 		public void InitAnimator()
 		{
+			if (StolariA == null) return;
+
             foreach (var stolar in StolariA)
             {
                 if (MySim.AnimatorExists) MySim.Animator.Register(stolar.AnimImageItem);

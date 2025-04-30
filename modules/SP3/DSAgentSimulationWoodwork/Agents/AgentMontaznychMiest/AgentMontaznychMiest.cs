@@ -38,6 +38,8 @@ namespace Agents.AgentMontaznychMiest
             AnimQueue = new AnimQueue(MySim.Animator, Constants.ANIM_QUEUE_END, Constants.ANIM_QUEUE_START, Constants.ANIM_QUEUE_SPEED);
             AnimQueue.SetVisible(true);
 
+			if (MontazneMiesta == null) return;
+
             foreach (MontazneMiesto miesto in MontazneMiesta)
 			{
 				if (MySim.AnimatorExists) MySim.Animator.Register(miesto.AnimShapeItem);

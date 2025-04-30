@@ -38,6 +38,7 @@ public partial class MainWindow : Window
         MCountInput.Text = "100";
         StabilizationPlot.Plot.XLabel("Replication");
         StabilizationPlot.Plot.YLabel("Hodnota");
+        _stolaren = null!;
     }
     #endregion // Constructor
     
@@ -72,7 +73,7 @@ public partial class MainWindow : Window
 	    
 	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
 	    {
-		    CurrentReplicationLabel.Content = sim.CurrentReplication;
+            CurrentReplicationLabel.Content = sim.CurrentReplication;
 		    CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4);
 		    AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " % " +
 		                                     " <" + Math.Round(_stolaren.GlobalneVytazenieA.GetConfidenceInterval().Item1, 4) + ";" +
@@ -125,7 +126,12 @@ public partial class MainWindow : Window
     {
 	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
 	    {
-		    SimulationTime(sim.CurrentTime);
+            if (sim.AnimatorExists)
+            {
+                _stolaren.AktualnyDenACasAnimItem.SetText($"Deň: {GetDay(sim.CurrentTime)} Čas: {FormatTimeAndDay(sim.CurrentTime)}");
+                _stolaren.AktualnaReplikaciaAnimItem.SetText($"Replikácia: {sim.CurrentReplication}");
+            }
+            SimulationTime(sim.CurrentTime);
 		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
 		    var montazneMiesta = ((MySimulation)sim).AgentMontaznychMiest.MontazneMiesta;
 		    var hotove = ((MySimulation)sim).AgentModelu.PocetHotovychObjednavok;
