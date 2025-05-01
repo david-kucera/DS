@@ -59,7 +59,8 @@ public class Tovar
     public void ChangeStatus(TovarStatus newStatus)
     {
         Status = newStatus;
-        AnimImageItem.SetLabel($"{ObjednavkaId}.{Poradie}.{Status}");
+        AnimImageItem.SetLabel($"{Status}");
+        AnimImageItem.SetToolTip($"{ObjednavkaId}.{Poradie}.{Status}");
     }
     public override string ToString()
     {

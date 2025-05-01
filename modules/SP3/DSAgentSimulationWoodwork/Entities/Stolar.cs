@@ -40,15 +40,15 @@ public class Stolar
         {
             case StolarType.A:
                 AnimImageItem = new AnimImageItem(IMG_PATH_A, IMG_WIDTH, IMG_HEIGHT);
-                AnimImageItem.SetLabel($"A{ID}");
+                AnimImageItem.SetToolTip($"A{ID}");
                 break;
             case StolarType.B:
                 AnimImageItem = new AnimImageItem(IMG_PATH_B, IMG_WIDTH, IMG_HEIGHT);
-                AnimImageItem.SetLabel($"B{ID}");
+                AnimImageItem.SetToolTip($"B{ID}");
                 break;
             case StolarType.C:
                 AnimImageItem = new AnimImageItem(IMG_PATH_C, IMG_WIDTH, IMG_HEIGHT);
-                AnimImageItem.SetLabel($"C{ID}");
+                AnimImageItem.SetToolTip($"C{ID}");
                 break;
             default:
                 throw new ArgumentOutOfRangeException(nameof(stolarType), stolarType, null);
