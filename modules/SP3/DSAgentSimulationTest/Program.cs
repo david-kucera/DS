@@ -16,7 +16,6 @@ class Program
     public static int M;
     public static Configuration CURRENT_CONFIG;
     public static string OUTPUT_DIR = "../../output/";
-    public static string OUTPUT_FILE = OUTPUT_DIR + "output.csv";
     public static string PATH_VYHOVUJUCE = OUTPUT_DIR + "vyhovuje.csv";
     public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.csv";
 	public static object LOCK = new();
@@ -35,10 +34,15 @@ class Program
 	private static void RunRandomly()
 	{
 		List<Configuration> configs = [];
+		ReadConfigs(configs);
 		while (true)
 		{
 			var randomConfig = new Configuration();
-			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) continue;
+			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) 
+			{
+                Console.WriteLine($"Configuration M{M},A{A},B{B},C{C} already done.");
+                continue; 
+			}
 			configs.Add(randomConfig);
 			CURRENT_CONFIG = randomConfig;
 			MySimulation sim = new MySimulation(SEEDER, randomConfig.M, randomConfig.A, randomConfig.B, randomConfig.C);
@@ -50,7 +54,9 @@ class Program
 
 	private static void RunSequentially()
 	{
-		for (int M = 40; M < 50; M++) // MM
+		List<Configuration> configs = [];
+        ReadConfigs(configs);
+        for (int M = 40; M < 50; M++) // MM
 		{
 			for (int A = 4; A < 8; A++) // A
 			{
@@ -58,7 +64,19 @@ class Program
 				{
 					for (int C = 36; C < 50; C++) // C
 					{
-						MySimulation sim = new MySimulation(SEEDER, M, A, B, C);
+						var config = new Configuration
+                        {
+                            M = M,
+                            A = A,
+                            B = B,
+                            C = C
+                        };
+						if (configs.Any(c => c.M == config.M && c.A == config.A && c.B == config.B && c.C == config.C)) 
+						{
+							Console.WriteLine($"Configuration M{M},A{A},B{B},C{C} already done.");
+							continue; 
+						}
+                        MySimulation sim = new MySimulation(SEEDER, config.M, config.A, config.B, config.C);
 						Console.WriteLine($"Current: M{M}, A{A}, B{B}, C{C}");
 						sim.OnSimulationDidFinish(ZapisStat);
 						sim.Start(REP_COUNT, END_TIME);
@@ -68,7 +86,28 @@ class Program
 		}
 	}
 
-	private static void VypisStat(OSPABA.Simulation sim)
+    private static void ReadConfigs(List<Configuration> configs)
+    {
+        var allLines = new List<string>();
+
+        if (File.Exists(PATH_VYHOVUJUCE)) allLines.AddRange(File.ReadAllLines(PATH_VYHOVUJUCE));
+        if (File.Exists(PATH_NEVYHOVUJUCE)) allLines.AddRange(File.ReadAllLines(PATH_NEVYHOVUJUCE));
+
+        foreach (var line in allLines)
+        {
+            var parts = line.Split(',');
+            if (int.TryParse(parts[0], out int m) &&
+                int.TryParse(parts[1], out int a) &&
+                int.TryParse(parts[2], out int b) &&
+                int.TryParse(parts[3], out int c))
+            {
+                configs.Add(new Configuration { M = m, A = a, B = b, C = c });
+            }
+        }
+    }
+
+
+    private static void VypisStat(OSPABA.Simulation sim)
 	{
 		Console.WriteLine("-----------------");
 		var cas = ((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
