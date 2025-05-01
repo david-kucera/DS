@@ -114,7 +114,7 @@ class Program
 		Console.WriteLine(FormatTime(cas));
 		Console.WriteLine(Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetValue(), 4));
 		Console.WriteLine();
-		if (cas < 42 * 60 * 60) Console.WriteLine("VYHOVUJE");
+		if (cas < 32 * 60 * 60) Console.WriteLine("VYHOVUJE");
 		else Console.WriteLine("NE VYHOVUJE");
 	}
 
@@ -128,7 +128,7 @@ class Program
 	    string vytazenieC = Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
 	    string output = $"{CURRENT_CONFIG.M},{CURRENT_CONFIG.A},{CURRENT_CONFIG.B},{CURRENT_CONFIG.C},{casf},{cas.ToString(CultureInfo.InvariantCulture)},{pocetNezacatychObj},{vytazenieA},{vytazenieB},{vytazenieC}\n";
 
-		if (cas < 42 * 60 * 60)
+		if (cas < 32 * 60 * 60)
 		{
 			File.AppendAllText(PATH_VYHOVUJUCE, output);
 			output = $"VYHOVUJE: {casf} | {pocetNezacatychObj} | {vytazenieA} | {vytazenieB} | {vytazenieC}\n";
@@ -154,8 +154,8 @@ class Program
     public class Configuration
     {
 		public int M { get; set; } = SEEDER.Next(40, 50);
-		public int A { get; set; } = SEEDER.Next(4, 8);
-		public int B { get; set; } = SEEDER.Next(4, 8);
-		public int C { get; set; } = SEEDER.Next(36, 50);
+		public int A { get; set; } = SEEDER.Next(6, 8);
+		public int B { get; set; } = SEEDER.Next(6, 8);
+		public int C { get; set; } = SEEDER.Next(40, 50);
     }
 }
