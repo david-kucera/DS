@@ -65,6 +65,10 @@ namespace Agents.AgentStolarov.ContinualAssistants
 					casPrechoduNaMontazneMiesto = _presunMedziMontaznymiMiestamiGenerator.NextDouble();
                     stolar.AnimImageItem.MoveTo(MySim.CurrentTime, casPrechoduNaMontazneMiesto, tovar.MontazneMiesto.PosX + 50, tovar.MontazneMiesto.PosY);
                 }
+				else
+				{
+                    stolar.AnimImageItem.MoveTo(MySim.CurrentTime, 0, tovar.MontazneMiesto.PosX + 50, tovar.MontazneMiesto.PosY);
+                }
 			}
 			
 			if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)

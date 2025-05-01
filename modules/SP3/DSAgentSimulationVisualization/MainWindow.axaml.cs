@@ -23,7 +23,6 @@ public partial class MainWindow : Window
     private DataLogger _replicationValuesMean = new();
     private DataLogger _replicationValuesTop = new();
     private DataLogger _replicationValuesBottom = new();
-    private bool _ignoreData = false;
     private MySimulation _stolaren;
     #endregion // Class members
     

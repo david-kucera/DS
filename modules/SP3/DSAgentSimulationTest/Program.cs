@@ -40,7 +40,7 @@ class Program
 			var randomConfig = new Configuration();
 			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) 
 			{
-                Console.WriteLine($"Configuration M{M},A{A},B{B},C{C} already done.");
+                Console.WriteLine($"Configuration M{randomConfig.M},A{randomConfig.A},B{randomConfig.B},C{randomConfig.C} already done.");
                 continue; 
 			}
 			configs.Add(randomConfig);
@@ -73,7 +73,7 @@ class Program
                         };
 						if (configs.Any(c => c.M == config.M && c.A == config.A && c.B == config.B && c.C == config.C)) 
 						{
-							Console.WriteLine($"Configuration M{M},A{A},B{B},C{C} already done.");
+							Console.WriteLine($"Configuration M{config.M},A{config.A},B{config.B},C{config.C} already done.");
 							continue; 
 						}
                         MySimulation sim = new MySimulation(SEEDER, config.M, config.A, config.B, config.C);
@@ -153,9 +153,9 @@ class Program
 
     public class Configuration
     {
-		public int M { get; set; } = SEEDER.Next(40, 50);
-		public int A { get; set; } = SEEDER.Next(6, 8);
-		public int B { get; set; } = SEEDER.Next(6, 8);
+		public int M { get; set; } = SEEDER.Next(49, 55);
+		public int A { get; set; } = SEEDER.Next(5, 8);
+		public int B { get; set; } = SEEDER.Next(5, 8);
 		public int C { get; set; } = SEEDER.Next(40, 50);
     }
 }
