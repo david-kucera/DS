@@ -51,7 +51,9 @@ namespace Simulation
 			GlobalneVytazenieA = new ConfidenceInterval();
 			GlobalneVytazenieB = new ConfidenceInterval();
 			GlobalneVytazenieC = new ConfidenceInterval();
-		}
+
+			InitAnimator();
+        }
 
 		override public void PrepareReplication()
 		{
