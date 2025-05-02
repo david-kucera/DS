@@ -22,6 +22,7 @@ public class Tovar
     public TovarStatus Status { get; set; }
     public MontazneMiesto MontazneMiesto { get; set; }
     public AnimImageItem AnimImageItem { get; set; }
+    public bool Started { get; set; } = false;
     #endregion // Properties
 
     #region Constructor

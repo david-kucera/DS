@@ -132,51 +132,78 @@ namespace Simulation
             AnimImageItem sklad = new AnimImageItem(Sklad.Image);
             sklad.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y);
             sklad.SetImageSize(Sklad.SKLAD_WIDTH, Sklad.SKLAD_HEIGHT);
-			AktualnyDenACasAnimItem = new AnimTextItem("Deň: 0 Čas: 06:00:00");
+			AktualnyDenACasAnimItem = new AnimTextItem(/*"Deň: 0 Čas: 06:00:00"*/"");
             AktualnyDenACasAnimItem.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y + sklad.Height);
 			AktualnyDenACasAnimItem.ZIndex = 1;
-            AktualnaReplikaciaAnimItem = new AnimTextItem("Replikácia: 0");
+            AktualnaReplikaciaAnimItem = new AnimTextItem(/*"Replikácia: 0"*/"");
             AktualnaReplikaciaAnimItem.SetPosition(Sklad.SKLAD_POS_X, Sklad.SKLAD_POS_Y + sklad.Height + 20);
             AktualnaReplikaciaAnimItem.ZIndex = 1;
-            if (AnimatorExists) 
-			{ 
+			Flags.DEBUG_QUEUE = false;
+			Flags.DEBUG_ANIM = false;
+			if (AnimatorExists)
+			{
 				Animator.Register(sklad);
-                Animator.Register(AktualnyDenACasAnimItem);
-                Animator.Register(AktualnaReplikaciaAnimItem);
-            }
-
-            AgentAStolar.InitAnimator();
-            AgentBStolar.InitAnimator();
-            AgentCStolar.InitAnimator();
-            AgentMontaznychMiest.InitAnimator();
+				Animator.Register(AktualnyDenACasAnimItem);
+				Animator.Register(AktualnaReplikaciaAnimItem);
+				AgentAStolar.InitAnimator();
+				AgentBStolar.InitAnimator();
+				AgentCStolar.InitAnimator();
+				AgentMontaznychMiest.InitAnimator();
+			}   
         }
 
-		public void CheckNezacateObjednavky()
+        public void CheckNezacateObjednavky()
 		{
 			var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
 			var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
 
 			var vsetkyNezacateTovary = tovaryCakajucaNaStolaraA
-                .Concat(tovaryCakajuceNaMiesto)
-                .ToList();
+				.Concat(tovaryCakajuceNaMiesto)
+				.ToList();
 
 			int pocetNezacatychObjednavok = 0;
 			List<Objednavka> objednavky = new();
-            foreach (var tovar in vsetkyNezacateTovary)
-            {
-                if (!objednavky.Contains(tovar.Objednavka)) objednavky.Add(tovar.Objednavka);
-            }
+			foreach (var tovar in vsetkyNezacateTovary)
+			{
+				if (!objednavky.Contains(tovar.Objednavka)) objednavky.Add(tovar.Objednavka);
+			}
 
-            foreach (var objednavka in objednavky)
-            {
-                if (!objednavka.Started) pocetNezacatychObjednavok++;
-            }
+			foreach (var objednavka in objednavky)
+			{
+				if (!objednavka.Started) pocetNezacatychObjednavok++;
+			}
 
-            PriemernyPocetNezacatychObjednavok.AddValue(pocetNezacatychObjednavok);
+			PriemernyPocetNezacatychObjednavok.AddValue(pocetNezacatychObjednavok);
+		}
+
+		public void CheckNezacateTovary()
+		{
+			// TODO
+			throw new NotImplementedException("CheckNezacateTovary not implemented");
         }
 
-        //meta! userInfo="Generated code: do not modify", tag="begin"
-        private void Init()
+
+        public void CheckNezacateObjednavkyModel()
+		{
+			var objednavky = AgentModelu.Objednavky;
+			int pocetNezacatychObjednavok = 0;
+
+			foreach (var objednavka in objednavky)
+			{
+				int pTovar = 0;
+				foreach (var tovar in objednavka.Tovary)
+				{
+					if (tovar.Started) break;
+					else pTovar++;
+				}
+				if (pTovar == objednavka.Tovary.Count) pocetNezacatychObjednavok++;
+			}
+
+			PriemernyPocetNezacatychObjednavok.AddValue(pocetNezacatychObjednavok);
+		}
+
+		//meta! userInfo="Generated code: do not modify", tag="begin"
+		private void Init()
 		{
 			AgentModelu = new AgentModelu(SimId.AgentModelu, this, null);
 			AgentOkolia = new AgentOkolia(SimId.AgentOkolia, this, AgentModelu);

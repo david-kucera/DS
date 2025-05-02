@@ -50,21 +50,25 @@ namespace Agents.AgentStolarov
 		public void ProcessDajStolaraA(MessageForm message)
 		{
 			var msg = ((MyMessage)message);
-			if (msg.Stolar != null)
+            if (msg.Stolar != null)
 			{
 				if (msg.Stolar.Type != StolarType.A) throw new Exception("Nesprávny typ stolára!");
 				msg.Tovar.Objednavka.Started = true;
-				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
-				StartContinualAssistant(message);
+				msg.Tovar.Started = true;
+                ((MySimulation)MySim).CheckNezacateObjednavky();
+                ((MySimulation)MySim).CheckNezacateTovary();
+                message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
+                StartContinualAssistant(message);
 			}
 			else
 			{
-				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
+                if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
 				else
 				{
 					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
-					((MySimulation)MySim).CheckNezacateObjednavky();
-				}
+                    ((MySimulation)MySim).CheckNezacateObjednavky();
+                    ((MySimulation)MySim).CheckNezacateTovary();
+                }
 			}
 		}
 
