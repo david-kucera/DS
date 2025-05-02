@@ -1,4 +1,6 @@
-﻿using System.Globalization;
+﻿using System.Diagnostics;
+using System.Globalization;
+using OSPABA;
 using Simulation;
 
 namespace DSAgentSimulationTest;
@@ -19,9 +21,10 @@ class Program
     public static string PATH_VYHOVUJUCE = OUTPUT_DIR + "vyhovuje.csv";
     public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.csv";
 	public static object LOCK = new();
-	#endregion // Constants
+    public static Stopwatch Stopwatch = new();
+    #endregion // Constants
 
-	static void Main(string[] args)
+    static void Main(string[] args)
 	{
 		if (!Directory.Exists(OUTPUT_DIR)) Directory.CreateDirectory(OUTPUT_DIR);
 		if (!File.Exists(PATH_VYHOVUJUCE)) File.Create(PATH_VYHOVUJUCE).Close();
@@ -35,9 +38,10 @@ class Program
 	{
 		List<Configuration> configs = [];
 		ReadConfigs(configs);
-		while (true)
+		Random random = new(SEED);
+        while (true)
 		{
-			var randomConfig = new Configuration();
+			var randomConfig = new Configuration(random);
 			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) 
 			{
                 Console.WriteLine($"Configuration M{randomConfig.M},A{randomConfig.A},B{randomConfig.B},C{randomConfig.C} already done.");
@@ -47,12 +51,40 @@ class Program
 			CURRENT_CONFIG = randomConfig;
 			MySimulation sim = new MySimulation(SEEDER, randomConfig.M, randomConfig.A, randomConfig.B, randomConfig.C);
 			Console.WriteLine($"Current: M{randomConfig.M}, A{randomConfig.A}, B{randomConfig.B}, C{randomConfig.C}");
+            sim.OnReplicationWillStart(StartRep);
 			sim.OnSimulationDidFinish(ZapisStat);
+			sim.OnReplicationDidFinish(CheckStat);
 			sim.Start(REP_COUNT, END_TIME);
 		}
 	}
 
-	private static void RunSequentially()
+    private static void StartRep(OSPABA.Simulation simulation)
+    {
+        Stopwatch.Restart();
+        Console.WriteLine($"Starting replication {simulation.CurrentReplication} at {DateTime.Now}");
+        Stopwatch.Start();
+    }
+
+    private static void CheckStat(OSPABA.Simulation simulation)
+    {
+		if (simulation.CurrentReplication < 3) return;
+        var mean = ((MySimulation)simulation).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
+		var interval = ((MySimulation)simulation).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
+
+        var lowerBound = interval.Item1;
+        var upperBound = interval.Item2;
+        var margin = mean * 0.01;
+
+        if (lowerBound > mean - margin && upperBound < mean + margin)
+		{
+            Console.WriteLine("Stopping simulation at " + simulation.CurrentReplication);
+			simulation.StopSimulation();
+            Stopwatch.Stop();
+            Console.WriteLine($"Simulation finished in {Stopwatch.Elapsed:hh\\:mm\\:ss}");
+        }
+    }
+
+    private static void RunSequentially()
 	{
 		List<Configuration> configs = [];
         ReadConfigs(configs);
@@ -119,6 +151,7 @@ class Program
 
 	private static void ZapisStat(OSPABA.Simulation sim)
     {
+        Stopwatch.Stop();
         double cas = ((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
 		string casf = FormatTime(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
 		string casInt = Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue(), 4) + "" +
@@ -159,8 +192,9 @@ class Program
 		}
 		
 	    Console.WriteLine(output);
-	}
-    
+        Console.WriteLine($"Simulation finished in {Stopwatch.Elapsed:hh\\:mm\\:ss}");
+    }
+
     private static string FormatTime(double time)
     {
         int hours = (int)(time / 3600); 
@@ -172,9 +206,20 @@ class Program
 
     public class Configuration
     {
-		public int M { get; set; } = SEEDER.Next(49, 55);
-		public int A { get; set; } = SEEDER.Next(5, 8);
-		public int B { get; set; } = SEEDER.Next(5, 8);
-		public int C { get; set; } = SEEDER.Next(40, 50);
+		public int M { get; set; }
+		public int A { get; set; }
+		public int B { get; set; }
+		public int C { get; set; }
+        public Configuration(Random rnd) 
+		{
+			M = rnd.Next(49, 60);
+            A = rnd.Next(5, 8);
+            B = rnd.Next(5, 8);
+            C = rnd.Next(35, 50);
+        }
+
+        public Configuration()
+        {
+        }
     }
 }
