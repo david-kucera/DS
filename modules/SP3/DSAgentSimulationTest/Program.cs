@@ -21,6 +21,7 @@ class Program
     public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.csv";
 	public static object LOCK = new();
     public static Stopwatch Stopwatch = new();
+    public static double Percentage = 0.01;
     #endregion // Constants
 
     static void Main(string[] args)
@@ -40,10 +41,11 @@ class Program
 		Random random = new(SEED);
         while (true)
 		{
-			var randomConfig = new Configuration(random);
+            Stopwatch.Reset();
+            var randomConfig = new Configuration(random);
 			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) 
 			{
-                Console.WriteLine($"Configuration M{randomConfig.M},A{randomConfig.A},B{randomConfig.B},C{randomConfig.C} already done.");
+                Console.WriteLine($"Configuration M{randomConfig.M},A{randomConfig.A},B{randomConfig.B},C{randomConfig.C} already done.\n");
                 continue; 
 			}
 			configs.Add(randomConfig);
@@ -65,7 +67,7 @@ class Program
 
         var lowerBound = interval.Item1;
         var upperBound = interval.Item2;
-        var margin = mean * 0.01;
+        var margin = mean * Percentage;
 
         if (lowerBound > mean - margin && upperBound < mean + margin)
 		{
@@ -185,6 +187,7 @@ class Program
 		
 	    Console.WriteLine(output);
         Console.WriteLine($"Simulation finished in {Stopwatch.Elapsed:hh\\:mm\\:ss}");
+        Console.WriteLine();
     }
 
     private static string FormatTime(double time)
