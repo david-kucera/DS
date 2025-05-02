@@ -23,6 +23,7 @@ public class Tovar
     public MontazneMiesto MontazneMiesto { get; set; }
     public AnimImageItem AnimImageItem { get; set; }
     public bool Started { get; set; } = false;
+    public double LastTechnicalTime { get; set; } = double.MaxValue;
     #endregion // Properties
 
     #region Constructor

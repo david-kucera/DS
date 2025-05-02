@@ -162,11 +162,19 @@ namespace Simulation
 			var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
 			var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
 
-			var vsetkyNezacateTovary = tovaryCakajucaNaStolaraA
-				.Concat(tovaryCakajuceNaMiesto)
-				.ToList();
+            var copyA = new PriorityQueue<Tovar, double>(AgentStolarov.CakajuceNaRezanie.UnorderedItems);
+            var copyB = new Queue<Tovar>(AgentMontaznychMiest.NepriradeneTovary);
 
-			int pocetNezacatychObjednavok = 0;
+            var vsetkyNezacateTovary = new List<Tovar>();
+
+            while (copyA.Count > 0)
+                vsetkyNezacateTovary.Add(copyA.Dequeue());
+
+            while (copyB.Count > 0)
+                vsetkyNezacateTovary.Add(copyB.Dequeue());
+
+
+            int pocetNezacatychObjednavok = 0;
 			List<Objednavka> objednavky = new();
 			foreach (var tovar in vsetkyNezacateTovary)
 			{
@@ -186,11 +194,7 @@ namespace Simulation
             var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
             var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
 
-            var vsetkyNezacateTovary = tovaryCakajucaNaStolaraA
-                .Concat(tovaryCakajuceNaMiesto)
-                .ToList();
-
-			PriemernyPocetNezacatychTovarov.AddValue(vsetkyNezacateTovary.Count);
+			PriemernyPocetNezacatychTovarov.AddValue(tovaryCakajuceNaMiesto.Count + tovaryCakajucaNaStolaraA.Count);
         }
 
         public void CheckNezacateObjednavkyModel()

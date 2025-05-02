@@ -2,7 +2,6 @@ using OSPABA;
 using Simulation;
 using Agents.AgentStolarov.ContinualAssistants;
 using DSAgentSimulationWoodwork.Entities;
-using OSPDataStruct;
 
 namespace Agents.AgentStolarov
 {
@@ -10,11 +9,11 @@ namespace Agents.AgentStolarov
 	public class AgentStolarov : OSPABA.Agent
 	{
 		#region Properties
-		public SimQueue<Tovar> CakajuceNaRezanie { get; set; }
-		public SimQueue<Tovar> CakajuceNaMorenie { get; set; }
-		public SimQueue<Tovar> CakajuceNaLakovanie { get; set; }
-		public SimQueue<Tovar> CakajuceNaSkladanie { get; set; }
-		public SimQueue<Tovar> CakajuceNaMontazKovani { get; set; }
+		public PriorityQueue<Tovar, double> CakajuceNaRezanie { get; set; }
+		public PriorityQueue<Tovar, double> CakajuceNaMorenie { get; set; }
+		public PriorityQueue<Tovar, double> CakajuceNaLakovanie { get; set; }
+		public PriorityQueue<Tovar,double> CakajuceNaSkladanie { get; set; }
+		public PriorityQueue<Tovar, double> CakajuceNaMontazKovani { get; set; }
 		#endregion // Properties
 
 		public AgentStolarov(int id, OSPABA.Simulation mySim, Agent parent) :
@@ -28,11 +27,11 @@ namespace Agents.AgentStolarov
 			base.PrepareReplication();
 			// Setup component for the next replication
 
-			CakajuceNaRezanie = new SimQueue<Tovar>();
-			CakajuceNaMorenie = new SimQueue<Tovar>();
-			CakajuceNaLakovanie = new SimQueue<Tovar>();
-			CakajuceNaSkladanie = new SimQueue<Tovar>();
-			CakajuceNaMontazKovani = new SimQueue<Tovar>();
+			CakajuceNaRezanie = new();
+			CakajuceNaMorenie = new();
+			CakajuceNaLakovanie = new();
+			CakajuceNaSkladanie = new();
+			CakajuceNaMontazKovani = new();
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
