@@ -87,7 +87,12 @@ public partial class MainWindow : Window
 		        Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetValue(), 4) + "" +
 		        " <" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item1, 4) + ";" +
 		        "" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item2, 4) + ">";
-		    AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
+            AverageTovarsNotStarted.Content =
+                Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetValue(), 4) + "" +
+                " <" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetConfidenceInterval().Item2, 4) + ">";
+
+            AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
 		    
 		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
 		    var hotove = ((MySimulation)sim).AgentModelu.PocetHotovychObjednavok;
@@ -227,6 +232,7 @@ public partial class MainWindow : Window
 
         AverageObjednavkaTimeInSystem.Content = 0;
         AverageObjednavkasNotStarted.Content = 0;
+        AverageTovarsNotStarted.Content = 0;
         AverageWorkloadAStolar.Content = "0 %";
         AverageWorkloadBStolar.Content = "0 %";
         AverageWorkloadCStolar.Content = "0 %";

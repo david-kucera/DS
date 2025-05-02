@@ -62,7 +62,12 @@ namespace Agents.AgentStolarov
 			}
 			else
 			{
-                if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
+                if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani) 
+				{
+                    msg.Code = Mc.DajStolaraC;
+                    msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+					Request(msg);    
+				}
 				else
 				{
 					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar);
@@ -86,10 +91,8 @@ namespace Agents.AgentStolarov
 			{
 				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani)
 				{
-					msg.Code = Mc.DajStolaraA;
-					msg.Addressee = MySim.FindAgent(SimId.AgentAStolar);
-					Request(msg);
-				}
+                    MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar);
+                }
 				else MyAgent.CakajuceNaMorenie.Enqueue(msg.Tovar);
 			}
 		}
@@ -436,8 +439,8 @@ namespace Agents.AgentStolarov
 			if (sprava.Tovar.Type == TovarType.Skrina)
 			{
 				sprava.Tovar.ChangeStatus(TovarStatus.CakajucaNaMontazKovani);
-                message.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-				message.Code = Mc.DajStolaraC;
+                message.Addressee = MySim.FindAgent(SimId.AgentAStolar);
+				message.Code = Mc.DajStolaraA;
 				Request(message);
 			}
 			else

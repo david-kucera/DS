@@ -127,6 +127,9 @@
 
 								<Label Content="Priemerný počet nezačatých objednávok:" FontSize="14"/>
 								<Label Name="AverageObjednavkasNotStarted" Content="0" FontSize="14" FontWeight="Bold"/>
+								
+								<Label Content="Priemerný počet nezačatých tovarov:" FontSize="14"/>
+								<Label Name="AverageTovarsNotStarted" Content="0" FontSize="14" FontWeight="Bold"/>
 
 								<Label Content="Priemerná vyťaženosť stolárov typu A:" FontSize="14"/>
 								<Label Name="AverageWorkloadAStolar" Content="0" FontSize="14" FontWeight="Bold"/>

@@ -24,7 +24,9 @@ namespace Simulation
 		public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; }
 		public ConfidenceInterval GlobalnyPriemernyPocetNezacatychObjednavok { get; set; }
 		public ConfidenceInterval PriemernyPocetNezacatychObjednavok { get; set; }
-		public ConfidenceInterval GlobalneVytazenieA { get; set; }
+        public ConfidenceInterval GlobalnyPriemernyPocetNezacatychTovarov { get; set; }
+        public ConfidenceInterval PriemernyPocetNezacatychTovarov { get; set; }
+        public ConfidenceInterval GlobalneVytazenieA { get; set; }
 		public ConfidenceInterval GlobalneVytazenieB { get; set; }
 		public ConfidenceInterval GlobalneVytazenieC { get; set; }
 		public AnimTextItem AktualnyDenACasAnimItem { get; set; }
@@ -48,7 +50,8 @@ namespace Simulation
 			
 			GlobalnyPriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
 			GlobalnyPriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
-			GlobalneVytazenieA = new ConfidenceInterval();
+            GlobalnyPriemernyPocetNezacatychTovarov = new ConfidenceInterval();
+            GlobalneVytazenieA = new ConfidenceInterval();
 			GlobalneVytazenieB = new ConfidenceInterval();
 			GlobalneVytazenieC = new ConfidenceInterval();
 
@@ -62,8 +65,9 @@ namespace Simulation
 
 			PriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
 			PriemernyPocetNezacatychObjednavok = new ConfidenceInterval();
-			
-			Objednavka.ResetPoradie();
+            PriemernyPocetNezacatychTovarov = new ConfidenceInterval();
+
+            Objednavka.ResetPoradie();
 			Stolar.ResetPoradie();
 			InitAnimator();
         }
@@ -75,8 +79,9 @@ namespace Simulation
 
 			GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
 			GlobalnyPriemernyPocetNezacatychObjednavok.AddValue(PriemernyPocetNezacatychObjednavok.GetValue());
+			GlobalnyPriemernyPocetNezacatychTovarov.AddValue(PriemernyPocetNezacatychTovarov.GetValue());
 
-			Average stolariAVytazenie = new();
+            Average stolariAVytazenie = new();
 			foreach (var stolar in AgentAStolar.StolariA)
 			{
 				stolariAVytazenie.AddValue(stolar.Workload.GetValue());
@@ -178,10 +183,15 @@ namespace Simulation
 
 		public void CheckNezacateTovary()
 		{
-			// TODO
-			throw new NotImplementedException("CheckNezacateTovary not implemented");
-        }
+            var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
+            var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
 
+            var vsetkyNezacateTovary = tovaryCakajucaNaStolaraA
+                .Concat(tovaryCakajuceNaMiesto)
+                .ToList();
+
+			PriemernyPocetNezacatychTovarov.AddValue(vsetkyNezacateTovary.Count);
+        }
 
         public void CheckNezacateObjednavkyModel()
 		{
