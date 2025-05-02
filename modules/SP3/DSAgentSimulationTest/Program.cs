@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Globalization;
-using OSPABA;
 using Simulation;
 
 namespace DSAgentSimulationTest;
@@ -51,19 +50,12 @@ class Program
 			CURRENT_CONFIG = randomConfig;
 			MySimulation sim = new MySimulation(SEEDER, randomConfig.M, randomConfig.A, randomConfig.B, randomConfig.C);
 			Console.WriteLine($"Current: M{randomConfig.M}, A{randomConfig.A}, B{randomConfig.B}, C{randomConfig.C}");
-            sim.OnReplicationWillStart(StartRep);
 			sim.OnSimulationDidFinish(ZapisStat);
 			sim.OnReplicationDidFinish(CheckStat);
-			sim.Start(REP_COUNT, END_TIME);
+            Stopwatch.Start();
+            sim.Start(REP_COUNT, END_TIME);
 		}
 	}
-
-    private static void StartRep(OSPABA.Simulation simulation)
-    {
-        Stopwatch.Restart();
-        Console.WriteLine($"Starting replication {simulation.CurrentReplication} at {DateTime.Now}");
-        Stopwatch.Start();
-    }
 
     private static void CheckStat(OSPABA.Simulation simulation)
     {
@@ -183,12 +175,12 @@ class Program
 		if (cas < 32 * 60 * 60)
 		{
 			File.AppendAllText(PATH_VYHOVUJUCE, output);
-			output = $"VYHOVUJE: {casf} | {pocetNezacatychObj} | {vytazenieA} | {vytazenieB} | {vytazenieC}\n";
+			output = $"VYHOVUJE: {casf} | {pocetNezacatychObj} | {vytazenieA} | {vytazenieB} | {vytazenieC}";
 		}
 		else
 		{
 			File.AppendAllText(PATH_NEVYHOVUJUCE, output);
-			output = $"NE VYHOVUJE: {casf} | {pocetNezacatychObj} | {vytazenieA} | {vytazenieB} | {vytazenieC}\n";
+			output = $"NE VYHOVUJE: {casf} | {pocetNezacatychObj} | {vytazenieA} | {vytazenieB} | {vytazenieC}";
 		}
 		
 	    Console.WriteLine(output);
