@@ -6,7 +6,7 @@ namespace DSAgentSimulationTest;
 class Program
 {
     #region Constants
-    public static int REP_COUNT = 100;
+    public static int REP_COUNT = 500;
     public static int END_TIME = 249 * 8 * 60 * 60;
     public static int SEED = 0;
     public static Random SEEDER = new(SEED);
@@ -106,7 +106,6 @@ class Program
         }
     }
 
-
     private static void VypisStat(OSPABA.Simulation sim)
 	{
 		Console.WriteLine("-----------------");
@@ -122,11 +121,31 @@ class Program
     {
         double cas = ((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
 		string casf = FormatTime(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
+		string casInt = Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue(), 4) + "" +
+                " <" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4) + ">";
+
         string pocetNezacatychObj= Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
+        string pocetNezacatychObjInt = 
+                "<" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item2, 4) + ">";
+
         string vytazenieA = Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
-		string vytazenieB = Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
-	    string vytazenieC = Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
-	    string output = $"{CURRENT_CONFIG.M},{CURRENT_CONFIG.A},{CURRENT_CONFIG.B},{CURRENT_CONFIG.C},{casf},{cas.ToString(CultureInfo.InvariantCulture)},{pocetNezacatychObj},{vytazenieA},{vytazenieB},{vytazenieC}\n";
+        string vytazenieAInt =
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item2, 4) + ">";
+
+        string vytazenieB = Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
+        string vytazenieBInt =
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item2, 4) + ">";
+
+        string vytazenieC = Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
+        string vytazenieCInt =
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item1, 4) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item2, 4) + ">";
+
+        string output = $"{CURRENT_CONFIG.M},{CURRENT_CONFIG.A},{CURRENT_CONFIG.B},{CURRENT_CONFIG.C},{casf},{cas.ToString(CultureInfo.InvariantCulture)},{casInt},{pocetNezacatychObj},{pocetNezacatychObjInt},{vytazenieA},{vytazenieAInt},{vytazenieB},{vytazenieBInt},{vytazenieC},{vytazenieCInt}\n";
 
 		if (cas < 32 * 60 * 60)
 		{
