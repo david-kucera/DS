@@ -162,7 +162,7 @@ namespace Simulation
 			var tovaryCakajuceNaMiesto = AgentMontaznychMiest.NepriradeneTovary;
 			var tovaryCakajucaNaStolaraA = AgentStolarov.CakajuceNaRezanie;
 
-            var copyA = new PriorityQueue<Tovar, double>(AgentStolarov.CakajuceNaRezanie.UnorderedItems);
+            var copyA = new PriorityQueue<Tovar, (double, double)>(AgentStolarov.CakajuceNaRezanie.UnorderedItems);
             var copyB = new Queue<Tovar>(AgentMontaznychMiest.NepriradeneTovary);
 
             var vsetkyNezacateTovary = new List<Tovar>();

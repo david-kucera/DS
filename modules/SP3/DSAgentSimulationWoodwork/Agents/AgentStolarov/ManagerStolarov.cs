@@ -70,7 +70,7 @@ namespace Agents.AgentStolarov
 				}
 				else
 				{
-					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar, msg.Tovar.Objednavka.ArrivalTime);
+					MyAgent.CakajuceNaRezanie.Enqueue(msg.Tovar, (msg.Tovar.Objednavka.ArrivalTime, msg.Tovar.LastTechnicalTime));
                     ((MySimulation)MySim).CheckNezacateObjednavky();
                     ((MySimulation)MySim).CheckNezacateTovary();
                 }
@@ -91,9 +91,9 @@ namespace Agents.AgentStolarov
 			{
 				if (msg.Tovar.Type == TovarType.Skrina && msg.Tovar.Status == TovarStatus.CakajucaNaMontazKovani)
 				{
-                    MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar, msg.Tovar.Objednavka.ArrivalTime);
+                    MyAgent.CakajuceNaMontazKovani.Enqueue(msg.Tovar, (msg.Tovar.Objednavka.ArrivalTime, msg.Tovar.LastTechnicalTime));
                 }
-				else MyAgent.CakajuceNaMorenie.Enqueue(msg.Tovar, msg.Tovar.Objednavka.ArrivalTime);
+				else MyAgent.CakajuceNaMorenie.Enqueue(msg.Tovar, (msg.Tovar.Objednavka.ArrivalTime, msg.Tovar.LastTechnicalTime));
 			}
 		}
 
@@ -107,7 +107,7 @@ namespace Agents.AgentStolarov
 				message.Addressee = MyAgent.FindAssistant(SimId.ProcessPresun);
 				StartContinualAssistant(message);
 			}
-			else MyAgent.CakajuceNaSkladanie.Enqueue(msg.Tovar, msg.Tovar.Objednavka.ArrivalTime);
+			else MyAgent.CakajuceNaSkladanie.Enqueue(msg.Tovar, (msg.Tovar.Objednavka.ArrivalTime, msg.Tovar.LastTechnicalTime));
 		}
 
 		//meta! userInfo="Process messages defined in code", id="0"
