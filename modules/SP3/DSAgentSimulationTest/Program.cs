@@ -7,7 +7,7 @@ namespace DSAgentSimulationTest;
 class Program
 {
     #region Constants
-    public static int REP_COUNT = 2;
+    public static int REP_COUNT = 500;
     public static int END_TIME = 249 * 8 * 60 * 60;
     public static int SEED = 0;
     public static Random SEEDER = new(SEED);
