@@ -201,33 +201,113 @@ namespace Agents.AgentStolarov
 					msg.Code = Mc.DajStolaraC;
 					Request(msg);
 				}
-				else if (MyAgent.CakajuceNaLakovanie.Count > 0)
+				else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 				{
-					var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
-					var msg = new MyMessage(MySim)
-					{
-						Tovar = tovar,
-						MontazneMiesto = tovar.MontazneMiesto,
-					};
-					if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+					Tovar tovarNaLakovanie = null;
+					if (MyAgent.CakajuceNaLakovanie.Count > 0)
+						tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
+					Tovar tovarNaMorenie = null;
+					if (MyAgent.CakajuceNaMorenie.Count > 0)
+						tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
-					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-					msg.Code = Mc.DajStolaraC;
-					Request(msg);
-				}
-				else if (MyAgent.CakajuceNaMorenie.Count > 0)
-				{
-					var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
-					var msg = new MyMessage(MySim)
+					if (tovarNaLakovanie is not null && tovarNaMorenie is null)
 					{
-						Tovar = tovar,
-						MontazneMiesto = tovar.MontazneMiesto,
-					};
-					if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+						var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
 
-					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-					msg.Code = Mc.DajStolaraC;
-					Request(msg);
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else if (tovarNaLakovanie is null && tovarNaMorenie is not null)
+					{
+						var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else if (tovarNaLakovanie is not null && tovarNaMorenie is not null)
+					{
+						if (tovarNaLakovanie.Objednavka.ArrivalTime < tovarNaMorenie.Objednavka.ArrivalTime)
+						{
+							var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else if (tovarNaLakovanie.Objednavka.ArrivalTime > tovarNaMorenie.Objednavka.ArrivalTime)
+						{
+							var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else
+						{
+							// rovnako, vyberam, ktory technologicky proces sa vykonal skor
+							var timeTovarLakovanie = tovarNaLakovanie.LastTechnicalTime;
+							var timeTovarMorenie = tovarNaMorenie.LastTechnicalTime;
+
+							if (timeTovarLakovanie < timeTovarMorenie)
+							{
+								var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+								var msg = new MyMessage(MySim)
+								{
+									Tovar = tovar,
+									MontazneMiesto = tovar.MontazneMiesto,
+								};
+								if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+								msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+								msg.Code = Mc.DajStolaraC;
+								Request(msg);
+							}
+							else if (timeTovarLakovanie > timeTovarMorenie)
+							{
+								var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+								var msg = new MyMessage(MySim)
+								{
+									Tovar = tovar,
+									MontazneMiesto = tovar.MontazneMiesto,
+								};
+								if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+								msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+								msg.Code = Mc.DajStolaraC;
+								Request(msg);
+							}
+							else
+							{
+								throw new Exception("Rovnake casy oboch technologickych procesov!");
+							}
+						}
+					}
 				}
 			}
 			else if (typStolara == StolarType.A)
@@ -307,33 +387,113 @@ namespace Agents.AgentStolarov
 				msg.Code = Mc.DajStolaraC;
 				Request(msg);
 			}
-			else if (MyAgent.CakajuceNaLakovanie.Count > 0)
+			else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 			{
-				var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
-				var msg = new MyMessage(MySim)
-				{
-					Tovar = tovar,
-					MontazneMiesto = tovar.MontazneMiesto,
-				};
-				if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+				Tovar tovarNaLakovanie = null;
+				if (MyAgent.CakajuceNaLakovanie.Count > 0)
+					tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
+				Tovar tovarNaMorenie = null;
+				if (MyAgent.CakajuceNaMorenie.Count > 0)
+					tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
-				msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-				msg.Code = Mc.DajStolaraC;
-				Request(msg);
-			}
-			else if (MyAgent.CakajuceNaMorenie.Count > 0)
-			{
-				var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
-				var msg = new MyMessage(MySim)
+				if (tovarNaLakovanie is not null && tovarNaMorenie is null)
 				{
-					Tovar = tovar,
-					MontazneMiesto = tovar.MontazneMiesto,
-				};
-				if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+					var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+					var msg = new MyMessage(MySim)
+					{
+						Tovar = tovar,
+						MontazneMiesto = tovar.MontazneMiesto,
+					};
+					if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
 
-				msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-				msg.Code = Mc.DajStolaraC;
-				Request(msg);
+					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+					msg.Code = Mc.DajStolaraC;
+					Request(msg);
+				}
+				else if (tovarNaLakovanie is null && tovarNaMorenie is not null)
+				{
+					var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+					var msg = new MyMessage(MySim)
+					{
+						Tovar = tovar,
+						MontazneMiesto = tovar.MontazneMiesto,
+					};
+					if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+					msg.Code = Mc.DajStolaraC;
+					Request(msg);
+				}
+				else if (tovarNaLakovanie is not null && tovarNaMorenie is not null)
+				{
+					if (tovarNaLakovanie.Objednavka.ArrivalTime < tovarNaMorenie.Objednavka.ArrivalTime)
+					{
+						var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else if (tovarNaLakovanie.Objednavka.ArrivalTime > tovarNaMorenie.Objednavka.ArrivalTime)
+					{
+						var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else
+					{
+						// rovnako, vyberam, ktory technologicky proces sa vykonal skor
+						var timeTovarLakovanie = tovarNaLakovanie.LastTechnicalTime;
+						var timeTovarMorenie = tovarNaMorenie.LastTechnicalTime;
+
+						if (timeTovarLakovanie < timeTovarMorenie)
+						{
+							var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else if (timeTovarLakovanie > timeTovarMorenie)
+						{
+							var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else
+						{
+							throw new Exception("Rovnake casy oboch technologickych procesov!");
+						}
+					}
+				}
 			}
 		}
 
@@ -390,9 +550,9 @@ namespace Agents.AgentStolarov
             message.Code = Mc.DajStolaraB;
             Request(message);
 
-            // Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
-            if (MyAgent.CakajuceNaMontazKovani.Count > 0)
-            {
+			// Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie
+			if (MyAgent.CakajuceNaMontazKovani.Count > 0)
+			{
 				var tovar = MyAgent.CakajuceNaMontazKovani.Dequeue();
 				var msg = new MyMessage(MySim)
 				{
@@ -405,33 +565,113 @@ namespace Agents.AgentStolarov
 				msg.Code = Mc.DajStolaraC;
 				Request(msg);
 			}
-			else if (MyAgent.CakajuceNaLakovanie.Count > 0)
+			else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 			{
-				var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
-				var msg = new MyMessage(MySim)
-				{
-					Tovar = tovar,
-					MontazneMiesto = tovar.MontazneMiesto,
-				};
-				if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+				Tovar tovarNaLakovanie = null;
+				if (MyAgent.CakajuceNaLakovanie.Count > 0)
+					tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
+				Tovar tovarNaMorenie = null;
+				if (MyAgent.CakajuceNaMorenie.Count > 0)
+					tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
-				msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-				msg.Code = Mc.DajStolaraC;
-				Request(msg);
-			}
-			else if (MyAgent.CakajuceNaMorenie.Count > 0)
-			{
-				var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
-				var msg = new MyMessage(MySim)
+				if (tovarNaLakovanie is not null && tovarNaMorenie is null)
 				{
-					Tovar = tovar,
-					MontazneMiesto = tovar.MontazneMiesto,
-				};
-				if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+					var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+					var msg = new MyMessage(MySim)
+					{
+						Tovar = tovar,
+						MontazneMiesto = tovar.MontazneMiesto,
+					};
+					if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
 
-				msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
-				msg.Code = Mc.DajStolaraC;
-				Request(msg);
+					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+					msg.Code = Mc.DajStolaraC;
+					Request(msg);
+				}
+				else if (tovarNaLakovanie is null && tovarNaMorenie is not null)
+				{
+					var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+					var msg = new MyMessage(MySim)
+					{
+						Tovar = tovar,
+						MontazneMiesto = tovar.MontazneMiesto,
+					};
+					if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+					msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+					msg.Code = Mc.DajStolaraC;
+					Request(msg);
+				}
+				else if (tovarNaLakovanie is not null && tovarNaMorenie is not null)
+				{
+					if (tovarNaLakovanie.Objednavka.ArrivalTime < tovarNaMorenie.Objednavka.ArrivalTime)
+					{
+						var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else if (tovarNaLakovanie.Objednavka.ArrivalTime > tovarNaMorenie.Objednavka.ArrivalTime)
+					{
+						var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+						var msg = new MyMessage(MySim)
+						{
+							Tovar = tovar,
+							MontazneMiesto = tovar.MontazneMiesto,
+						};
+						if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+						msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+						msg.Code = Mc.DajStolaraC;
+						Request(msg);
+					}
+					else
+					{
+						// rovnako, vyberam, ktory technologicky proces sa vykonal skor
+						var timeTovarLakovanie = tovarNaLakovanie.LastTechnicalTime;
+						var timeTovarMorenie = tovarNaMorenie.LastTechnicalTime;
+
+						if (timeTovarLakovanie < timeTovarMorenie)
+						{
+							var tovar = MyAgent.CakajuceNaLakovanie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaLakovanie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else if (timeTovarLakovanie > timeTovarMorenie)
+						{
+							var tovar = MyAgent.CakajuceNaMorenie.Dequeue();
+							var msg = new MyMessage(MySim)
+							{
+								Tovar = tovar,
+								MontazneMiesto = tovar.MontazneMiesto,
+							};
+							if (msg.Tovar.Status != TovarStatus.CakajucaNaMorenie) throw new Exception("Nesprávny status tovaru!");
+
+							msg.Addressee = MySim.FindAgent(SimId.AgentCStolar);
+							msg.Code = Mc.DajStolaraC;
+							Request(msg);
+						}
+						else
+						{
+							throw new Exception("Rovnake casy oboch technologickych procesov!");
+						}
+					}
+				}
 			}
 		}
 
