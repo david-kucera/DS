@@ -8,7 +8,8 @@ namespace Agents.AgentStolarov
 	public class ManagerStolarov : OSPABA.Manager
 	{
         #region Constants
-		private int POSUN_X = 50;
+        private int POSUN_X_MIN = 25;
+		private int POSUN_X_MAX = 50;
 		private int POSUN_Y_MIN = -10;
         private int POSUN_Y_MAX = 10;
         #endregion // Constants
@@ -123,7 +124,7 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-			sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+			sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
 			sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 			
@@ -171,7 +172,7 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
 			var typStolara = sprava.Stolar.Type;
 			sprava.Stolar = null;
@@ -279,7 +280,7 @@ namespace Agents.AgentStolarov
 			}
 
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
@@ -378,7 +379,7 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
@@ -439,7 +440,7 @@ namespace Agents.AgentStolarov
 		{
 			var sprava = ((MyMessage)message);
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
-            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
+            sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
 			sprava.Stolar = null;
 
