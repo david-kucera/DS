@@ -7,7 +7,7 @@ namespace DSAgentSimulationTest;
 class Program
 {
     #region Constants
-    public static int REP_COUNT = 500;
+    public static int REP_COUNT = 2;
     public static int END_TIME = 249 * 8 * 60 * 60;
     public static int SEED = 0;
     public static Random SEEDER = new(SEED);
@@ -22,6 +22,7 @@ class Program
 	public static object LOCK = new();
     public static Stopwatch Stopwatch = new();
     public static double Percentage = 0.01;
+    public static int STOP_MAX = 0;
     #endregion // Constants
 
     static void Main(string[] args)
@@ -39,16 +40,18 @@ class Program
 		List<Configuration> configs = [];
 		ReadConfigs(configs);
 		Random random = new(SEED);
-        while (true)
+        while (STOP_MAX < 20)
 		{
             Stopwatch.Reset();
             var randomConfig = new Configuration(random);
 			if (configs.Any(c => c.M == randomConfig.M && c.A == randomConfig.A && c.B == randomConfig.B && c.C == randomConfig.C)) 
 			{
+                STOP_MAX++;
                 Console.WriteLine($"Configuration M{randomConfig.M},A{randomConfig.A},B{randomConfig.B},C{randomConfig.C} already done.\n");
                 continue; 
 			}
-			configs.Add(randomConfig);
+            STOP_MAX = 0;
+            configs.Add(randomConfig);
 			CURRENT_CONFIG = randomConfig;
 			MySimulation sim = new MySimulation(SEEDER, randomConfig.M, randomConfig.A, randomConfig.B, randomConfig.C);
 			Console.WriteLine($"{configs.Count}. Current: M{randomConfig.M}, A{randomConfig.A}, B{randomConfig.B}, C{randomConfig.C}");
@@ -152,29 +155,29 @@ class Program
         Stopwatch.Stop();
         double cas = ((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
 		string casf = FormatTime(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue());
-		string casInt = Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue(), 4) + "" +
-                " <" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) + ";" +
-                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4) + ">";
+		string casInt =
+                "<" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4).ToString(CultureInfo.InvariantCulture) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4).ToString(CultureInfo.InvariantCulture) + ">";
 
         string pocetNezacatychObj= Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
         string pocetNezacatychObjInt = 
-                "<" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item1, 4) + ";" +
-                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item2, 4) + ">";
+                "<" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item1, 4).ToString(CultureInfo.InvariantCulture) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item2, 4).ToString(CultureInfo.InvariantCulture) + ">";
 
         string vytazenieA = Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
         string vytazenieAInt =
-                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item1, 4) + ";" +
-                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item2, 4) + ">";
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item1, 4).ToString(CultureInfo.InvariantCulture) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieA.GetConfidenceInterval().Item2, 4).ToString(CultureInfo.InvariantCulture) + ">";
 
         string vytazenieB = Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
         string vytazenieBInt =
-                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item1, 4) + ";" +
-                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item2, 4) + ">";
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item1, 4).ToString(CultureInfo.InvariantCulture) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieB.GetConfidenceInterval().Item2, 4).ToString(CultureInfo.InvariantCulture) + ">";
 
         string vytazenieC = Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetValue(), 2).ToString(CultureInfo.InvariantCulture);
         string vytazenieCInt =
-                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item1, 4) + ";" +
-                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item2, 4) + ">";
+                "<" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item1, 4).ToString(CultureInfo.InvariantCulture) + ";" +
+                "" + Math.Round(((MySimulation)sim).GlobalneVytazenieC.GetConfidenceInterval().Item2, 4).ToString(CultureInfo.InvariantCulture)  + ">";
 
         string output = $"{CURRENT_CONFIG.M},{CURRENT_CONFIG.A},{CURRENT_CONFIG.B},{CURRENT_CONFIG.C},{casf},{cas.ToString(CultureInfo.InvariantCulture)},{casInt},{pocetNezacatychObj},{pocetNezacatychObjInt},{vytazenieA},{vytazenieAInt},{vytazenieB},{vytazenieBInt},{vytazenieC},{vytazenieCInt}\n";
 
