@@ -61,7 +61,7 @@ class Program
 
     private static void CheckStat(OSPABA.Simulation simulation)
     {
-		if (simulation.CurrentReplication < 3) return;
+		if (simulation.CurrentReplication < 100) return;
         var mean = ((MySimulation)simulation).GlobalnyPriemernyCasObjednavkyVSysteme.GetValue();
 		var interval = ((MySimulation)simulation).GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval();
 
@@ -69,7 +69,9 @@ class Program
         var upperBound = interval.Item2;
         var margin = mean * Percentage;
 
-        if (lowerBound > mean - margin && upperBound < mean + margin)
+        var minutesElapsed = Stopwatch.Elapsed.TotalMinutes;
+
+		if (lowerBound > mean - margin && upperBound < mean + margin || minutesElapsed >= 15)
 		{
             Console.WriteLine("Stopping simulation at " + simulation.CurrentReplication);
 			simulation.StopSimulation();
