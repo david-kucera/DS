@@ -73,31 +73,26 @@ public partial class MainWindow : Window
 	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
 	    {
             CurrentReplicationLabel.Content = sim.CurrentReplication;
-		    CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4);
-		    AverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " % " +
+            GlobalTimeLabel.Content = Math.Round(timeOfObjednavka, 4);
+		    GlobalAverageWorkloadAStolar.Content = Math.Round(_stolaren.GlobalneVytazenieA.GetValue(), 4) + " % " +
 		                                     " <" + Math.Round(_stolaren.GlobalneVytazenieA.GetConfidenceInterval().Item1, 4) + ";" +
 		                                     "" + Math.Round(_stolaren.GlobalneVytazenieA.GetConfidenceInterval().Item2, 4) + ">";
-		    AverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " % " +
+		    GlobalAverageWorkloadBStolar.Content = Math.Round(_stolaren.GlobalneVytazenieB.GetValue(), 4) + " % " +
 		                                     " <" + Math.Round(_stolaren.GlobalneVytazenieB.GetConfidenceInterval().Item1, 4) + ";" +
 		                                     "" + Math.Round(_stolaren.GlobalneVytazenieB.GetConfidenceInterval().Item2, 4) + ">";
-		    AverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " % " +
+		    GlobalAverageWorkloadCStolar.Content = Math.Round(_stolaren.GlobalneVytazenieC.GetValue(), 4) + " % " +
 		                                     " <" + Math.Round(_stolaren.GlobalneVytazenieC.GetConfidenceInterval().Item1, 4) + ";" +
 		                                     "" + Math.Round(_stolaren.GlobalneVytazenieC.GetConfidenceInterval().Item2, 4) + ">";
-		    AverageObjednavkasNotStarted.Content =
+		    GlobalNotStartedObjednavky.Content =
 		        Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetValue(), 4) + "" +
 		        " <" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item1, 4) + ";" +
 		        "" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychObjednavok.GetConfidenceInterval().Item2, 4) + ">";
-            AverageTovarsNotStarted.Content =
+		    GlobalNotStartedTovar.Content =
                 Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetValue(), 4) + "" +
                 " <" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetConfidenceInterval().Item1, 4) + ";" +
                 "" + Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetConfidenceInterval().Item2, 4) + ">";
 
-            AverageObjednavkaTimeInSystem.Content = FormatTime(timeOfObjednavka);
-		    
-		    var objednavky = ((MySimulation)sim).AgentModelu.Objednavky;
-		    var hotove = ((MySimulation)sim).AgentModelu.PocetHotovychObjednavok;
-			NumberOfOrders.Content = objednavky.Count;
-			NumberOfFinishedOrders.Content = hotove;
+		    GlobalTimeFormatLabel.Content = FormatTime(timeOfObjednavka);
 	    });
 	    
 	    if (_totalValuesProcessed <= _skipFirst) return;
@@ -114,12 +109,12 @@ public partial class MainWindow : Window
         
 	    Avalonia.Threading.Dispatcher.UIThread.InvokeAsync(() =>
 	    {
-	        CurrentValueLabel.Content = Math.Round(timeOfObjednavka, 4) 
-	                                    + " <" 
-	                                    + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
-	                                    + ", " 
-	                                    + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4)
-	                                    + ">";
+		    GlobalTimeLabel.Content = Math.Round(timeOfObjednavka, 4) 
+		                              + " <" 
+		                              + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item1, 4) 
+		                              + ", " 
+		                              + Math.Round(_stolaren.GlobalnyPriemernyCasObjednavkyVSysteme.GetConfidenceInterval().Item2, 4)
+		                              + ">";
 	        // if (_dataCounter % 10 == 0) 
 	            StabilizationPlot.Plot.Axes.AutoScale();
 	        StabilizationPlot.Refresh();
@@ -155,7 +150,6 @@ public partial class MainWindow : Window
 				AverageWorkloadBStolar.Content = (int)priemernaVytazenostB.GetValue() + " %";
 				AverageWorkloadCStolar.Content = (int)priemernaVytazenostC.GetValue() + " %";
 
-
 				WaitingQueueRezanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaRezanie.Count;
 				WaitingQueueMorenie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaMorenie.Count;
 				WaitingQueueLakovanie.Content = ((MySimulation)sim).AgentStolarov.CakajuceNaLakovanie.Count;
@@ -164,6 +158,7 @@ public partial class MainWindow : Window
 
 				AverageObjednavkaTimeInSystem.Content = FormatTime(_stolaren.PriemernyCasObjednavkyVSysteme.GetValue());
 				AverageObjednavkasNotStarted.Content = Math.Round(_stolaren.PriemernyPocetNezacatychObjednavok.GetValue(), 4);
+				AverageTovarsNotStarted.Content = Math.Round(_stolaren.GlobalnyPriemernyPocetNezacatychTovarov.GetValue(), 4);
 
 				ItemsControlMontazneMiesta.Items.Clear();
 				foreach (var mm in montazneMiesta) ItemsControlMontazneMiesta.Items.Add(mm.ToString());
