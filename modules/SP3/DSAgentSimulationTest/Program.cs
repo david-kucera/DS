@@ -51,7 +51,7 @@ class Program
 			configs.Add(randomConfig);
 			CURRENT_CONFIG = randomConfig;
 			MySimulation sim = new MySimulation(SEEDER, randomConfig.M, randomConfig.A, randomConfig.B, randomConfig.C);
-			Console.WriteLine($"Current: M{randomConfig.M}, A{randomConfig.A}, B{randomConfig.B}, C{randomConfig.C}");
+			Console.WriteLine($"{configs.Count}. Current: M{randomConfig.M}, A{randomConfig.A}, B{randomConfig.B}, C{randomConfig.C}");
 			sim.OnSimulationDidFinish(ZapisStat);
 			sim.OnReplicationDidFinish(CheckStat);
             Stopwatch.Start();
@@ -105,8 +105,10 @@ class Program
 							continue; 
 						}
                         MySimulation sim = new MySimulation(SEEDER, config.M, config.A, config.B, config.C);
-						Console.WriteLine($"Current: M{M}, A{A}, B{B}, C{C}");
+						Console.WriteLine($"{configs.Count}. Current: M{M}, A{A}, B{B}, C{C}");
 						sim.OnSimulationDidFinish(ZapisStat);
+						sim.OnReplicationDidFinish(CheckStat);
+						Stopwatch.Start();
 						sim.Start(REP_COUNT, END_TIME);
 					}
 				}

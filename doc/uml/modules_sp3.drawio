@@ -1,0 +1,34 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36" version="26.2.14">
+  <diagram name="Page-1" id="dfEno3oxPMVwbRbaHs-8">
+    <mxGraphModel dx="983" dy="517" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-1" value="DSAgent&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;SimulationLib&lt;/span&gt;&lt;div&gt;&lt;div&gt;(dll)&lt;/div&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="80" y="360" width="160" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-2" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="13n8F_4z8-tzUvbTYzl7-3" target="13n8F_4z8-tzUvbTYzl7-1">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-3" value="DSAgent&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;SimulationWoodw&lt;/span&gt;&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;ork&lt;/span&gt;&lt;div&gt;&lt;div&gt;&lt;div&gt;(dll&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="290" y="360" width="200" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-4" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="13n8F_4z8-tzUvbTYzl7-5" target="13n8F_4z8-tzUvbTYzl7-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-5" value="DSAgentSimulationVisualization&lt;div&gt;&lt;div&gt;(avalonia)&lt;/div&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="360" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-6" value="DSAgentSimulationTest&lt;div&gt;(console&lt;span style=&quot;background-color: transparent; color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&quot;&gt;)&lt;/span&gt;&lt;/div&gt;" style="shape=module;align=left;spacingLeft=20;align=center;verticalAlign=top;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="530" y="430" width="220" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="13n8F_4z8-tzUvbTYzl7-8" value="" style="endArrow=classic;html=1;rounded=0;exitX=-0.013;exitY=0.47;exitDx=0;exitDy=0;exitPerimeter=0;entryX=1;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="13n8F_4z8-tzUvbTYzl7-6" target="13n8F_4z8-tzUvbTYzl7-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="440" y="440" as="sourcePoint" />
+            <mxPoint x="490" y="390" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
