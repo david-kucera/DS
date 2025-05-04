@@ -23,8 +23,8 @@ namespace Agents.AgentStolarov
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			_ajNaLakovanieGenerator = new ContinousUniform(seeder, 0, 1);
-            _randomPosunGenerator = new Random(seeder.Next());
+			_ajNaLakovanieGenerator = new ContinousUniform(seeder!, 0, 1);
+            _randomPosunGenerator = new Random(seeder!.Next());
             Init();
 		}
 
@@ -116,6 +116,8 @@ namespace Agents.AgentStolarov
 		{
 			switch (message.Code)
 			{
+				default:
+					break;
 			}
 		}
 
@@ -126,7 +128,7 @@ namespace Agents.AgentStolarov
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
 			sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
 			sprava.Stolar.Obsadeny = false;
-			sprava.Stolar = null;
+			sprava.Stolar = null!;
 			
 			// Pokracovanie objednavky na morenie
 			sprava.Tovar.LastTechnicalTime = MySim.CurrentTime;
@@ -175,7 +177,7 @@ namespace Agents.AgentStolarov
             sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
 			var typStolara = sprava.Stolar.Type;
-			sprava.Stolar = null;
+			sprava.Stolar = null!;
 
             sprava.Tovar.LastTechnicalTime = MySim.CurrentTime;
             sprava.Tovar.ChangeStatus(TovarStatus.Hotova);
@@ -203,10 +205,10 @@ namespace Agents.AgentStolarov
 				}
 				else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 				{
-					Tovar tovarNaLakovanie = null;
+					Tovar tovarNaLakovanie = null!;
 					if (MyAgent.CakajuceNaLakovanie.Count > 0)
 						tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
-					Tovar tovarNaMorenie = null;
+					Tovar tovarNaMorenie = null!;
 					if (MyAgent.CakajuceNaMorenie.Count > 0)
 						tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
@@ -362,7 +364,7 @@ namespace Agents.AgentStolarov
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
             sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
-			sprava.Stolar = null;
+			sprava.Stolar = null!;
 
             // Ak sa nelakuje, tovar pokracuje dalej na skladanie
             sprava.Tovar.LastTechnicalTime = MySim.CurrentTime;
@@ -389,10 +391,10 @@ namespace Agents.AgentStolarov
 			}
 			else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 			{
-				Tovar tovarNaLakovanie = null;
+				Tovar tovarNaLakovanie = null!;
 				if (MyAgent.CakajuceNaLakovanie.Count > 0)
 					tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
-				Tovar tovarNaMorenie = null;
+				Tovar tovarNaMorenie = null!;
 				if (MyAgent.CakajuceNaMorenie.Count > 0)
 					tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
@@ -541,7 +543,7 @@ namespace Agents.AgentStolarov
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
             sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
-			sprava.Stolar = null;
+			sprava.Stolar = null!;
 
             // Tovar pokracuje dalej na skladanie
             sprava.Tovar.LastTechnicalTime = MySim.CurrentTime;
@@ -567,10 +569,10 @@ namespace Agents.AgentStolarov
 			}
 			else if (MyAgent.CakajuceNaLakovanie.Count > 0 || MyAgent.CakajuceNaMorenie.Count > 0)
 			{
-				Tovar tovarNaLakovanie = null;
+				Tovar tovarNaLakovanie = null!;
 				if (MyAgent.CakajuceNaLakovanie.Count > 0)
 					tovarNaLakovanie = MyAgent.CakajuceNaLakovanie.Peek();
-				Tovar tovarNaMorenie = null;
+				Tovar tovarNaMorenie = null!;
 				if (MyAgent.CakajuceNaMorenie.Count > 0)
 					tovarNaMorenie = MyAgent.CakajuceNaMorenie.Peek();
 
@@ -682,7 +684,7 @@ namespace Agents.AgentStolarov
 			sprava.Stolar.Workload.AddValue(sprava.Stolar.Obsadeny, MySim.CurrentTime);
             sprava.Stolar.AnimImageItem.Move(MySim.CurrentTime, 0, _randomPosunGenerator.Next(POSUN_X_MIN, POSUN_X_MAX), _randomPosunGenerator.Next(POSUN_Y_MIN, POSUN_Y_MAX));
             sprava.Stolar.Obsadeny = false;
-			sprava.Stolar = null;
+			sprava.Stolar = null!;
 
 			if (sprava.Tovar.Type == TovarType.Skrina)
 			{

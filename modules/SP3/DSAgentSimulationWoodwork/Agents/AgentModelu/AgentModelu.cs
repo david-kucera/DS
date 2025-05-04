@@ -7,9 +7,9 @@ namespace Agents.AgentModelu
 	//meta! id="1"
 	public class AgentModelu : OSPABA.Agent
 	{
-		public List<Objednavka> Objednavky { get; set; }
-		public int PocetHotovychObjednavok { get; set; }
-		public AgentModelu(int id, OSPABA.Simulation mySim, Agent parent) :
+		public List<Objednavka> Objednavky { get; set; } = null!;
+		public int PocetHotovychObjednavok { get; set; } = 0;
+        public AgentModelu(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
 			Init();

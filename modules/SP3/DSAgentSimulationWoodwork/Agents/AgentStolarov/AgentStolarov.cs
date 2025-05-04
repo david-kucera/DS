@@ -9,11 +9,11 @@ namespace Agents.AgentStolarov
 	public class AgentStolarov : OSPABA.Agent
 	{
 		#region Properties
-		public PriorityQueue<Tovar, (double, double)> CakajuceNaRezanie { get; set; }
-		public PriorityQueue<Tovar, (double, double)> CakajuceNaMorenie { get; set; }
-		public PriorityQueue<Tovar, (double, double)> CakajuceNaLakovanie { get; set; }
-		public PriorityQueue<Tovar,(double, double)> CakajuceNaSkladanie { get; set; }
-		public PriorityQueue<Tovar, (double, double)> CakajuceNaMontazKovani { get; set; }
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaRezanie { get; set; } = null!;
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaMorenie { get; set; } = null!;
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaLakovanie { get; set; } = null!;
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaSkladanie { get; set; } = null!;
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaMontazKovani { get; set; } = null!;
 		#endregion // Properties
 
 		public AgentStolarov(int id, OSPABA.Simulation mySim, Agent parent) :

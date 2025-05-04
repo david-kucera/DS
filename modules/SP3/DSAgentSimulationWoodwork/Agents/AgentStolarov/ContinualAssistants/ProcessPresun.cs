@@ -18,9 +18,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			_montazneMiestoSkladGenerator = new TriangularGenerator(seeder, 60.0, 480.0, 120.0);
-			_pripravaDrevaGenerator = new TriangularGenerator(seeder, 300.0, 900.0, 500.0);
-			_presunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(seeder, 120.0, 500.0, 150.0);
+			_montazneMiestoSkladGenerator = new TriangularGenerator(seeder!, 60.0, 480.0, 120.0);
+			_pripravaDrevaGenerator = new TriangularGenerator(seeder!, 300.0, 900.0, 500.0);
+			_presunMedziMontaznymiMiestamiGenerator = new TriangularGenerator(seeder!, 120.0, 500.0, 150.0);
 		}
 
 		override public void PrepareReplication()
@@ -72,7 +72,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			}
 			
 			if (stolar.MontazneMiesto != null && stolar.MontazneMiesto.Stolar != null && stolar.MontazneMiesto.Stolar.ID == stolar.ID && stolar.MontazneMiesto.Stolar.Type == stolar.Type)
-				stolar.MontazneMiesto.Stolar = null;
+				stolar.MontazneMiesto.Stolar = null!;
 			
 			double trvanieUdalosti = casPrechoduZMontaznehoMiestaDoSkladu + casPripravyDrevaVSklade + casPrechoduZoSkladuNaMontazneMiesto +casPrechoduNaMontazneMiesto;
 			Hold(trvanieUdalosti, message);

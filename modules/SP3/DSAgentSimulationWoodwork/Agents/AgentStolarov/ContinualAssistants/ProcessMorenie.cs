@@ -18,9 +18,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			_stolMorenieGenerator = new ContinousUniform(seeder, 100.0 * 60, 480.0 * 60);
-			_stolickaMorenieGenerator = new ContinousUniform(seeder, 90.0 * 60, 400.0 * 60);
-			_skrinaMorenieGenerator = new ContinousUniform(seeder, 300.0 * 60, 600.0 * 60);
+			_stolMorenieGenerator = new ContinousUniform(seeder!, 100.0 * 60, 480.0 * 60);
+			_stolickaMorenieGenerator = new ContinousUniform(seeder!, 90.0 * 60, 400.0 * 60);
+			_skrinaMorenieGenerator = new ContinousUniform(seeder!, 300.0 * 60, 600.0 * 60);
 		}
 
 		override public void PrepareReplication()

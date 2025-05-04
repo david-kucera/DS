@@ -30,9 +30,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 				0.6,
 				0.4
 			];
-			_stolRezanieGenerator = new ContinousEmpirical(seeder, intervals, percentages);
-			_stolickaRezanieGenerator = new ContinousUniform(seeder, 12.0 * 60, 16.0 * 60);
-			_skrinaRezanieGenerator = new ContinousUniform(seeder, 15.0 * 60, 80.0 * 60);
+			_stolRezanieGenerator = new ContinousEmpirical(seeder!, intervals, percentages);
+			_stolickaRezanieGenerator = new ContinousUniform(seeder!, 12.0 * 60, 16.0 * 60);
+			_skrinaRezanieGenerator = new ContinousUniform(seeder!, 15.0 * 60, 80.0 * 60);
 		}
 
 		override public void PrepareReplication()

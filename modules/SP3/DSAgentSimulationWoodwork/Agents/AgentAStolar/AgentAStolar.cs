@@ -8,10 +8,10 @@ namespace Agents.AgentAStolar
 	public class AgentAStolar : OSPABA.Agent
 	{
 		#region Properties
-		public List<Stolar> StolariA { get; set; }
-		#endregion // Properties
+		public List<Stolar> StolariA { get; set; } = null!;
+        #endregion // Properties
 
-		public AgentAStolar(int id, OSPABA.Simulation mySim, Agent parent) :
+        public AgentAStolar(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
 			Init();

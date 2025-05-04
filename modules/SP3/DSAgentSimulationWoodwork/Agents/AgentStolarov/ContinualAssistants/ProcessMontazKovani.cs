@@ -16,7 +16,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
 			base(id, mySim, myAgent)
 		{
 			var seeder = ((MySimulation)MySim).Seeder;
-			_skrinaMontazKovaniGenerator = new ContinousUniform(seeder, 15.0 * 60, 25.0 * 60);
+			_skrinaMontazKovaniGenerator = new ContinousUniform(seeder!, 15.0 * 60, 25.0 * 60);
 		}
 
 		override public void PrepareReplication()

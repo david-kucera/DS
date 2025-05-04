@@ -58,8 +58,8 @@ namespace Agents.AgentMontaznychMiest
 			// Uvolnenie montazneho miesta
 			var miesto = ((MyMessage)message).Tovar.MontazneMiesto;
             miesto.Tovar.AnimImageItem.Remove();
-            miesto.Tovar = null;
-			((MyMessage)message).Tovar.MontazneMiesto = null;
+            miesto.Tovar = null!;
+			((MyMessage)message).Tovar.MontazneMiesto = null!;
 
 			// Priradenie montazneho miesta k starsiemu tovaru
 			if (MyAgent.NepriradeneTovary.Count > 0)
@@ -86,6 +86,8 @@ namespace Agents.AgentMontaznychMiest
 		{
 			switch (message.Code)
 			{
+				default:
+					break;
 			}
 		}
 

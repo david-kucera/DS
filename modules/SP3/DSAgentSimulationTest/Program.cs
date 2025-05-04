@@ -11,11 +11,7 @@ class Program
     public static int END_TIME = 249 * 8 * 60 * 60;
     public static int SEED = 0;
     public static Random SEEDER = new(SEED);
-	public static int A;
-    public static int B;
-    public static int C;
-    public static int M;
-    public static Configuration CURRENT_CONFIG;
+    public static Configuration CURRENT_CONFIG = null!;
     public static string OUTPUT_DIR = "../../output/";
     public static string PATH_VYHOVUJUCE = OUTPUT_DIR + "vyhovuje.csv";
     public static string PATH_NEVYHOVUJUCE = OUTPUT_DIR + "nevyhovuje.csv";

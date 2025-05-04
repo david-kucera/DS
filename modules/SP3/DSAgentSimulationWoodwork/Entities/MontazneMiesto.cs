@@ -24,8 +24,8 @@ public class MontazneMiesto
     public MontazneMiesto(int id)
     {
         ID = id;
-        Tovar = null;
-        Stolar = null;
+        Tovar = null!;
+        Stolar = null!;
 
         int posX = (id-1) / 3;
         int posY = (id-1) % 3;

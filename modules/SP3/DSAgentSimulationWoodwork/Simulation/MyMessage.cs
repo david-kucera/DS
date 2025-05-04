@@ -5,10 +5,10 @@ namespace Simulation
 	public class MyMessage : OSPABA.MessageForm
 	{
 		#region Properties
-		public Objednavka Objednavka { get; set; } = null;
-		public MontazneMiesto MontazneMiesto { get; set; } = null;
-		public Tovar Tovar { get; set; } = null;
-		public Stolar Stolar { get; set; } = null;
+		public Objednavka Objednavka { get; set; } = null!;
+		public MontazneMiesto MontazneMiesto { get; set; } = null!;
+		public Tovar Tovar { get; set; } = null!;
+		public Stolar Stolar { get; set; } = null!;
 		#endregion // Properties
 
 		public MyMessage(OSPABA.Simulation mySim) :

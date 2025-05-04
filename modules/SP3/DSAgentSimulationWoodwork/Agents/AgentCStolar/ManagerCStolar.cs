@@ -28,7 +28,7 @@ namespace Agents.AgentCStolar
 		{
 			var msg = ((MyMessage)message);
 
-			Stolar volny = null;
+			Stolar volny = null!;
 			var stolari = MyAgent.StolariC;
 			foreach (var stolar in stolari)
 			{
@@ -50,7 +50,9 @@ namespace Agents.AgentCStolar
 		{
 			switch (message.Code)
 			{
-			}
+				default:
+                    break;
+            }
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"

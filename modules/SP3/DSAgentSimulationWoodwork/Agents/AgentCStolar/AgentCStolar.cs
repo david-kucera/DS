@@ -8,7 +8,7 @@ namespace Agents.AgentCStolar
 	public class AgentCStolar : OSPABA.Agent
 	{
 		#region Properties
-		public List<Stolar> StolariC { get; set; }
+		public List<Stolar> StolariC { get; set; } = null!;
 		#endregion // Properties
 
 		public AgentCStolar(int id, OSPABA.Simulation mySim, Agent parent) :

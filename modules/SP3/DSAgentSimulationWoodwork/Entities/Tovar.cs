@@ -36,7 +36,7 @@ public class Tovar
         Objednavka = objednavka;
         ObjednavkaId = objednavkaId;
         Status = TovarStatus.CakajucaNaRezanie;
-        MontazneMiesto = null;
+        MontazneMiesto = null!;
         switch (type) 
         {
             case TovarType.Stol:

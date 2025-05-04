@@ -32,9 +32,9 @@ namespace Agents.AgentStolarov.ContinualAssistants
 				0.6,
 				0.3
 			];
-			_stolLakovanieGenerator = new ContinousEmpirical(seeder, intervals, percentages);
-			_stolickaLakovanieGenerator = new ContinousUniform(seeder, 40.0 * 60, 200.0 * 60);
-			_skrinaLakovanieGenerator = new ContinousUniform(seeder, 250.0 * 60, 560.0 * 60);
+			_stolLakovanieGenerator = new ContinousEmpirical(seeder!, intervals, percentages);
+			_stolickaLakovanieGenerator = new ContinousUniform(seeder!, 40.0 * 60, 200.0 * 60);
+			_skrinaLakovanieGenerator = new ContinousUniform(seeder!, 250.0 * 60, 560.0 * 60);
 		}
 
 		override public void PrepareReplication()

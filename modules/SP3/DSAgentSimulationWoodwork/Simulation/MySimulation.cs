@@ -20,17 +20,17 @@ namespace Simulation
 		public int PocetStolarovA { get; set; } = 2;
 		public int PocetStolarovB { get; set; } = 2;
 		public int PocetStolarovC { get; set; } = 18;
-		public ConfidenceInterval GlobalnyPriemernyCasObjednavkyVSysteme { get; set; }
-		public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; }
-		public ConfidenceInterval GlobalnyPriemernyPocetNezacatychObjednavok { get; set; }
-		public ConfidenceInterval PriemernyPocetNezacatychObjednavok { get; set; }
-        public ConfidenceInterval GlobalnyPriemernyPocetNezacatychTovarov { get; set; }
-        public ConfidenceInterval PriemernyPocetNezacatychTovarov { get; set; }
-        public ConfidenceInterval GlobalneVytazenieA { get; set; }
-		public ConfidenceInterval GlobalneVytazenieB { get; set; }
-		public ConfidenceInterval GlobalneVytazenieC { get; set; }
-		public AnimTextItem AktualnyDenACasAnimItem { get; set; }
-		public AnimTextItem AktualnaReplikaciaAnimItem { get; set; }
+		public ConfidenceInterval GlobalnyPriemernyCasObjednavkyVSysteme { get; set; } = null!;
+		public ConfidenceInterval PriemernyCasObjednavkyVSysteme { get; set; } = null!;
+		public ConfidenceInterval GlobalnyPriemernyPocetNezacatychObjednavok { get; set; } = null!;
+		public ConfidenceInterval PriemernyPocetNezacatychObjednavok { get; set; } = null!;
+        public ConfidenceInterval GlobalnyPriemernyPocetNezacatychTovarov { get; set; } = null!;
+        public ConfidenceInterval PriemernyPocetNezacatychTovarov { get; set; } = null!;
+        public ConfidenceInterval GlobalneVytazenieA { get; set; } = null!;
+		public ConfidenceInterval GlobalneVytazenieB { get; set; } = null!;
+		public ConfidenceInterval GlobalneVytazenieC { get; set; } = null!;
+		public AnimTextItem AktualnyDenACasAnimItem { get; set; } = null!;
+		public AnimTextItem AktualnaReplikaciaAnimItem { get; set; } = null!;
         #endregion // Properties
 
         public MySimulation(Random seeder, int pocetMiest, int pocetA, int pocetB, int pocetC)
@@ -219,7 +219,7 @@ namespace Simulation
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
 		{
-			AgentModelu = new AgentModelu(SimId.AgentModelu, this, null);
+			AgentModelu = new AgentModelu(SimId.AgentModelu, this, null!);
 			AgentOkolia = new AgentOkolia(SimId.AgentOkolia, this, AgentModelu);
 			AgentStolarskejDielne = new AgentStolarskejDielne(SimId.AgentStolarskejDielne, this, AgentModelu);
 			AgentStolarov = new AgentStolarov(SimId.AgentStolarov, this, AgentStolarskejDielne);
@@ -229,21 +229,21 @@ namespace Simulation
 			AgentCStolar = new AgentCStolar(SimId.AgentCStolar, this, AgentStolarov);
 		}
 		public AgentModelu AgentModelu
-		{ get; set; }
-		public AgentOkolia AgentOkolia
-		{ get; set; }
-		public AgentStolarskejDielne AgentStolarskejDielne
-		{ get; set; }
-		public AgentStolarov AgentStolarov
-		{ get; set; }
-		public AgentMontaznychMiest AgentMontaznychMiest
-		{ get; set; }
-		public AgentAStolar AgentAStolar
-		{ get; set; }
+		{ get; set; } = null!;
+        public AgentOkolia AgentOkolia
+		{ get; set; } = null!;
+        public AgentStolarskejDielne AgentStolarskejDielne
+		{ get; set; } = null!;
+        public AgentStolarov AgentStolarov
+		{ get; set; } = null!;
+        public AgentMontaznychMiest AgentMontaznychMiest
+		{ get; set; } = null!;
+        public AgentAStolar AgentAStolar
+		{ get; set; } = null!;
 		public AgentBStolar AgentBStolar
-		{ get; set; }
-		public AgentCStolar AgentCStolar
-		{ get; set; }
-		//meta! tag="end"
-	}
+		{ get; set; } = null!;
+        public AgentCStolar AgentCStolar
+		{ get; set; } = null!;
+        //meta! tag="end"
+    }
 }

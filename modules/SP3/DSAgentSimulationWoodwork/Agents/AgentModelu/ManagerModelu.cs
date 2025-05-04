@@ -38,7 +38,9 @@ namespace Agents.AgentModelu
 		{
 			switch (message.Code)
 			{
-			}
+                default:
+                    break;
+            }
 		}
 
 		//meta! sender="AgentStolarskejDielne", id="115", type="Notice"
@@ -47,7 +49,7 @@ namespace Agents.AgentModelu
 			var tovar = ((MyMessage)message).Tovar;
 			var obj = MyAgent.Objednavky.Find(o => o.Poradie == tovar.ObjednavkaId);
 
-			foreach (var t in obj.Tovary)
+			foreach (var t in obj!.Tovary)
 			{
 				if (t.Status != TovarStatus.Hotova) return;
 			}

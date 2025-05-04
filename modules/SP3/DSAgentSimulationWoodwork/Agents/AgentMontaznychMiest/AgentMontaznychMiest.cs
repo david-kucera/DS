@@ -9,9 +9,9 @@ namespace Agents.AgentMontaznychMiest
 	public class AgentMontaznychMiest : OSPABA.Agent
 	{
         #region Properties
-        public List<MontazneMiesto> MontazneMiesta { get; set; }
-		public Queue<Tovar> NepriradeneTovary { get; set; }
-        public AnimQueue AnimQueue { get; set; }
+        public List<MontazneMiesto> MontazneMiesta { get; set; } = null!;
+		public Queue<Tovar> NepriradeneTovary { get; set; } = null!;
+        public AnimQueue AnimQueue { get; set; } = null!;
         #endregion // Properties
 
         public AgentMontaznychMiest(int id, OSPABA.Simulation mySim, Agent parent) :

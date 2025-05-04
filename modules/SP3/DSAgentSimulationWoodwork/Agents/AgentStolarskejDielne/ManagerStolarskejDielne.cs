@@ -56,7 +56,9 @@ namespace Agents.AgentStolarskejDielne
 		{
 			switch (message.Code)
 			{
-			}
+                default:
+                    break;
+            }
 		}
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
