@@ -36,7 +36,7 @@ class Program
 		List<Configuration> configs = [];
 		ReadConfigs(configs);
 		Random random = new(SEED);
-        while (STOP_MAX < 20)
+        while (STOP_MAX < 20 + configs.Count)
 		{
             Stopwatch.Reset();
             var randomConfig = new Configuration(random);
