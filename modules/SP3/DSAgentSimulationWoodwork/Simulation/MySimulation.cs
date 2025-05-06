@@ -45,7 +45,6 @@ namespace Simulation
 
 		override public void PrepareSimulation()
 		{
-			base.PrepareSimulation();
 			// Create global statistcis
 			
 			GlobalnyPriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
@@ -56,11 +55,12 @@ namespace Simulation
 			GlobalneVytazenieC = new ConfidenceInterval();
 
 			InitAnimator();
+
+            base.PrepareSimulation();
         }
 
 		override public void PrepareReplication()
 		{
-			base.PrepareReplication();
 			// Reset entities, queues, local statistics, etc...
 
 			PriemernyCasObjednavkyVSysteme = new ConfidenceInterval();
@@ -70,12 +70,13 @@ namespace Simulation
             Objednavka.ResetPoradie();
 			Stolar.ResetPoradie();
 			InitAnimator();
+
+            base.PrepareReplication();
         }
 
 		override public void ReplicationFinished()
 		{
 			// Collect local statistics into global, update UI, etc...
-			base.ReplicationFinished();
 
 			GlobalnyPriemernyCasObjednavkyVSysteme.AddValue(PriemernyCasObjednavkyVSysteme.GetValue());
 			GlobalnyPriemernyPocetNezacatychObjednavok.AddValue(PriemernyPocetNezacatychObjednavok.GetValue());
@@ -104,6 +105,8 @@ namespace Simulation
 
             if (AnimatorExists)
                 Animator.ClearAll();
+
+            base.ReplicationFinished();
         }
 
 		override public void SimulationFinished()
