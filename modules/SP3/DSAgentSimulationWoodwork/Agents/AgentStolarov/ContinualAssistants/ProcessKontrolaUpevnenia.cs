@@ -17,7 +17,7 @@ namespace Agents.AgentStolarov.ContinualAssistants
             base(id, mySim, myAgent)
         {
             var seeder = ((MySimulation)MySim).Seeder;
-            _kontrolaGenerator = new(seeder, 10 * 60, 20 * 60, 18 * 60);
+            _kontrolaGenerator = new(seeder, 10.0 * 60, 20.0 * 60, 18.0 * 60);
         }
 
         override public void PrepareReplication()

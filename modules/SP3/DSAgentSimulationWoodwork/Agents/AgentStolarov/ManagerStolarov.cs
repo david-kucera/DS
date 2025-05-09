@@ -902,7 +902,6 @@ namespace Agents.AgentStolarov
             messageKoniec.Addressee = MySim.FindAgent(SimId.AgentStolarskejDielne);
             Notice(messageKoniec);
 
-
             // Naplanovanie dalsej aktivity pre stolara typu C - prednost ma montaz kovani, potom bud lakovanie alebo morenie a nakoniec kontrola
             if (MyAgent.CakajuceNaMontazKovani.Count > 0)
             {
