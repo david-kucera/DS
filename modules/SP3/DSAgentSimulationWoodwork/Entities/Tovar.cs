@@ -112,6 +112,8 @@ public enum TovarStatus
 	PriebehLakovania,
 	CakajucaNaSkladanie,
     PriebehSkladania,
+    CakajucaNaKontrolu,
+    PriebehKontroly,
     CakajucaNaMontazKovani,
     PriebehMontazeKovani,
     Hotova
