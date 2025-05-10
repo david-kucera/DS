@@ -28,5 +28,7 @@ namespace Simulation
 		public const int ProcessMontazKovani = 1016;
 		public const int SchedulerPrichodovObjednavok = 1001;
 		//meta! tag="end"
-	}
+
+		public const int ProcessKontrolaUpevnenia = 1017;
+    }
 }

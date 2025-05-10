@@ -14,9 +14,10 @@ namespace Agents.AgentStolarov
 		public PriorityQueue<Tovar, (double, double)> CakajuceNaLakovanie { get; set; } = null!;
 		public PriorityQueue<Tovar, (double, double)> CakajuceNaSkladanie { get; set; } = null!;
 		public PriorityQueue<Tovar, (double, double)> CakajuceNaMontazKovani { get; set; } = null!;
-		#endregion // Properties
+		public PriorityQueue<Tovar, (double, double)> CakajuceNaKontrolu { get; set; } = null!;
+        #endregion // Properties
 
-		public AgentStolarov(int id, OSPABA.Simulation mySim, Agent parent) :
+        public AgentStolarov(int id, OSPABA.Simulation mySim, Agent parent) :
 			base(id, mySim, parent)
 		{
 			Init();
@@ -32,7 +33,8 @@ namespace Agents.AgentStolarov
 			CakajuceNaLakovanie = new();
 			CakajuceNaSkladanie = new();
 			CakajuceNaMontazKovani = new();
-		}
+            CakajuceNaKontrolu = new();
+        }
 
 		//meta! userInfo="Generated code: do not modify", tag="begin"
 		private void Init()
@@ -44,7 +46,8 @@ namespace Agents.AgentStolarov
 			new ProcessMontazKovani(SimId.ProcessMontazKovani, MySim, this);
 			new ProcessRezanie(SimId.ProcessRezanie, MySim, this);
 			new ProcessSkladanie(SimId.ProcessSkladanie, MySim, this);
-			AddOwnMessage(Mc.ZacniPracu);
+			new ProcessKontrola(SimId.ProcessKontrolaUpevnenia, MySim, this);
+            AddOwnMessage(Mc.ZacniPracu);
 			AddOwnMessage(Mc.DajStolaraC);
 			AddOwnMessage(Mc.DajStolaraB);
 			AddOwnMessage(Mc.DajStolaraA);
